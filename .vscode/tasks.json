@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Soup House site",
+      "detail": "Runs the website + Keystatic editor; logs the addresses to logs/server.log",
+      "type": "shell",
+      "command": "export NVM_DIR=\"$HOME/.nvm\"; [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && (nvm use 22 >/dev/null 2>&1 || nvm install 22); IP=$(hostname -I 2>/dev/null | awk '{print $1}'); mkdir -p logs; { echo 'Soup House site - addresses:'; echo '  Local site:     https://localhost:4321/'; echo '  Local editor:   https://localhost:4321/keystatic'; echo \"  Network site:   https://${IP}:4321/\"; echo \"  Network editor: https://${IP}:4321/keystatic\"; echo ''; } | tee logs/server.log; npm run dev -- --host 0.0.0.0 2>&1 | tee -a logs/server.log",
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "focus": false
+      },
+      "group": { "kind": "build", "isDefault": true }
+    }
+  ]
+}
