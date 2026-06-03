@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Anton+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
 
 /* Tailwind */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/* Font tokens — these make the `font-roboto` / `font-cardo` utilities exist.
+   Roboto = body text, Cardo = serif headings. */
+@theme {
+  --font-roboto: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-cardo: "Cardo", ui-serif, Georgia, "Times New Roman", serif;
+}
 
 /* DaisyUI — themes must be explicitly enabled in v5, or only light/dark ship */
 @plugin "daisyui" {
