@@ -1,0 +1,31 @@
+---
+import Layout from '@layouts/Layout.astro'
+import Posts from '@components/Posts.astro'
+import Hero from '@components/Hero.astro'
+import Mission from '@components/Mission.astro'
+import WhatWeDo from '@components/WhatWeDo.astro'
+import HowItWorks from '@components/HowItWorks.astro'
+import CalendarSection from '@components/CalendarSection.astro'
+import CTA from '@components/CTA.astro'
+
+import pageData from '@content/pages/home.json'
+---
+<Layout title={pageData?.title}>
+  <Hero />
+  <Mission />
+  <WhatWeDo />
+  <CalendarSection />
+  <HowItWorks />
+  <section class="bg-base-100 py-20">
+    <div class="container mx-auto max-w-screen-2xl px-3">
+      <header class="space-y-3 text-center">
+        <h2 class="font-anton text-4xl md:text-5xl">{pageData?.posts.heading}</h2>
+        <p class="text-base-content/70 text-lg">{pageData?.posts.subheading}</p>
+      </header>
+      <div class="mt-10">
+        <Posts maxPosts={3} />
+      </div>
+    </div>
+  </section>
+  <CTA />
+</Layout>

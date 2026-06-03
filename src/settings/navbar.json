@@ -1,0 +1,49 @@
+{
+  "links": [
+    {
+      "text": "Home",
+      "isDropdown": {
+        "discriminant": false,
+        "value": {
+          "link": "/"
+        }
+      }
+    },
+    {
+      "text": "About",
+      "isDropdown": {
+        "discriminant": false,
+        "value": {
+          "link": "/about"
+        }
+      }
+    },
+    {
+      "text": "Get Involved",
+      "isDropdown": {
+        "discriminant": false,
+        "value": {
+          "link": "/get-involved"
+        }
+      }
+    },
+    {
+      "text": "News",
+      "isDropdown": {
+        "discriminant": false,
+        "value": {
+          "link": "/posts"
+        }
+      }
+    }
+  ],
+  "buttons": [
+    {
+      "label": "Donate",
+      "link": "#",
+      "icon": "",
+      "style": "primary",
+      "size": ""
+    }
+  ]
+}

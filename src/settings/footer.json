@@ -1,0 +1,22 @@
+{
+  "menuItems": [
+    {
+      "text": "Home",
+      "link": "/"
+    },
+    {
+      "text": "About",
+      "link": "/about"
+    },
+    {
+      "text": "Get Involved",
+      "link": "/get-involved"
+    },
+    {
+      "text": "News",
+      "link": "/posts"
+    }
+  ],
+  "copyright": "Lorem ipsum &copy; Soup House, Inc.\n",
+  "socialIcons": []
+}

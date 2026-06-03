@@ -1,0 +1,71 @@
+---
+import Layout from '@layouts/Layout.astro'
+
+const ways = [
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+    title: 'Volunteer',
+    body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>',
+    title: 'Donate',
+    body: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    title: 'Partner',
+    body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse.',
+  },
+]
+---
+<Layout title="Get Involved">
+  <section class="bg-base-200 py-20">
+    <div class="mx-auto max-w-screen-md space-y-4 px-4 text-center">
+      <p class="text-primary font-semibold tracking-widest uppercase">Get Involved</p>
+      <h1 class="font-anton text-5xl md:text-6xl">Lorem ipsum, join us</h1>
+      <p class="text-base-content/70 text-xl">
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-base-100 py-20">
+    <div class="mx-auto grid max-w-screen-xl gap-8 px-4 md:grid-cols-3">
+      {
+        ways.map((way) => (
+          <div class="card bg-base-200 shadow-md">
+            <div class="card-body items-start gap-3">
+              <div class="text-primary" set:html={way.icon} />
+              <h2 class="card-title text-2xl">{way.title}</h2>
+              <p class="text-base-content/70">{way.body}</p>
+              <div class="card-actions mt-2">
+                <a href="#" class="btn btn-primary">Learn more</a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="bg-base-200 py-20">
+    <div class="mx-auto max-w-2xl px-4">
+      <h2 class="font-anton mb-8 text-center text-4xl">Sign Up (placeholder)</h2>
+      <div class="card bg-base-100 shadow-md">
+        <div class="card-body space-y-4">
+          <label class="floating-label">
+            <span>Name</span>
+            <input type="text" placeholder="Name" class="input input-bordered w-full" />
+          </label>
+          <label class="floating-label">
+            <span>Email</span>
+            <input type="email" placeholder="Email" class="input input-bordered w-full" />
+          </label>
+          <textarea class="textarea textarea-bordered w-full" placeholder="How would you like to help?"></textarea>
+          <button class="btn btn-primary">Send (not wired up)</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

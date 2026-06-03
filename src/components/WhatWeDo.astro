@@ -1,0 +1,44 @@
+---
+// Three-card grid. Play with: `lg:grid-cols-3`, `gap-8`, the `card` padding,
+// and swap `bg-base-100`/`bg-base-300` to see surface colors change.
+const cards = [
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>',
+    title: 'Lorem Meals',
+    body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pay-what-you-can dolore magna.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
+    title: 'Ipsum Groceries',
+    body: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    title: 'Dolor Community',
+    body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.',
+  },
+];
+---
+<section class="bg-base-100 py-20">
+  <div class="mx-auto max-w-screen-xl px-4">
+    <header class="mx-auto mb-12 max-w-2xl space-y-3 text-center">
+      <h2 class="font-anton text-4xl md:text-5xl">What We Do</h2>
+      <p class="text-base-content/70 text-lg">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.
+      </p>
+    </header>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {
+        cards.map((card) => (
+          <div class="card bg-base-200 shadow-md transition-transform hover:-translate-y-1">
+            <div class="card-body items-start gap-3">
+              <div class="text-primary" set:html={card.icon} />
+              <h3 class="card-title text-2xl">{card.title}</h3>
+              <p class="text-base-content/70">{card.body}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

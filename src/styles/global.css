@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton+SC&display=swap');
+
+/* Tailwind */
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* DaisyUI — themes must be explicitly enabled in v5, or only light/dark ship */
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, cupcake, bumblebee, emerald,
+    corporate, synthwave, retro, cyberpunk, valentine, halloween, garden,
+    forest, aqua, lofi, pastel, fantasy, wireframe;
+}
+
+/* Custom "souphouse" theme — a warm soup-kitchen palette.
+   Tokens are in hex so VS Code color-swatch pickers work on them.
+   Tweak these values and the whole site recolors. Select it in the CMS
+   (Site Settings → Branding → theme = Souphouse) or via data-theme. */
+@plugin "daisyui/theme" {
+  name: "souphouse";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #fbf6ec; /* page background      */
+  --color-base-200: #f3ead7; /* cards / raised areas  */
+  --color-base-300: #e7d9bf; /* borders / deeper      */
+  --color-base-content: #2c2420; /* body text         */
+
+  --color-primary: #c1432b; /* tomato — buttons, links */
+  --color-primary-content: #fdf3ee;
+  --color-secondary: #5a7d3c; /* herb green            */
+  --color-secondary-content: #f4f8ee;
+  --color-accent: #e0a43b; /* honey / amber           */
+  --color-accent-content: #2c2018;
+  --color-neutral: #3a2e28; /* deep brown             */
+  --color-neutral-content: #f3ead7;
+
+  --color-info: #3b82a6;
+  --color-info-content: #ffffff;
+  --color-success: #4f8a4f;
+  --color-success-content: #ffffff;
+  --color-warning: #d9892b;
+  --color-warning-content: #2c2018;
+  --color-error: #b53d2e;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+

@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets'
+import { getCollection, getEntry } from 'astro:content'
+
+export interface Props {
+  maxPosts?: number
+}
+
+const { maxPosts = 3 }: Props = Astro.props
+
+const posts = await getCollection('posts')
+
+---
+<ul class="flex flex-wrap items-stretch justify-center gap-6">
+  {
+    posts.slice(0, maxPosts).map((post) => (
+      <li>
+        <a href={`/posts/${post.id}`}>
+          <div class="card bg-base-300 h-full w-96 shadow-xl transition-transform hover:scale-105">
+            <figure>
+              {post.data.featuredImage && (
+                <Image src={post.data.featuredImage} class="object-fit h-60 rounded-t-2xl" alt="Shoes" />
+              )}
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">{post.data.title}</h2>
+              <p>{post.data.excerpt}</p>
+              <div class="card-actions justify-end">
+                <button class="btn btn-primary btn-link">Read full story</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+

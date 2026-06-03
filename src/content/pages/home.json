@@ -1,0 +1,30 @@
+{
+  "title": "Home",
+  "hero": {
+    "heroImage": "@assets/images/pages/home/hero/heroImage.jpg",
+    "heroImageAlt": "Placeholder hero image",
+    "heading": "Lorem ipsum dolor sit amet",
+    "subheading": "Consectetur adipiscing elit",
+    "intro": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "buttons": [
+      {
+        "label": "Get Involved",
+        "link": "/get-involved",
+        "style": "primary",
+        "type": "",
+        "size": "large"
+      },
+      {
+        "label": "Learn More",
+        "link": "/about",
+        "style": "secondary",
+        "type": "outline",
+        "size": "large"
+      }
+    ]
+  },
+  "posts": {
+    "heading": "Latest News",
+    "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  }
+}
