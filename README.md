@@ -13,7 +13,7 @@ npm install
 npm run dev -- --host 0.0.0.0
 ```
 
-Dev server runs over https with a self-signed cert (accept the warning once).
+Dev server runs over https with a self-signed cert.
 Keystatic needs https when you open it over a LAN IP, not just localhost.
 
 - site: https://localhost:4321
