@@ -2,23 +2,26 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
+import vercel from '@astrojs/vercel';
 
 import tailwindcss from '@tailwindcss/vite';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
-// The Keystatic admin (/keystatic + /api/keystatic) needs a server runtime, so
-// we only load it during `astro dev`. The `astro build` output is 100% static
-// (no adapter), which deploys cleanly to Cloudflare Pages. Editors run Keystatic
-// locally for now; serving the admin from Cloudflare is a later step.
+// Static by default. Keystatic's two routes (/keystatic, /api/keystatic) are
+// marked prerender:false, so the Vercel adapter turns just those into Node
+// serverless functions (for the GitHub OAuth + API), while every page stays
+// static. The admin needs a Node runtime, which Vercel provides.
 //
-// We key off argv ('dev' vs 'build') rather than NODE_ENV, which isn't reliably
-// set when the config is first evaluated.
+// basic-ssl is dev-only: HTTPS so the Keystatic admin gets a secure context
+// when opened over a LAN IP. We key off argv ('dev') because NODE_ENV isn't
+// reliably set when the config is first evaluated.
 const isDev = process.argv.includes('dev');
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), markdoc(), ...(isDev ? [keystatic()] : [])],
+  integrations: [react(), markdoc(), keystatic()],
   output: 'static',
+  adapter: vercel(),
   vite: {
     plugins: [tailwindcss(), ...(isDev ? [basicSsl()] : [])],
   },
