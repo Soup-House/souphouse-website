@@ -1,10 +1,10 @@
 {
   "title": "Home",
   "hero": {
-    "heroImage": "@assets/images/pages/home/hero/heroImage.jpg",
-    "heroImageAlt": "Placeholder hero image",
-    "heading": "Lorem ipsum dolor sit amet",
-    "subheading": "Consectetur adipiscing elit",
+    "heroImage": "@assets/images/pages/home/hero/heroImage.png",
+    "heroImageAlt": "A bowl of soup",
+    "heading": "We are Soup House",
+    "subheading": "The World's Soupiest House",
     "intro": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "buttons": [
       {
