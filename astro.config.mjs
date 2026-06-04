@@ -6,6 +6,8 @@ import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
+import cloudflare from '@astrojs/cloudflare';
+
 // The Keystatic admin (/keystatic + /api/keystatic) needs a server runtime, so
 // we only load it during `astro dev`. The `astro build` output is 100% static
 // (no adapter), which deploys cleanly to Cloudflare Pages. Editors run Keystatic
@@ -19,7 +21,10 @@ const isDev = process.argv.includes('dev');
 export default defineConfig({
   integrations: [react(), markdoc(), ...(isDev ? [keystatic()] : [])],
   output: 'static',
+
   vite: {
     plugins: [tailwindcss(), ...(isDev ? [basicSsl()] : [])],
   },
+
+  adapter: cloudflare(),
 });
