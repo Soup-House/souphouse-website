@@ -2,6 +2,9 @@
   "name": "souphouse-website",
   "version": "0.1.0",
   "license": "MIT",
+  "engines": {
+    "node": "22.x"
+  },
   "overrides": {
     "vite": "^7"
   },
