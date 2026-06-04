@@ -6,16 +6,20 @@ import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
-// HTTPS only for local dev so the Keystatic admin gets a secure context
-// (Web Crypto / crypto.subtle) when accessed over a LAN IP. Production
-// builds and the deployed site are unaffected.
-const isDev = process.env.NODE_ENV !== 'production';
+// The Keystatic admin (/keystatic + /api/keystatic) needs a server runtime, so
+// we only load it during `astro dev`. The `astro build` output is 100% static
+// (no adapter), which deploys cleanly to Cloudflare Pages. Editors run Keystatic
+// locally for now; serving the admin from Cloudflare is a later step.
+//
+// We key off argv ('dev' vs 'build') rather than NODE_ENV, which isn't reliably
+// set when the config is first evaluated.
+const isDev = process.argv.includes('dev');
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), markdoc(), keystatic()],
+  integrations: [react(), markdoc(), ...(isDev ? [keystatic()] : [])],
   output: 'static',
   vite: {
-    plugins: [tailwindcss(), ...(isDev ? [basicSsl()] : [])]
-  }
+    plugins: [tailwindcss(), ...(isDev ? [basicSsl()] : [])],
+  },
 });

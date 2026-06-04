@@ -8,7 +8,7 @@ export default config({
   },
 
     ui: {
-    brand: { name: 'Astrokeys' },
+    brand: { name: 'Soup House' },
     navigation: {
       'Content': ['home',  'posts',  ],
       'Components': [ 'navbar', 'footer'],
