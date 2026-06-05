@@ -21,13 +21,13 @@ const parsedCopyright = await marked(copyright);
 ---
 
 <footer class="footer footer-horizontal footer-center bg-base-200 text-base-content rounded p-10">
-  <nav class="grid grid-flow-col gap-4">
+  <nav class="flex flex-wrap items-center justify-center gap-4">
     {menuItems.map((item) => (
       <a href={item.link} class="link link-hover">{item.text}</a>
     ))}
   </nav>
   <nav>
-    <div class="grid grid-flow-col gap-4">
+    <div class="flex items-center justify-center gap-4">
       {socialIcons.map((social) => (
         <a href={social.url} aria-label={social.name} class="w-6 h-6 fill-primary">
           <div class="w-6 h-6" set:html={social.icon} />
