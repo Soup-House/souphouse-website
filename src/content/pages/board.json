@@ -12,16 +12,42 @@
     {
       "discriminant": "team",
       "value": {
-        "heading": "",
-        "subheading": "",
         "members": [
-          { "name": "Name", "role": "President", "bio": "Short bio goes here.", "photo": null },
-          { "name": "Name", "role": "Secretary", "bio": "Short bio goes here.", "photo": null },
-          { "name": "Name", "role": "Treasurer", "bio": "Short bio goes here.", "photo": null },
-          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null },
-          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null },
-          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null },
-          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null }
+          {
+            "name": "Adam Holbrook",
+            "role": "President",
+            "bio": "Short bio goes here."
+          },
+          {
+            "name": "Birdie Huber",
+            "role": "Secretary",
+            "bio": "Short bio goes here."
+          },
+          {
+            "name": "Eliza Roark",
+            "role": "Treasurer",
+            "bio": "Short bio goes here."
+          },
+          {
+            "name": "Randi Wiggins",
+            "role": "Director",
+            "bio": "Short bio goes here."
+          },
+          {
+            "name": "Samuel McCay",
+            "role": "Director",
+            "bio": "Short bio goes here."
+          },
+          {
+            "name": "Natalie Wilkerson",
+            "role": "Director",
+            "bio": "Short bio goes here."
+          },
+          {
+            "name": "Michael Vassilakis",
+            "role": "Director",
+            "bio": "Short bio goes here."
+          }
         ]
       }
     }
