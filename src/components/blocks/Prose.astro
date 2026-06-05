@@ -1,0 +1,14 @@
+---
+import { marked } from 'marked'
+import type { TextBlock } from './types'
+
+const { eyebrow, heading, body }: TextBlock = Astro.props
+const bodyHtml = body ? await marked(body) : ''
+---
+<section class="bg-base-100 py-20">
+  <div class="mx-auto max-w-3xl px-4">
+    {eyebrow && <p class="text-primary mb-2 font-semibold tracking-widest uppercase">{eyebrow}</p>}
+    {heading && <h2 class="font-heading mb-6 text-4xl md:text-5xl">{heading}</h2>}
+    {bodyHtml && <div class="prose prose-lg max-w-none" set:html={bodyHtml} />}
+  </div>
+</section>

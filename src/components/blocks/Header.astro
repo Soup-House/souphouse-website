@@ -1,0 +1,12 @@
+---
+import type { HeaderBlock } from './types'
+
+const { eyebrow, heading, subheading }: HeaderBlock = Astro.props
+---
+<section class="bg-base-200 py-20">
+  <div class="mx-auto max-w-screen-md space-y-4 px-4 text-center">
+    {eyebrow && <p class="text-primary font-semibold tracking-widest uppercase">{eyebrow}</p>}
+    {heading && <h1 class="font-heading text-5xl md:text-6xl">{heading}</h1>}
+    {subheading && <p class="text-base-content/70 text-xl">{subheading}</p>}
+  </div>
+</section>

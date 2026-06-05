@@ -14,7 +14,25 @@
       "isDropdown": {
         "discriminant": false,
         "value": {
-          "link": "/about"
+          "link": "/#about"
+        }
+      }
+    },
+    {
+      "text": "What We Do",
+      "isDropdown": {
+        "discriminant": false,
+        "value": {
+          "link": "/#what-we-do"
+        }
+      }
+    },
+    {
+      "text": "Meals",
+      "isDropdown": {
+        "discriminant": false,
+        "value": {
+          "link": "/#meals"
         }
       }
     },
@@ -24,6 +42,15 @@
         "discriminant": false,
         "value": {
           "link": "/get-involved"
+        }
+      }
+    },
+    {
+      "text": "Contact",
+      "isDropdown": {
+        "discriminant": false,
+        "value": {
+          "link": "/contact"
         }
       }
     },
@@ -40,7 +67,7 @@
   "buttons": [
     {
       "label": "Donate",
-      "link": "#",
+      "link": "/donate",
       "icon": "",
       "style": "primary",
       "size": ""

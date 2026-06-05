@@ -1,0 +1,49 @@
+---
+interface ButtonData {
+  label: string
+  link: string
+  icon?: string
+  style?: string
+  type?: string
+  size?: string
+}
+
+const { buttons = [] }: { buttons?: ButtonData[] } = Astro.props
+
+const styleClass: Record<string, string> = {
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  neutral: 'btn-neutral',
+  info: 'btn-info',
+  success: 'btn-success',
+  warning: 'btn-warning',
+  error: 'btn-error',
+}
+const typeClass: Record<string, string> = {
+  ghost: 'btn-ghost',
+  link: 'btn-link',
+  outline: 'btn-outline',
+  disabled: 'btn-disabled',
+}
+const sizeClass: Record<string, string> = {
+  large: 'btn-lg',
+  small: 'btn-sm',
+  tiny: 'btn-xs',
+  wide: 'btn-wide',
+}
+---
+{
+  buttons.map((button) => (
+    <a
+      href={button.link}
+      class:list={[
+        'btn',
+        styleClass[button.style ?? ''] ?? '',
+        typeClass[button.type ?? ''] ?? '',
+        sizeClass[button.size ?? ''] ?? '',
+      ]}>
+      {button.icon && <span set:html={button.icon} />}
+      {button.label}
+    </a>
+  ))
+}

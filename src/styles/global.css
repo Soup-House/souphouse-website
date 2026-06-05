@@ -1,15 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
-
 /* Tailwind */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Font tokens — these make the `font-roboto` / `font-cardo` utilities exist.
-   Roboto = body text, Cardo = serif headings. */
+/* Font role tokens — these make the `font-heading` / `font-body` utilities
+   exist. The families and weights are set per page from the CMS (Site Settings
+   -> Branding -> Typography); these values are just the build-time defaults. */
 @theme {
-  --font-roboto: "Roboto", ui-sans-serif, system-ui, sans-serif;
-  --font-cardo: "Cardo", ui-serif, Georgia, "Times New Roman", serif;
+  --font-heading: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Cardo", ui-serif, Georgia, "Times New Roman", serif;
+}
+
+/* Weight comes from the same Typography settings (CSS vars set on <html>). */
+@layer base {
+  body {
+    font-weight: var(--font-body-weight, 400);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--font-heading-weight, 400);
+  }
 }
 
 /* DaisyUI — themes must be explicitly enabled in v5, or only light/dark ship */

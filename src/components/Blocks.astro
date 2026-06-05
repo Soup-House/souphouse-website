@@ -1,0 +1,50 @@
+---
+import Hero from './blocks/Hero.astro'
+import Header from './blocks/Header.astro'
+import Split from './blocks/Split.astro'
+import Prose from './blocks/Prose.astro'
+import Cards from './blocks/Cards.astro'
+import Steps from './blocks/Steps.astro'
+import Calendar from './blocks/Calendar.astro'
+import PostsTeaser from './blocks/PostsTeaser.astro'
+import Cta from './blocks/Cta.astro'
+import Signup from './blocks/Signup.astro'
+import Newsletter from './blocks/Newsletter.astro'
+import Schedule from './blocks/Schedule.astro'
+import Team from './blocks/Team.astro'
+import Embed from './blocks/Embed.astro'
+
+const registry: Record<string, any> = {
+  hero: Hero,
+  header: Header,
+  split: Split,
+  prose: Prose,
+  cards: Cards,
+  steps: Steps,
+  calendar: Calendar,
+  postsTeaser: PostsTeaser,
+  cta: Cta,
+  signup: Signup,
+  newsletter: Newsletter,
+  schedule: Schedule,
+  team: Team,
+  embed: Embed,
+}
+
+const blocks: Array<{ discriminant: string; value: Record<string, any> }> =
+  Astro.props.blocks ?? []
+---
+{
+  blocks.map((block) => {
+    const Component = registry[block.discriminant]
+    if (!Component) return null
+    const { anchorId } = block.value
+    return anchorId ? (
+      <div id={anchorId} class="scroll-mt-20">
+        <Component {...block.value} />
+      </div>
+    ) : (
+      <Component {...block.value} />
+    )
+  })
+}

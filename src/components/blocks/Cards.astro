@@ -1,0 +1,39 @@
+---
+import type { CardsBlock } from './types'
+
+const { heading, subheading, items = [] }: CardsBlock = Astro.props
+---
+<section class="bg-base-100 py-20">
+  <div class="mx-auto max-w-screen-xl px-4">
+    {
+      (heading || subheading) && (
+        <header class="mx-auto mb-12 max-w-2xl space-y-3 text-center">
+          {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
+          {subheading && <p class="text-base-content/70 text-lg">{subheading}</p>}
+        </header>
+      )
+    }
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {
+        items.map((card) => (
+          <div class="card bg-base-200 shadow-md transition-transform hover:-translate-y-1">
+            <div class="card-body items-start gap-3">
+              {card.icon && <div class="text-primary" set:html={card.icon} />}
+              {card.title && <h3 class="card-title text-2xl">{card.title}</h3>}
+              {card.body && <p class="text-base-content/70">{card.body}</p>}
+              {
+                card.link && (
+                  <div class="card-actions mt-2">
+                    <a href={card.link} class="btn btn-primary">
+                      {card.linkLabel || 'Learn more'}
+                    </a>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

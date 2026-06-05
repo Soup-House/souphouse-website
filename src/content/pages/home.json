@@ -1,30 +1,147 @@
 {
   "title": "Home",
-  "hero": {
-    "heroImage": "@assets/images/pages/home/hero/heroImage.jpg",
-    "heroImageAlt": "A bowl of soup",
-    "heading": "We are Soup House",
-    "subheading": "The World's Soupiest House",
-    "intro": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "buttons": [
-      {
-        "label": "Get Involved",
-        "link": "/get-involved",
-        "style": "primary",
-        "type": "",
-        "size": "large"
-      },
-      {
-        "label": "Learn More",
-        "link": "/about",
-        "style": "secondary",
-        "type": "outline",
-        "size": "large"
+  "blocks": [
+    {
+      "discriminant": "hero",
+      "value": {
+        "heading": "We are Soup House",
+        "subheading": "The World's Soupiest House",
+        "intro": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+        "image": "@assets/images/pages/home/hero/heroImage.jpg",
+        "imageAlt": "A bowl of soup",
+        "buttons": [
+          {
+            "label": "Get Involved",
+            "link": "/get-involved",
+            "icon": "",
+            "style": "primary",
+            "type": "",
+            "size": "large"
+          },
+          {
+            "label": "Learn More",
+            "link": "/about",
+            "icon": "",
+            "style": "secondary",
+            "type": "outline",
+            "size": "large"
+          }
+        ]
       }
-    ]
-  },
-  "posts": {
-    "heading": "Latest News",
-    "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  }
+    },
+    {
+      "discriminant": "split",
+      "value": {
+        "anchorId": "about",
+        "eyebrow": "Our Mission",
+        "heading": "Lorem ipsum dolor sit amet, consectetur adipiscing",
+        "body": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident."
+      }
+    },
+    {
+      "discriminant": "cards",
+      "value": {
+        "anchorId": "what-we-do",
+        "heading": "What We Do",
+        "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.",
+        "items": [
+          {
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2\"/><path d=\"M7 2v20\"/><path d=\"M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7\"/></svg>",
+            "title": "Lorem Meals",
+            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pay-what-you-can dolore magna.",
+            "link": "",
+            "linkLabel": ""
+          },
+          {
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z\"/><path d=\"M3 6h18\"/><path d=\"M16 10a4 4 0 0 1-8 0\"/></svg>",
+            "title": "Ipsum Groceries",
+            "body": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+            "link": "",
+            "linkLabel": ""
+          },
+          {
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/></svg>",
+            "title": "Dolor Community",
+            "body": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.",
+            "link": "",
+            "linkLabel": ""
+          }
+        ]
+      }
+    },
+    {
+      "discriminant": "schedule",
+      "value": {
+        "anchorId": "meals",
+        "heading": "Meals & Distributions",
+        "subheading": "Placeholder — when and where to find us.",
+        "items": [
+          { "when": "Day, time", "place": "Location", "detail": "What's happening." },
+          { "when": "Day, time", "place": "Location", "detail": "What's happening." }
+        ]
+      }
+    },
+    {
+      "discriminant": "calendar",
+      "value": {
+        "anchorId": "events",
+        "heading": "Upcoming Events",
+        "subheading": "Placeholder — events and gatherings will list here."
+      }
+    },
+    {
+      "discriminant": "steps",
+      "value": {
+        "anchorId": "how-it-works",
+        "heading": "How It Works",
+        "subheading": "Lorem ipsum dolor sit amet consectetur.",
+        "items": [
+          { "title": "Lorem", "body": "Consectetur adipiscing elit sed do eiusmod tempor." },
+          { "title": "Ipsum", "body": "Incididunt ut labore et dolore magna aliqua minim." },
+          { "title": "Dolor", "body": "Quis nostrud exercitation ullamco laboris nisi aliquip." },
+          { "title": "Amet", "body": "Duis aute irure dolor in reprehenderit voluptate velit." }
+        ]
+      }
+    },
+    {
+      "discriminant": "postsTeaser",
+      "value": {
+        "heading": "Latest News",
+        "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "maxPosts": 3
+      }
+    },
+    {
+      "discriminant": "newsletter",
+      "value": {
+        "heading": "Stay in the loop",
+        "note": "Placeholder — meal times, distro days, and news in your inbox. (Signup coming soon.)"
+      }
+    },
+    {
+      "discriminant": "cta",
+      "value": {
+        "heading": "Lorem ipsum, get involved",
+        "body": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+        "buttons": [
+          {
+            "label": "Volunteer",
+            "link": "/get-involved",
+            "icon": "",
+            "style": "secondary",
+            "type": "",
+            "size": "large"
+          },
+          {
+            "label": "Donate",
+            "link": "/donate",
+            "icon": "",
+            "style": "",
+            "type": "outline",
+            "size": "large"
+          }
+        ]
+      }
+    }
+  ]
 }

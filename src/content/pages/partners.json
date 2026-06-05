@@ -1,0 +1,33 @@
+{
+  "title": "Partners",
+  "blocks": [
+    {
+      "discriminant": "header",
+      "value": {
+        "eyebrow": "Coalition",
+        "heading": "Our Partners",
+        "subheading": "Placeholder — the folks we work alongside."
+      }
+    },
+    {
+      "discriminant": "prose",
+      "value": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "Placeholder intro about the partner spaces and organizations Soup House works with."
+      }
+    },
+    {
+      "discriminant": "cards",
+      "value": {
+        "heading": "",
+        "subheading": "",
+        "items": [
+          { "icon": "", "title": "Partner name", "body": "What we do together.", "link": "#", "linkLabel": "Visit" },
+          { "icon": "", "title": "Partner name", "body": "What we do together.", "link": "#", "linkLabel": "Visit" },
+          { "icon": "", "title": "Partner name", "body": "What we do together.", "link": "#", "linkLabel": "Visit" }
+        ]
+      }
+    }
+  ]
+}

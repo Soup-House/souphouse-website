@@ -9,6 +9,7 @@ export const buttons = fields.array(
           label: 'Style',
           description: "Style based on DaisyUI.com",
           options: [
+            { label: 'Default (no color)', value: '' },
             { label: 'Primary', value: 'primary' },
             { label: 'Secondary', value: 'secondary' },
             { label: 'neutral', value: 'neutral' },

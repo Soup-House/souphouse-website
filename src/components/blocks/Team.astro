@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets'
+import type { TeamBlock } from './types'
+
+const { heading, subheading, members = [] }: TeamBlock = Astro.props
+---
+<section class="bg-base-100 py-20">
+  <div class="mx-auto max-w-screen-xl px-4">
+    {
+      (heading || subheading) && (
+        <header class="mx-auto mb-12 max-w-2xl space-y-3 text-center">
+          {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
+          {subheading && <p class="text-base-content/70 text-lg">{subheading}</p>}
+        </header>
+      )
+    }
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        members.map((member) => (
+          <div class="card bg-base-200 shadow-md">
+            <div class="card-body items-center gap-2 text-center">
+              {member.photo ? (
+                <Image
+                  src={member.photo}
+                  alt={member.name || 'Board member'}
+                  width={160}
+                  height={160}
+                  class="h-40 w-40 rounded-full object-cover"
+                />
+              ) : (
+                <div class="bg-base-300 text-base-content/40 flex h-40 w-40 items-center justify-center rounded-full text-sm">
+                  Photo
+                </div>
+              )}
+              {member.name && <h3 class="card-title text-xl">{member.name}</h3>}
+              {member.role && <p class="text-primary font-semibold">{member.role}</p>}
+              {member.bio && <p class="text-base-content/70 text-sm">{member.bio}</p>}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
