@@ -1,0 +1,17 @@
+---
+import Posts from '@components/Posts.astro'
+import type { PostsTeaserBlock } from './types'
+
+const { heading, subheading, maxPosts }: PostsTeaserBlock = Astro.props
+---
+<section class="bg-base-100 py-20">
+  <div class="container mx-auto max-w-screen-2xl px-3">
+    <header class="space-y-3 text-center">
+      {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
+      {subheading && <p class="text-base-content/70 text-lg">{subheading}</p>}
+    </header>
+    <div class="mt-10">
+      <Posts maxPosts={maxPosts ?? 3} />
+    </div>
+  </div>
+</section>

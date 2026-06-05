@@ -1,0 +1,29 @@
+{
+  "title": "Board",
+  "blocks": [
+    {
+      "discriminant": "header",
+      "value": {
+        "eyebrow": "Who we are",
+        "heading": "Our Board",
+        "subheading": "Placeholder — the people behind Soup House."
+      }
+    },
+    {
+      "discriminant": "team",
+      "value": {
+        "heading": "",
+        "subheading": "",
+        "members": [
+          { "name": "Name", "role": "President", "bio": "Short bio goes here.", "photo": null },
+          { "name": "Name", "role": "Secretary", "bio": "Short bio goes here.", "photo": null },
+          { "name": "Name", "role": "Treasurer", "bio": "Short bio goes here.", "photo": null },
+          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null },
+          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null },
+          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null },
+          { "name": "Name", "role": "Director", "bio": "Short bio goes here.", "photo": null }
+        ]
+      }
+    }
+  ]
+}

@@ -2,6 +2,11 @@
   "site": {
     "siteName": "Soup House, Inc.",
     "theme": "souphouse",
-    "favicon": "/images/site/favicon.png"
+    "favicon": "/images/site/favicon.png",
+    "typography": {
+      "pairing": "playfair-source",
+      "headingWeight": "400",
+      "bodyWeight": "400"
+    }
   }
 }

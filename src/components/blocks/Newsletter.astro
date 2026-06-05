@@ -1,0 +1,15 @@
+---
+import type { NewsletterBlock } from './types'
+
+const { heading, note }: NewsletterBlock = Astro.props
+---
+<section class="bg-base-200 py-20">
+  <div class="mx-auto max-w-2xl px-4 text-center">
+    {heading && <h2 class="font-heading mb-2 text-4xl">{heading}</h2>}
+    {note && <p class="text-base-content/70 mb-8">{note}</p>}
+    <form class="join mx-auto w-full max-w-md">
+      <input type="email" placeholder="you@email.com" class="input input-bordered join-item w-full" />
+      <button class="btn btn-primary join-item">Subscribe</button>
+    </form>
+  </div>
+</section>

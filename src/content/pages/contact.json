@@ -1,0 +1,26 @@
+{
+  "title": "Contact",
+  "blocks": [
+    {
+      "discriminant": "header",
+      "value": {
+        "eyebrow": "Contact",
+        "heading": "Get in touch",
+        "subheading": "Placeholder — we'd love to hear from you."
+      }
+    },
+    {
+      "discriminant": "prose",
+      "value": {
+        "body": "**Email:** contact@souphouse.org\n\n**Where we are:** South St. Louis\n\n**Mail:** wherever"
+      }
+    },
+    {
+      "discriminant": "signup",
+      "value": {
+        "heading": "Send us a note",
+        "note": "Placeholder form"
+      }
+    }
+  ]
+}

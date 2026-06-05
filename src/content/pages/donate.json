@@ -1,0 +1,29 @@
+{
+  "title": "Donate",
+  "blocks": [
+    {
+      "discriminant": "header",
+      "value": {
+        "eyebrow": "Support",
+        "heading": "Donate",
+        "subheading": "Placeholder — your gift keeps neighbors fed."
+      }
+    },
+    {
+      "discriminant": "prose",
+      "value": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "Our donation form runs on **Zeffy**, which is free for us to use — so every cent of your gift reaches Soup House. At checkout Zeffy will offer to add a **tip for Zeffy** on top of your donation. That tip is optional and doesn't come to us. If you'd rather not, just choose **\"Other\"** and enter **$0**."
+      }
+    },
+    {
+      "discriminant": "embed",
+      "value": {
+        "heading": "",
+        "note": "",
+        "html": ""
+      }
+    }
+  ]
+}

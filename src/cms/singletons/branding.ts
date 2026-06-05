@@ -1,4 +1,5 @@
 import { fields, singleton } from '@keystatic/core'
+import { FONT_PAIRINGS, FONT_WEIGHTS, DEFAULT_TYPOGRAPHY } from '../../settings/fonts'
 
 export const branding = singleton({
   label: 'Branding',
@@ -39,6 +40,27 @@ export const branding = singleton({
         directory: 'public/images',
         publicPath: '/images/',
       }),
+      typography: fields.object(
+        {
+          pairing: fields.select({
+            label: 'Font pairing',
+            description: 'Heading + body fonts',
+            options: FONT_PAIRINGS.map((p) => ({ label: p.label, value: p.id })),
+            defaultValue: DEFAULT_TYPOGRAPHY.pairing,
+          }),
+          headingWeight: fields.select({
+            label: 'Heading weight',
+            options: FONT_WEIGHTS,
+            defaultValue: DEFAULT_TYPOGRAPHY.headingWeight,
+          }),
+          bodyWeight: fields.select({
+            label: 'Body weight',
+            options: FONT_WEIGHTS,
+            defaultValue: DEFAULT_TYPOGRAPHY.bodyWeight,
+          }),
+        },
+        { label: 'Typography' }
+      ),
     }),
   },
 })

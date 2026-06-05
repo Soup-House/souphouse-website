@@ -1,5 +1,5 @@
 import { config } from '@keystatic/core';
-import { home, navbar, footer, branding, seo } from 'src/cms/singletons';
+import { home, about, getInvolved, donate, contact, board, partners, navbar, footer, branding, seo } from 'src/cms/singletons';
 import { posts } from 'src/cms/collections';
 
 // Local file storage during `astro dev` (edit straight from the repo, no auth),
@@ -16,9 +16,9 @@ export default config({
     ui: {
     brand: { name: 'Soup House' },
     navigation: {
-      'Content': ['home',  'posts',  ],
-      'Components': [ 'navbar', 'footer'],
-      'Site Settings': [ 'branding', 'seo' ],
+      'Content': ['home', 'about', 'getInvolved', 'donate', 'contact', 'board', 'partners', 'posts'],
+      'Components': ['navbar', 'footer'],
+      'Site Settings': ['branding', 'seo'],
     },
   },
 
@@ -28,9 +28,15 @@ export default config({
 
   singletons: {
     home,
+    about,
+    getInvolved,
+    donate,
+    contact,
+    board,
+    partners,
     navbar,
     footer,
     branding,
-    seo
+    seo,
   },
 });

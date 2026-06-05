@@ -1,15 +1,15 @@
 import { fields, singleton } from '@keystatic/core';
 import { pageBlocks } from '../fields';
 
-export const home = singleton({
-  label: 'Home Page',
+export const donate = singleton({
+  label: 'Donate Page',
   format: { data: 'json' },
-  path: 'src/content/pages/home',
+  path: 'src/content/pages/donate',
   schema: {
     title: fields.text({
       label: 'Page Title',
       description: 'The title of the page',
-      defaultValue: 'Home',
+      defaultValue: 'Donate',
     }),
     blocks: pageBlocks,
   },

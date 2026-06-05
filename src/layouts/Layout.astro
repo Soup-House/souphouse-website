@@ -10,15 +10,31 @@ export interface Props {
 
 import branding from '@settings/branding.json'
 import seo from '@settings/seo.json'
+import { FONT_PAIRINGS, DEFAULT_TYPOGRAPHY } from '@settings/fonts'
 
 const { title } = Astro.props
+
+const typography = { ...DEFAULT_TYPOGRAPHY, ...(branding.site.typography ?? {}) }
+const pairing = FONT_PAIRINGS.find((p) => p.id === typography.pairing) ?? FONT_PAIRINGS[0]
+const fontVars = {
+  '--font-heading': pairing.heading,
+  '--font-body': pairing.body,
+  '--font-heading-weight': typography.headingWeight,
+  '--font-body-weight': typography.bodyWeight,
+}
 ---
 
 <!doctype html>
-<html lang="en" class="font-roboto scroll-smooth" data-theme={branding.site.theme}>
+<html lang="en" class="font-body scroll-smooth" data-theme={branding.site.theme} style={fontVars}>
   <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
+
+  <!-- Fonts (family + weights chosen in Site Settings -> Branding -> Typography) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={pairing.href} />
+
   {branding.site.favicon && (
   <link rel="icon" href={branding.site.favicon} />
       )}

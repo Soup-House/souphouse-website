@@ -1,0 +1,46 @@
+{
+  "title": "About",
+  "blocks": [
+    {
+      "discriminant": "header",
+      "value": {
+        "eyebrow": "About Us",
+        "heading": "Lorem ipsum dolor sit amet",
+        "subheading": "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+      }
+    },
+    {
+      "discriminant": "prose",
+      "value": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "## Our Story\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n## What We Believe\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.\n\n- Lorem ipsum dolor sit amet\n- Consectetur adipiscing elit\n- Sed do eiusmod tempor incididunt"
+      }
+    },
+    {
+      "discriminant": "cta",
+      "value": {
+        "heading": "Lorem ipsum, get involved",
+        "body": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+        "buttons": [
+          {
+            "label": "Volunteer",
+            "link": "/get-involved",
+            "icon": "",
+            "style": "secondary",
+            "type": "",
+            "size": "large"
+          },
+          {
+            "label": "Donate",
+            "link": "/donate",
+            "icon": "",
+            "style": "",
+            "type": "outline",
+            "size": "large"
+          }
+        ]
+      }
+    }
+  ]
+}
