@@ -261,16 +261,15 @@ function barHtml(enabled, state, presets, allTags, opts) {
         `<button role="tab" data-tab="${t}" class="tab ${t === state.tab ? 'tab-active' : ''}">${TAB_LABELS[t] || t}</button>`
     )
     .join('')
+  const tabs = `<div role="tablist" class="tabs tabs-box">${tabBtns}</div>`
 
-  if (!opts.showFilters)
-    return `<div class="bg-base-200 mb-8 flex flex-wrap items-center justify-center gap-3 rounded-2xl p-3">
-      <div role="tablist" class="tabs tabs-boxed bg-base-300">${tabBtns}</div></div>`
+  if (!opts.showFilters) return `<div class="mb-8 flex justify-center">${tabs}</div>`
 
   const chipTags = [...new Set([...presets, ...state.activeTags])]
   const chips = chipTags
     .map((t) => {
       const on = state.activeTags.has(t.toLowerCase())
-      return `<button type="button" data-tag-chip="${esc(t)}" class="btn btn-xs ${on ? 'btn-primary' : 'btn-outline'}">${esc(t)}</button>`
+      return `<button type="button" data-tag-chip="${esc(t)}" class="btn btn-sm ${on ? 'btn-primary' : 'btn-outline'}">${esc(t)}</button>`
     })
     .join('')
   const tfOptions = TIMEFRAMES.map(
@@ -280,21 +279,21 @@ function barHtml(enabled, state, presets, allTags, opts) {
   let location = ''
   if (opts.showLocation) {
     if (state.center) {
-      location = `<span class="badge badge-primary gap-1">Within ${state.radiusMi} mi of ${esc(state.locationLabel)}
-        <button type="button" data-loc-clear aria-label="Clear location filter">✕</button></span>`
+      location = `<span class="badge badge-primary badge-lg gap-1">Within ${state.radiusMi} mi of ${esc(state.locationLabel)}
+        <button type="button" data-loc-clear class="ml-1 font-bold" aria-label="Clear location filter">✕</button></span>`
     } else {
       const radii = RADII.map((r) => `<option value="${r}" ${r === state.radiusMi ? 'selected' : ''}>${r} mi</option>`).join('')
-      location = `<span class="flex items-center gap-1 text-sm">within
-        <select data-radius class="select select-bordered select-xs">${radii}</select> of
-        <input type="text" data-loc-input placeholder="address or ZIP" class="input input-bordered input-xs w-32" aria-label="Address or ZIP" />
-        <button type="button" data-loc-go class="btn btn-xs">Go</button></span>`
+      location = `<div class="join">
+        <select data-radius class="select select-sm join-item">${radii}</select>
+        <input type="text" data-loc-input placeholder="address or ZIP" class="input input-sm join-item w-40" aria-label="Address or ZIP" />
+        <button type="button" data-loc-go class="btn btn-sm btn-primary join-item">Go</button></div>`
     }
-    if (state.locError) location += `<span class="text-error text-xs">${esc(state.locError)}</span>`
+    if (state.locError) location += `<span class="text-error text-sm">${esc(state.locError)}</span>`
   }
 
   const styleSel =
     state.tab === 'map'
-      ? `<select data-map-style class="select select-bordered select-xs" aria-label="Map style">${MAP_STYLES.map(
+      ? `<select data-map-style class="select select-sm" aria-label="Map style">${MAP_STYLES.map(
           ([v, l]) => `<option value="${v}" ${v === state.mapStyle ? 'selected' : ''}>${l}</option>`
         ).join('')}</select>`
       : ''
@@ -304,13 +303,13 @@ function barHtml(enabled, state, presets, allTags, opts) {
     .join('')}</datalist>`
 
   return `
-    <div class="bg-base-200 mb-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-3">
-      <div role="tablist" class="tabs tabs-boxed bg-base-300">${tabBtns}</div>
-      <div class="flex flex-wrap items-center gap-2">
+    <div class="bg-base-200 mb-8 space-y-4 rounded-2xl p-4">
+      <div class="flex justify-center">${tabs}</div>
+      <div class="flex flex-wrap items-center justify-center gap-2">
         ${chips}
         <input type="text" list="gancio-all-tags" data-tag-input placeholder="Add tag…"
-               class="input input-bordered input-xs w-28" aria-label="Add a tag filter" />
-        <select data-timeframe class="select select-bordered select-xs" aria-label="Timeframe">${tfOptions}</select>
+               class="input input-sm w-32" aria-label="Add a tag filter" />
+        <select data-timeframe class="select select-sm" aria-label="Timeframe">${tfOptions}</select>
         ${location}
         ${styleSel}
         ${datalist}
