@@ -7,13 +7,12 @@
         "heading": "We are Soup House",
         "subheading": "The World's Soupiest House",
         "intro": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-        "image": "@assets/images/pages/home/hero/heroImage.jpg",
+        "image": "@assets/images/pages/blocks/0/value/image.jpg",
         "imageAlt": "A bowl of soup",
         "buttons": [
           {
             "label": "Get Involved",
             "link": "/get-involved",
-            "icon": "",
             "style": "primary",
             "type": "",
             "size": "large"
@@ -21,7 +20,6 @@
           {
             "label": "Learn More",
             "link": "/about",
-            "icon": "",
             "style": "secondary",
             "type": "outline",
             "size": "large"
@@ -48,23 +46,17 @@
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2\"/><path d=\"M7 2v20\"/><path d=\"M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7\"/></svg>",
             "title": "Lorem Meals",
-            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pay-what-you-can dolore magna.",
-            "link": "",
-            "linkLabel": ""
+            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pay-what-you-can dolore magna."
           },
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z\"/><path d=\"M3 6h18\"/><path d=\"M16 10a4 4 0 0 1-8 0\"/></svg>",
             "title": "Ipsum Groceries",
-            "body": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
-            "link": "",
-            "linkLabel": ""
+            "body": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip."
           },
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/></svg>",
             "title": "Dolor Community",
-            "body": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.",
-            "link": "",
-            "linkLabel": ""
+            "body": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat."
           }
         ]
       }
@@ -73,11 +65,10 @@
       "discriminant": "calendar",
       "value": {
         "anchorId": "events",
-        "heading": "Upcoming Events",
-        "subheading": "Browse what's coming up — as a list, a month, or a map.",
+        "heading": "Community Calendar",
+        "subheading": "We're working on a calendar of events in St. Louis with free food. Take a look, or visit the full calendar and submit your own event! ",
         "source": "https://calendar.souphouse.org",
-        "tags": "",
-        "presetTags": "meal, distribution, art brunch, volunteer",
+        "presetTags": "meal, distribution, art, volunteer, vegan, vegetarian, gluten-free",
         "max": 6,
         "showList": true,
         "showCalendar": true,
@@ -96,10 +87,22 @@
         "heading": "How It Works",
         "subheading": "Lorem ipsum dolor sit amet consectetur.",
         "items": [
-          { "title": "Lorem", "body": "Consectetur adipiscing elit sed do eiusmod tempor." },
-          { "title": "Ipsum", "body": "Incididunt ut labore et dolore magna aliqua minim." },
-          { "title": "Dolor", "body": "Quis nostrud exercitation ullamco laboris nisi aliquip." },
-          { "title": "Amet", "body": "Duis aute irure dolor in reprehenderit voluptate velit." }
+          {
+            "title": "Lorem",
+            "body": "Consectetur adipiscing elit sed do eiusmod tempor."
+          },
+          {
+            "title": "Ipsum",
+            "body": "Incididunt ut labore et dolore magna aliqua minim."
+          },
+          {
+            "title": "Dolor",
+            "body": "Quis nostrud exercitation ullamco laboris nisi aliquip."
+          },
+          {
+            "title": "Amet",
+            "body": "Duis aute irure dolor in reprehenderit voluptate velit."
+          }
         ]
       }
     },
@@ -127,7 +130,6 @@
           {
             "label": "Volunteer",
             "link": "/get-involved",
-            "icon": "",
             "style": "secondary",
             "type": "",
             "size": "large"
@@ -135,7 +137,6 @@
           {
             "label": "Donate",
             "link": "/donate",
-            "icon": "",
             "style": "",
             "type": "outline",
             "size": "large"
