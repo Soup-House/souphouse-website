@@ -74,11 +74,10 @@
       "value": {
         "anchorId": "meals",
         "heading": "Meals & Distributions",
-        "subheading": "Placeholder — when and where to find us.",
-        "items": [
-          { "when": "Day, time", "place": "Location", "detail": "What's happening." },
-          { "when": "Day, time", "place": "Location", "detail": "What's happening." }
-        ]
+        "subheading": "When and where to find a free meal.",
+        "source": "https://calendar.souphouse.org",
+        "tags": "meal, distribution",
+        "max": 6
       }
     },
     {
@@ -86,7 +85,14 @@
       "value": {
         "anchorId": "events",
         "heading": "Upcoming Events",
-        "subheading": "Placeholder — events and gatherings will list here."
+        "subheading": "Browse what's coming up — as a list, a month, or a map.",
+        "source": "https://calendar.souphouse.org",
+        "tags": "",
+        "max": 6,
+        "showList": true,
+        "showCalendar": true,
+        "showMap": true,
+        "defaultTab": "list"
       }
     },
     {

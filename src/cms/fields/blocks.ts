@@ -93,12 +93,34 @@ export const pageBlocks = fields.blocks(
       }),
     },
     calendar: {
-      label: 'Calendar placeholder',
-      itemLabel: (props) => props.fields.heading.value || 'Calendar placeholder',
+      label: 'Events widget (list / calendar / map)',
+      itemLabel: (props) => props.fields.heading.value || 'Events widget',
       schema: fields.object({
         ...anchorField,
         heading: fields.text({ label: 'Heading' }),
         subheading: fields.text({ label: 'Subheading', multiline: true }),
+        source: fields.text({
+          label: 'Calendar source',
+          description: 'Gancio instance URL',
+          defaultValue: 'https://calendar.souphouse.org',
+        }),
+        tags: fields.text({
+          label: 'Filter by tags',
+          description: 'Comma-separated; leave blank to show all events',
+        }),
+        max: fields.integer({ label: 'Max events in the list view', defaultValue: 6 }),
+        showList: fields.checkbox({ label: 'Show List tab', defaultValue: true }),
+        showCalendar: fields.checkbox({ label: 'Show Calendar (month grid) tab', defaultValue: true }),
+        showMap: fields.checkbox({ label: 'Show Map tab', defaultValue: true }),
+        defaultTab: fields.select({
+          label: 'Default tab',
+          options: [
+            { label: 'List', value: 'list' },
+            { label: 'Calendar', value: 'calendar' },
+            { label: 'Map', value: 'map' },
+          ],
+          defaultValue: 'list',
+        }),
       }),
     },
     postsTeaser: {
@@ -146,14 +168,17 @@ export const pageBlocks = fields.blocks(
         ...anchorField,
         heading: fields.text({ label: 'Heading' }),
         subheading: fields.text({ label: 'Subheading', multiline: true }),
-        items: fields.array(
-          fields.object({
-            when: fields.text({ label: 'When', description: 'e.g. Wednesdays, 6pm' }),
-            place: fields.text({ label: 'Place' }),
-            detail: fields.text({ label: 'Detail', multiline: true }),
-          }),
-          { label: 'Times', itemLabel: (props) => props.fields.when.value || 'Time' }
-        ),
+        source: fields.text({
+          label: 'Calendar source',
+          description: 'Gancio instance URL',
+          defaultValue: 'https://calendar.souphouse.org',
+        }),
+        tags: fields.text({
+          label: 'Filter by tags',
+          description: 'Comma-separated, e.g. meal, distribution',
+          defaultValue: 'meal, distribution',
+        }),
+        max: fields.integer({ label: 'Max to show', defaultValue: 6 }),
       }),
     },
     team: {
