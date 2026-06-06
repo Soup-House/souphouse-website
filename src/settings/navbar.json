@@ -28,7 +28,7 @@
       }
     },
     {
-      "text": "Events",
+      "text": "Community Calendar",
       "isDropdown": {
         "discriminant": false,
         "value": {
@@ -68,8 +68,8 @@
     {
       "label": "Donate",
       "link": "/donate",
-      "icon": "",
       "style": "primary",
+      "type": "",
       "size": ""
     }
   ]
