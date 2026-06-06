@@ -6,11 +6,14 @@ const {
   subheading,
   source = 'https://calendar.souphouse.org',
   tags = '',
+  presetTags = '',
   max = 6,
   showList = true,
   showCalendar = true,
   showMap = true,
   defaultTab = 'list',
+  defaultTimeframe = '30',
+  showFilters = true,
 }: CalendarBlock = Astro.props
 
 const enabledTabs = [showList && 'list', showCalendar && 'calendar', showMap && 'map']
@@ -32,9 +35,12 @@ const enabledTabs = [showList && 'list', showCalendar && 'calendar', showMap && 
       data-view="tabs"
       data-source={source}
       data-tags={tags}
+      data-preset-tags={presetTags}
       data-max={max}
       data-tabs={enabledTabs}
-      data-default={defaultTab}>
+      data-default={defaultTab}
+      data-timeframe={defaultTimeframe}
+      data-show-filters={String(showFilters)}>
       <div class="text-base-content/50 py-10 text-center">Loading events…</div>
     </div>
     <div class="mt-10 text-center">

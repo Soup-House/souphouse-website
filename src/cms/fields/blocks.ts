@@ -105,8 +105,12 @@ export const pageBlocks = fields.blocks(
           defaultValue: 'https://calendar.souphouse.org',
         }),
         tags: fields.text({
-          label: 'Filter by tags',
-          description: 'Comma-separated; leave blank to show all events',
+          label: 'Base tag filter',
+          description: 'Comma-separated; only events with these tags ever show. Leave blank for all.',
+        }),
+        presetTags: fields.text({
+          label: 'Preset filter tags',
+          description: 'Comma-separated chips shown in the filter bar for visitors to toggle',
         }),
         max: fields.integer({ label: 'Max events in the list view', defaultValue: 6 }),
         showList: fields.checkbox({ label: 'Show List tab', defaultValue: true }),
@@ -121,6 +125,18 @@ export const pageBlocks = fields.blocks(
           ],
           defaultValue: 'list',
         }),
+        defaultTimeframe: fields.select({
+          label: 'Default timeframe',
+          options: [
+            { label: 'Today', value: 'today' },
+            { label: 'Next 7 days', value: '7' },
+            { label: 'Next 30 days', value: '30' },
+            { label: 'Next 3 months', value: '90' },
+            { label: 'All upcoming', value: 'all' },
+          ],
+          defaultValue: '30',
+        }),
+        showFilters: fields.checkbox({ label: 'Show the filter bar', defaultValue: true }),
       }),
     },
     postsTeaser: {
