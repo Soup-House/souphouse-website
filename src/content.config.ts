@@ -149,6 +149,13 @@ const pages = defineCollection({
                 anchorId: z.string().optional(),
                 heading: z.string().optional(),
                 subheading: z.string().optional(),
+                source: z.string().optional(),
+                tags: z.string().optional(),
+                max: z.number().nullable().optional(),
+                showList: z.boolean().optional(),
+                showCalendar: z.boolean().optional(),
+                showMap: z.boolean().optional(),
+                defaultTab: z.string().optional(),
               }),
             }),
             z.object({
@@ -191,16 +198,9 @@ const pages = defineCollection({
                 anchorId: z.string().optional(),
                 heading: z.string().optional(),
                 subheading: z.string().optional(),
-                items: z
-                  .array(
-                    z.object({
-                      when: z.string().optional(),
-                      place: z.string().optional(),
-                      detail: z.string().optional(),
-                    })
-                  )
-                  .optional()
-                  .default([]),
+                source: z.string().optional(),
+                tags: z.string().optional(),
+                max: z.number().nullable().optional(),
               }),
             }),
             z.object({

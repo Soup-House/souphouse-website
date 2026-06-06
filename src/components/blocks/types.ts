@@ -58,6 +58,13 @@ export interface StepsBlock {
 export interface CalendarBlock {
   heading?: string
   subheading?: string
+  source?: string
+  tags?: string
+  max?: number | null
+  showList?: boolean
+  showCalendar?: boolean
+  showMap?: boolean
+  defaultTab?: string
 }
 
 export interface PostsTeaserBlock {
@@ -82,16 +89,12 @@ export interface NewsletterBlock {
   note?: string
 }
 
-export interface ScheduleItem {
-  when?: string
-  place?: string
-  detail?: string
-}
-
 export interface ScheduleBlock {
   heading?: string
   subheading?: string
-  items?: ScheduleItem[]
+  source?: string
+  tags?: string
+  max?: number | null
 }
 
 export interface Member {
