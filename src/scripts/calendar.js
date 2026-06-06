@@ -3,7 +3,8 @@
 // an optional "within X miles of <place>" location filter, current tab, and map
 // style) drives everything: changing a control re-runs applyFilters() and
 // redraws the visible view, so List / Calendar / Map stay in sync. Tabs and
-// filters share one control bar. Geocoding uses Nominatim (OpenStreetMap), only
+// filters share one control bar; tags are a checkbox dropdown with the chosen
+// ones shown as removable pills. Geocoding uses Nominatim (OpenStreetMap), only
 // when the visitor submits an address/ZIP — we never request browser location.
 // Map tiles use Leaflet, lazy-loaded when the Map tab is opened.
 
@@ -37,6 +38,17 @@ const parseTags = (csv) =>
   (csv || '').split(',').map((t) => t.trim()).filter(Boolean)
 const eventTags = (ev) => (ev.tags || []).map((t) => String(t).toLowerCase())
 const hasCoords = (ev) => ev.place && ev.place.latitude && ev.place.longitude
+
+// Tag sets keep the original casing for display; matching is case-insensitive.
+const tagKey = (t) => String(t).toLowerCase()
+const hasTag = (set, t) => [...set].some((x) => tagKey(x) === tagKey(t))
+function removeTag(set, t) {
+  const x = [...set].find((v) => tagKey(v) === tagKey(t))
+  if (x !== undefined) set.delete(x)
+}
+function toggleTag(set, t) {
+  hasTag(set, t) ? removeTag(set, t) : set.add(t)
+}
 
 function milesBetween(a, b) {
   const R = 3958.8
@@ -78,8 +90,8 @@ function timeframeWindow(tf) {
 
 function applyFilters(events, { baseTags = [], activeTags = [], timeframe = 'all', center = null, radiusMi = 0 }) {
   const [from, to] = timeframeWindow(timeframe)
-  const base = baseTags.map((t) => t.toLowerCase())
-  const active = [...activeTags].map((t) => t.toLowerCase())
+  const base = baseTags.map(tagKey)
+  const active = [...activeTags].map(tagKey)
   return events
     .filter((ev) => {
       if (ev.start_datetime < from) return false
@@ -214,12 +226,7 @@ async function renderMap(panel, events, source, { style, center, radiusMi }) {
   }
 
   if (center) {
-    L.circleMarker([center.lat, center.lng], {
-      radius: 6,
-      color: '#c1432b',
-      fillColor: '#c1432b',
-      fillOpacity: 1,
-    })
+    L.circleMarker([center.lat, center.lng], { radius: 6, color: '#c1432b', fillColor: '#c1432b', fillOpacity: 1 })
       .addTo(map)
       .bindPopup('Search area center')
     const circle = L.circle([center.lat, center.lng], {
@@ -254,6 +261,15 @@ const MAP_STYLES = [
   ['dark', 'Dark'],
 ]
 
+function pillsHtml(activeTags) {
+  return [...activeTags]
+    .map(
+      (t) =>
+        `<span class="badge badge-primary gap-1">${esc(t)}<button type="button" data-tag-remove="${esc(t)}" class="ml-0.5 font-bold" aria-label="Remove ${esc(t)} filter">✕</button></span>`
+    )
+    .join('')
+}
+
 function barHtml(enabled, state, presets, allTags, opts) {
   const tabBtns = enabled
     .map(
@@ -265,13 +281,35 @@ function barHtml(enabled, state, presets, allTags, opts) {
 
   if (!opts.showFilters) return `<div class="mb-8 flex justify-center">${tabs}</div>`
 
-  const chipTags = [...new Set([...presets, ...state.activeTags])]
-  const chips = chipTags
-    .map((t) => {
-      const on = state.activeTags.has(t.toLowerCase())
-      return `<button type="button" data-tag-chip="${esc(t)}" class="btn btn-sm ${on ? 'btn-primary' : 'btn-outline'}">${esc(t)}</button>`
-    })
+  // Menu lists the preset tags plus any active tag that isn't a preset.
+  const menuTags = [...presets]
+  state.activeTags.forEach((t) => {
+    if (!presets.some((p) => tagKey(p) === tagKey(t))) menuTags.push(t)
+  })
+  const menuItems = menuTags
+    .map(
+      (t) =>
+        `<li><label class="flex cursor-pointer items-center gap-2 px-2 py-1">
+          <input type="checkbox" data-tag-check="${esc(t)}" class="checkbox checkbox-sm" ${hasTag(state.activeTags, t) ? 'checked' : ''} />
+          <span>${esc(t)}</span></label></li>`
+    )
     .join('')
+  const datalist = `<datalist id="gancio-all-tags">${[...new Set(allTags)]
+    .map((t) => `<option value="${esc(t)}"></option>`)
+    .join('')}</datalist>`
+  const tagsControl = `
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-sm">Tags ▾</div>
+      <div tabindex="0" class="dropdown-content bg-base-100 rounded-box z-10 mt-2 w-56 p-2 shadow">
+        <ul class="menu menu-sm w-full p-0">${menuItems || '<li class="text-base-content/50 px-2 py-1 text-sm">No preset tags</li>'}</ul>
+        <div class="border-base-300 mt-1 border-t pt-2">
+          <input type="text" list="gancio-all-tags" data-tag-input placeholder="+ add tag"
+                 class="input input-sm w-full" aria-label="Add a tag filter" />
+        </div>
+      </div>
+    </div>
+    <span data-tag-pills class="flex flex-wrap items-center gap-1">${pillsHtml(state.activeTags)}</span>`
+
   const tfOptions = TIMEFRAMES.map(
     ([v, l]) => `<option value="${v}" ${v === state.timeframe ? 'selected' : ''}>${l}</option>`
   ).join('')
@@ -298,17 +336,11 @@ function barHtml(enabled, state, presets, allTags, opts) {
         ).join('')}</select>`
       : ''
 
-  const datalist = `<datalist id="gancio-all-tags">${[...new Set(allTags)]
-    .map((t) => `<option value="${esc(t)}"></option>`)
-    .join('')}</datalist>`
-
   return `
     <div class="bg-base-200 mb-8 space-y-4 rounded-2xl p-4">
       <div class="flex justify-center">${tabs}</div>
       <div class="flex flex-wrap items-center justify-center gap-2">
-        ${chips}
-        <input type="text" list="gancio-all-tags" data-tag-input placeholder="Add tag…"
-               class="input input-sm w-32" aria-label="Add a tag filter" />
+        ${tagsControl}
         <select data-timeframe class="select select-sm" aria-label="Timeframe">${tfOptions}</select>
         ${location}
         ${styleSel}
@@ -379,6 +411,15 @@ async function initWidget(el) {
     if (tab === 'map' && panels.map)
       renderMap(panels.map, events, source, { style: state.mapStyle, center: state.center, radiusMi: state.radiusMi })
   }
+  const updatePills = () => {
+    const c = el.querySelector('[data-tag-pills]')
+    if (c) c.innerHTML = pillsHtml(state.activeTags)
+  }
+  // Tag changes update pills + views in place, keeping the dropdown open.
+  const tagsChanged = () => {
+    updatePills()
+    drawView(state.tab)
+  }
   const refresh = () => {
     drawBar()
     drawView(state.tab)
@@ -407,11 +448,14 @@ async function initWidget(el) {
   el.addEventListener('click', (e) => {
     const tabBtn = e.target.closest('[data-tab]')
     if (tabBtn) return showTab(tabBtn.dataset.tab)
-    const chip = e.target.closest('[data-tag-chip]')
-    if (chip) {
-      const t = chip.dataset.tagChip.toLowerCase()
-      state.activeTags.has(t) ? state.activeTags.delete(t) : state.activeTags.add(t)
-      return refresh()
+    const rm = e.target.closest('[data-tag-remove]')
+    if (rm) {
+      const t = rm.dataset.tagRemove
+      removeTag(state.activeTags, t)
+      el.querySelectorAll('[data-tag-check]').forEach((cb) => {
+        if (tagKey(cb.dataset.tagCheck) === tagKey(t)) cb.checked = false
+      })
+      return tagsChanged()
     }
     if (e.target.closest('[data-loc-go]')) {
       return runGeocode(el.querySelector('[data-loc-input]')?.value || '')
@@ -435,6 +479,11 @@ async function initWidget(el) {
     }
   })
   el.addEventListener('change', (e) => {
+    const check = e.target.closest('[data-tag-check]')
+    if (check) {
+      toggleTag(state.activeTags, check.dataset.tagCheck)
+      return tagsChanged()
+    }
     if (e.target.closest('[data-timeframe]')) {
       state.timeframe = e.target.value
       return refresh()
@@ -453,9 +502,10 @@ async function initWidget(el) {
     if (e.key !== 'Enter') return
     const tagInput = e.target.closest('[data-tag-input]')
     if (tagInput && tagInput.value.trim()) {
-      state.activeTags.add(tagInput.value.trim().toLowerCase())
+      e.preventDefault()
+      if (!hasTag(state.activeTags, tagInput.value.trim())) state.activeTags.add(tagInput.value.trim())
       tagInput.value = ''
-      return refresh()
+      return tagsChanged()
     }
     const locInput = e.target.closest('[data-loc-input]')
     if (locInput) {
