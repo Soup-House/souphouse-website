@@ -1,3 +1,7 @@
+---
+import Analytics from '@vercel/analytics/astro'
+import SpeedInsights from '@vercel/speed-insights/astro'
+---
 <!doctype html>
 <html lang="en">
   <head>
@@ -58,5 +62,7 @@
       <p class="contact">Questions? <a href="mailto:contact@souphouse.org">contact@souphouse.org</a></p>
       <p class="org">Soup House, Inc. &middot; a St. Louis nonprofit</p>
     </main>
+    <Analytics />
+    <SpeedInsights />
   </body>
 </html>
