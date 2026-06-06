@@ -179,6 +179,16 @@ export const pageBlocks = fields.blocks(
         ...anchorField,
         heading: fields.text({ label: 'Heading' }),
         note: fields.text({ label: 'Note', multiline: true }),
+        action: fields.text({
+          label: 'Form endpoint URL',
+          description:
+            'Paste your Formspree form URL (or Web3Forms endpoint) to make the form send. Leave blank for a disabled placeholder.',
+        }),
+        accessKey: fields.text({
+          label: 'Access key',
+          description: 'Only for Web3Forms. Leave blank for Formspree.',
+        }),
+        buttonLabel: fields.text({ label: 'Button label', defaultValue: 'Send' }),
       }),
     },
     newsletter: {
