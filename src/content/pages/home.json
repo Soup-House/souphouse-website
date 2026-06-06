@@ -88,11 +88,14 @@
         "subheading": "Browse what's coming up — as a list, a month, or a map.",
         "source": "https://calendar.souphouse.org",
         "tags": "",
+        "presetTags": "meal, distribution, art brunch, volunteer",
         "max": 6,
         "showList": true,
         "showCalendar": true,
         "showMap": true,
-        "defaultTab": "list"
+        "defaultTab": "list",
+        "defaultTimeframe": "30",
+        "showFilters": true
       }
     },
     {

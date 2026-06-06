@@ -60,11 +60,14 @@ export interface CalendarBlock {
   subheading?: string
   source?: string
   tags?: string
+  presetTags?: string
   max?: number | null
   showList?: boolean
   showCalendar?: boolean
   showMap?: boolean
   defaultTab?: string
+  defaultTimeframe?: string
+  showFilters?: boolean
 }
 
 export interface PostsTeaserBlock {
