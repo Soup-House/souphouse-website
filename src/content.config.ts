@@ -187,6 +187,9 @@ const pages = defineCollection({
                 anchorId: z.string().optional(),
                 heading: z.string().optional(),
                 note: z.string().optional(),
+                action: z.string().optional(),
+                accessKey: z.string().optional(),
+                buttonLabel: z.string().optional(),
               }),
             }),
             z.object({

@@ -87,6 +87,9 @@ export interface CtaBlock {
 export interface SignupBlock {
   heading?: string
   note?: string
+  action?: string
+  accessKey?: string
+  buttonLabel?: string
 }
 
 export interface NewsletterBlock {
