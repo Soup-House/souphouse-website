@@ -1,21 +1,82 @@
 ---
-// Placeholder for the Gancio-fed calendar widget that will live here later.
 import type { CalendarBlock } from './types'
 
 const { heading, subheading }: CalendarBlock = Astro.props
+
+// Upcoming events are pulled live from the Soup House Gancio instance. Its API
+// sends `access-control-allow-origin: *`, so we fetch in the browser and render
+// in our own styling — the list stays current without rebuilding the site.
+const source = 'https://calendar.souphouse.org'
+const max = 6
 ---
 <section class="bg-base-100 py-20">
   <div class="mx-auto max-w-screen-xl px-4">
-    <header class="mb-10 space-y-3 text-center">
-      {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
-      {subheading && <p class="text-base-content/70 text-lg">{subheading}</p>}
-    </header>
-    <div
-      class="border-base-300 text-base-content/50 flex min-h-72 items-center justify-center rounded-2xl border-2 border-dashed">
-      <p class="text-center text-lg">
-        Calendar widget goes here<br />
-        <span class="text-sm">(reads from Gancio later)</span>
-      </p>
+    {
+      (heading || subheading) && (
+        <header class="mb-10 space-y-3 text-center">
+          {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
+          {subheading && <p class="text-base-content/70 text-lg">{subheading}</p>}
+        </header>
+      )
+    }
+    <ul id="gancio-events" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <li class="text-base-content/50 col-span-full py-10 text-center">Loading events…</li>
+    </ul>
+    <div class="mt-10 text-center">
+      <a href={source} target="_blank" rel="noopener" class="btn btn-primary btn-outline">
+        See the full calendar
+      </a>
     </div>
   </div>
 </section>
+
+<script is:inline define:vars={{ source, max }}>
+  const esc = (s) =>
+    String(s ?? '').replace(
+      /[&<>"']/g,
+      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]
+    )
+  const fmtDate = (ts) =>
+    new Date(ts * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+  const fmtTime = (ts) =>
+    new Date(ts * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+
+  const message = (text) =>
+    `<li class="text-base-content/50 col-span-full py-10 text-center">${text}</li>`
+
+  async function loadGancioEvents() {
+    const list = document.getElementById('gancio-events')
+    if (!list) return
+    try {
+      const now = Math.floor(Date.now() / 1000)
+      const res = await fetch(`${source}/api/events?start=${now}&max=${max}`)
+      const events = await res.json()
+      if (!Array.isArray(events) || events.length === 0) {
+        list.innerHTML = message('No upcoming events yet — check back soon.')
+        return
+      }
+      list.innerHTML = events
+        .map((ev) => {
+          const place =
+            ev.place && ev.place.name
+              ? `<div class="text-base-content/70 text-sm">${esc(ev.place.name)}</div>`
+              : ''
+          return `<li>
+            <a href="${source}/event/${encodeURIComponent(ev.slug)}" target="_blank" rel="noopener"
+               class="card bg-base-200 h-full shadow-md transition-transform hover:-translate-y-1">
+              <div class="card-body gap-2">
+                <div class="text-primary font-semibold">${fmtDate(ev.start_datetime)} · ${fmtTime(ev.start_datetime)}</div>
+                <h3 class="card-title text-xl">${esc(ev.title)}</h3>
+                ${place}
+              </div>
+            </a>
+          </li>`
+        })
+        .join('')
+    } catch {
+      list.innerHTML = message("Couldn't load events right now.")
+    }
+  }
+
+  document.addEventListener('astro:page-load', loadGancioEvents)
+</script>
