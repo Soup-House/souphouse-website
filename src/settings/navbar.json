@@ -28,11 +28,11 @@
       }
     },
     {
-      "text": "Meals",
+      "text": "Events",
       "isDropdown": {
         "discriminant": false,
         "value": {
-          "link": "/#meals"
+          "link": "/#events"
         }
       }
     },

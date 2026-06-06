@@ -177,26 +177,6 @@ export const pageBlocks = fields.blocks(
         note: fields.text({ label: 'Note', multiline: true }),
       }),
     },
-    schedule: {
-      label: 'Meals & distributions',
-      itemLabel: (props) => props.fields.heading.value || 'Meals & distributions',
-      schema: fields.object({
-        ...anchorField,
-        heading: fields.text({ label: 'Heading' }),
-        subheading: fields.text({ label: 'Subheading', multiline: true }),
-        source: fields.text({
-          label: 'Calendar source',
-          description: 'Gancio instance URL',
-          defaultValue: 'https://calendar.souphouse.org',
-        }),
-        tags: fields.text({
-          label: 'Filter by tags',
-          description: 'Comma-separated, e.g. meal, distribution',
-          defaultValue: 'meal, distribution',
-        }),
-        max: fields.integer({ label: 'Max to show', defaultValue: 6 }),
-      }),
-    },
     team: {
       label: 'Team / board',
       itemLabel: (props) => props.fields.heading.value || 'Team / board',

@@ -1,9 +1,9 @@
-// Renders live Gancio events into any [data-gancio] container on the page.
-// One fetch per source (cached). The tabbed widget keeps a small `state`
-// (active tag filters + timeframe); changing a filter re-runs applyFilters()
-// and re-renders whatever view is showing, so List / Calendar / Map all stay
-// in sync. The simple list view (Meals & Distributions) just applies its
-// fixed base tags. Map tiles use Leaflet + OpenStreetMap, lazy-loaded on open.
+// Renders the live Gancio events widget into any [data-gancio] container.
+// One fetch per source (cached). A small `state` (active tag filters +
+// timeframe + current tab) drives everything: changing a control re-runs
+// applyFilters() and redraws the visible view, so List / Calendar / Map stay
+// in sync. The tabs and the filters share one control bar. Map tiles use
+// Leaflet + OpenStreetMap, lazy-loaded only when the Map tab is opened.
 
 const cache = new Map()
 
@@ -184,8 +184,9 @@ async function renderMap(panel, events, source) {
   setTimeout(() => map.invalidateSize(), 60)
 }
 
-// ----- filter bar ----------------------------------------------------------
+// ----- control bar (tabs + filters, together) ------------------------------
 
+const TAB_LABELS = { list: 'List', calendar: 'Calendar', map: 'Map' }
 const TIMEFRAMES = [
   ['today', 'Today'],
   ['7', 'Next 7 days'],
@@ -194,29 +195,43 @@ const TIMEFRAMES = [
   ['all', 'All upcoming'],
 ]
 
-function barHtml(presets, activeTags, timeframe, allTags) {
-  const chipTags = [...new Set([...presets, ...activeTags])]
-  const chips = chipTags
-    .map((t) => {
-      const on = activeTags.has(t.toLowerCase())
-      return `<button type="button" data-tag-chip="${esc(t)}" class="btn btn-sm ${on ? 'btn-primary' : 'btn-outline'}">${esc(t)}</button>`
-    })
+function barHtml(enabled, tab, presets, activeTags, timeframe, allTags, showFilters) {
+  const tabBtns = enabled
+    .map(
+      (t) =>
+        `<button role="tab" data-tab="${t}" class="tab ${t === tab ? 'tab-active' : ''}">${TAB_LABELS[t] || t}</button>`
+    )
     .join('')
-  const options = TIMEFRAMES.map(
-    ([v, l]) => `<option value="${v}" ${v === timeframe ? 'selected' : ''}>${l}</option>`
-  ).join('')
-  const datalist = `<datalist id="gancio-all-tags">${[...new Set(allTags)]
-    .map((t) => `<option value="${esc(t)}"></option>`)
-    .join('')}</datalist>`
-  return `
-    <div class="bg-base-200 mb-8 flex flex-wrap items-center justify-center gap-3 rounded-2xl p-4">
-      <div class="flex flex-wrap items-center justify-center gap-2">
+
+  let filters = ''
+  if (showFilters) {
+    const chipTags = [...new Set([...presets, ...activeTags])]
+    const chips = chipTags
+      .map((t) => {
+        const on = activeTags.has(t.toLowerCase())
+        return `<button type="button" data-tag-chip="${esc(t)}" class="btn btn-xs ${on ? 'btn-primary' : 'btn-outline'}">${esc(t)}</button>`
+      })
+      .join('')
+    const options = TIMEFRAMES.map(
+      ([v, l]) => `<option value="${v}" ${v === timeframe ? 'selected' : ''}>${l}</option>`
+    ).join('')
+    const datalist = `<datalist id="gancio-all-tags">${[...new Set(allTags)]
+      .map((t) => `<option value="${esc(t)}"></option>`)
+      .join('')}</datalist>`
+    filters = `
+      <div class="flex flex-wrap items-center gap-2">
         ${chips}
-        <input type="text" list="gancio-all-tags" data-tag-input placeholder="Add a tag…"
-               class="input input-bordered input-sm w-32" aria-label="Add a tag filter" />
-      </div>
-      <select data-timeframe class="select select-bordered select-sm" aria-label="Timeframe">${options}</select>
-      ${datalist}
+        <input type="text" list="gancio-all-tags" data-tag-input placeholder="Add tag…"
+               class="input input-bordered input-xs w-28" aria-label="Add a tag filter" />
+        <select data-timeframe class="select select-bordered select-xs" aria-label="Timeframe">${options}</select>
+        ${datalist}
+      </div>`
+  }
+
+  return `
+    <div class="bg-base-200 mb-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-3">
+      <div role="tablist" class="tabs tabs-boxed bg-base-300">${tabBtns}</div>
+      ${filters}
     </div>`
 }
 
@@ -227,13 +242,6 @@ async function initWidget(el) {
   const baseTags = parseTags(el.dataset.tags)
   const max = parseInt(el.dataset.max || '6', 10) || 6
   const all = await getEvents(source)
-
-  // Simple list (e.g. Meals & Distributions): base tags only, no controls.
-  if (el.dataset.view !== 'tabs') {
-    const events = applyFilters(all, { baseTags, timeframe: 'all' })
-    el.innerHTML = `<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">${listHtml(events, source, max)}</ul>`
-    return
-  }
 
   const enabled = (el.dataset.tabs || 'list,calendar,map').split(',').map((s) => s.trim()).filter(Boolean)
   if (!enabled.length) enabled.push('list')
@@ -247,20 +255,14 @@ async function initWidget(el) {
     tab: enabled.includes(el.dataset.default) ? el.dataset.default : enabled[0],
     gy: new Date().getFullYear(),
     gm: new Date().getMonth(),
-    mapDrawn: false,
   }
 
-  const labels = { list: 'List', calendar: 'Calendar', map: 'Map' }
   el.innerHTML = `
     <div data-bar></div>
-    <div role="tablist" class="tabs tabs-boxed mb-8 justify-center">
-      ${enabled.map((t) => `<button role="tab" data-tab="${t}" class="tab">${labels[t] || t}</button>`).join('')}
-    </div>
     ${enabled.includes('list') ? `<div data-panel="list" class="hidden"></div>` : ''}
     ${enabled.includes('calendar') ? `<div data-panel="calendar" class="hidden"></div>` : ''}
     ${enabled.includes('map') ? `<div data-panel="map" class="hidden"></div>` : ''}
   `
-
   const bar = el.querySelector('[data-bar]')
   const panels = {
     list: el.querySelector('[data-panel="list"]'),
@@ -269,66 +271,38 @@ async function initWidget(el) {
   }
 
   const filtered = () => applyFilters(all, { baseTags, activeTags: state.activeTags, timeframe: state.timeframe })
-
-  function drawBar() {
-    if (!showFilters) return
-    bar.innerHTML = barHtml(presets, state.activeTags, state.timeframe, allTags)
+  const drawBar = () => {
+    bar.innerHTML = barHtml(enabled, state.tab, presets, state.activeTags, state.timeframe, allTags, showFilters)
   }
-
-  function drawView(tab) {
+  const drawView = (tab) => {
     const events = filtered()
     if (tab === 'list' && panels.list)
       panels.list.innerHTML = `<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">${listHtml(events, source, max)}</ul>`
-    if (tab === 'calendar' && panels.calendar)
-      panels.calendar.innerHTML = gridHtml(events, source, state.gy, state.gm)
-    if (tab === 'map' && panels.map) {
-      state.mapDrawn = true
-      renderMap(panels.map, events, source)
-    }
+    if (tab === 'calendar' && panels.calendar) panels.calendar.innerHTML = gridHtml(events, source, state.gy, state.gm)
+    if (tab === 'map' && panels.map) renderMap(panels.map, events, source)
   }
-
-  function refresh() {
-    // Re-render the visible view now; others redraw when shown.
+  const refresh = () => {
+    drawBar()
     drawView(state.tab)
-    if (state.tab === 'map') state.mapDrawn = true
   }
-
-  function show(tab) {
+  const showTab = (tab) => {
     state.tab = tab
     Object.entries(panels).forEach(([k, p]) => p && p.classList.toggle('hidden', k !== tab))
-    el.querySelectorAll('[data-tab]').forEach((b) => b.classList.toggle('tab-active', b.dataset.tab === tab))
+    drawBar()
     drawView(tab)
   }
 
-  // events: tag chips, tag input, timeframe, tabs, calendar nav
-  bar.addEventListener('click', (e) => {
+  el.addEventListener('click', (e) => {
+    const tabBtn = e.target.closest('[data-tab]')
+    if (tabBtn) return showTab(tabBtn.dataset.tab)
     const chip = e.target.closest('[data-tag-chip]')
-    if (!chip) return
-    const t = chip.dataset.tagChip.toLowerCase()
-    state.activeTags.has(t) ? state.activeTags.delete(t) : state.activeTags.add(t)
-    drawBar()
-    refresh()
-  })
-  bar.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return
-    const input = e.target.closest('[data-tag-input]')
-    if (!input || !input.value.trim()) return
-    state.activeTags.add(input.value.trim().toLowerCase())
-    input.value = ''
-    drawBar()
-    refresh()
-  })
-  bar.addEventListener('change', (e) => {
-    const sel = e.target.closest('[data-timeframe]')
-    if (!sel) return
-    state.timeframe = sel.value
-    refresh()
-  })
-  el.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => show(b.dataset.tab)))
-  if (panels.calendar)
-    panels.calendar.addEventListener('click', (e) => {
-      const nav = e.target.closest('[data-cal-nav]')
-      if (!nav) return
+    if (chip) {
+      const t = chip.dataset.tagChip.toLowerCase()
+      state.activeTags.has(t) ? state.activeTags.delete(t) : state.activeTags.add(t)
+      return refresh()
+    }
+    const nav = e.target.closest('[data-cal-nav]')
+    if (nav) {
       state.gm += parseInt(nav.dataset.calNav, 10)
       if (state.gm < 0) {
         state.gm = 11
@@ -338,10 +312,24 @@ async function initWidget(el) {
         state.gy++
       }
       drawView('calendar')
-    })
+    }
+  })
+  el.addEventListener('change', (e) => {
+    const sel = e.target.closest('[data-timeframe]')
+    if (!sel) return
+    state.timeframe = sel.value
+    refresh()
+  })
+  el.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return
+    const input = e.target.closest('[data-tag-input]')
+    if (!input || !input.value.trim()) return
+    state.activeTags.add(input.value.trim().toLowerCase())
+    input.value = ''
+    refresh()
+  })
 
-  drawBar()
-  show(state.tab)
+  showTab(state.tab)
 }
 
 function initCalendars() {

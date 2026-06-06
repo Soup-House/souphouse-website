@@ -70,17 +70,6 @@
       }
     },
     {
-      "discriminant": "schedule",
-      "value": {
-        "anchorId": "meals",
-        "heading": "Meals & Distributions",
-        "subheading": "When and where to find a free meal.",
-        "source": "https://calendar.souphouse.org",
-        "tags": "meal, distribution",
-        "max": 6
-      }
-    },
-    {
       "discriminant": "calendar",
       "value": {
         "anchorId": "events",

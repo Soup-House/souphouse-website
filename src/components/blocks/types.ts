@@ -92,14 +92,6 @@ export interface NewsletterBlock {
   note?: string
 }
 
-export interface ScheduleBlock {
-  heading?: string
-  subheading?: string
-  source?: string
-  tags?: string
-  max?: number | null
-}
-
 export interface Member {
   name?: string
   role?: string
