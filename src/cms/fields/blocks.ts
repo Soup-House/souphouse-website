@@ -137,6 +137,19 @@ export const pageBlocks = fields.blocks(
           defaultValue: '30',
         }),
         showFilters: fields.checkbox({ label: 'Show the filter bar', defaultValue: true }),
+        showLocationFilter: fields.checkbox({
+          label: 'Show the "within X miles of…" location filter',
+          defaultValue: true,
+        }),
+        defaultMapStyle: fields.select({
+          label: 'Default map style',
+          options: [
+            { label: 'Standard', value: 'standard' },
+            { label: 'Light', value: 'light' },
+            { label: 'Dark', value: 'dark' },
+          ],
+          defaultValue: 'standard',
+        }),
       }),
     },
     postsTeaser: {

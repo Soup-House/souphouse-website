@@ -84,7 +84,9 @@
         "showMap": true,
         "defaultTab": "list",
         "defaultTimeframe": "30",
-        "showFilters": true
+        "showFilters": true,
+        "showLocationFilter": true,
+        "defaultMapStyle": "standard"
       }
     },
     {

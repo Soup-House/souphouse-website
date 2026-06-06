@@ -68,6 +68,8 @@ export interface CalendarBlock {
   defaultTab?: string
   defaultTimeframe?: string
   showFilters?: boolean
+  showLocationFilter?: boolean
+  defaultMapStyle?: string
 }
 
 export interface PostsTeaserBlock {

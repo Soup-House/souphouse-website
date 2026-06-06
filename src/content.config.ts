@@ -159,6 +159,8 @@ const pages = defineCollection({
                 defaultTab: z.string().optional(),
                 defaultTimeframe: z.string().optional(),
                 showFilters: z.boolean().optional(),
+                showLocationFilter: z.boolean().optional(),
+                defaultMapStyle: z.string().optional(),
               }),
             }),
             z.object({

@@ -14,6 +14,8 @@ const {
   defaultTab = 'list',
   defaultTimeframe = '30',
   showFilters = true,
+  showLocationFilter = true,
+  defaultMapStyle = 'standard',
 }: CalendarBlock = Astro.props
 
 const enabledTabs = [showList && 'list', showCalendar && 'calendar', showMap && 'map']
@@ -40,7 +42,9 @@ const enabledTabs = [showList && 'list', showCalendar && 'calendar', showMap && 
       data-tabs={enabledTabs}
       data-default={defaultTab}
       data-timeframe={defaultTimeframe}
-      data-show-filters={String(showFilters)}>
+      data-show-filters={String(showFilters)}
+      data-show-location={String(showLocationFilter)}
+      data-map-style={defaultMapStyle}>
       <div class="text-base-content/50 py-10 text-center">Loading events…</div>
     </div>
     <div class="mt-10 text-center">
