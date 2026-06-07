@@ -19,7 +19,9 @@
       "discriminant": "signup",
       "value": {
         "heading": "Send us a note",
-        "note": "Placeholder form"
+        "note": "Placeholder form",
+        "action": "https://api.web3forms.com/submit",
+        "accessKey": "d3211b39-60c6-416f-8242-7ee8e2bb0460"
       }
     }
   ]
