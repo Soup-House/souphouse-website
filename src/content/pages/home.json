@@ -6,7 +6,7 @@
       "value": {
         "heading": "We are Soup House",
         "subheading": "The World's Soupiest House",
-        "intro": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+        "intro": "Soup House is where all of Saint Louis can have dinner together. We cook for our neighbors and organizational partners, all towards the goal of finding a gathering place of our own where there's always good, free food that everyone can enjoy together.",
         "image": "@assets/images/pages/blocks/0/value/image.jpg",
         "imageAlt": "A bowl of soup",
         "buttons": [
@@ -41,7 +41,7 @@
       "value": {
         "anchorId": "what-we-do",
         "heading": "What We Do",
-        "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.",
+        "subheading": "Our work comes in three flavors:",
         "items": [
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2\"/><path d=\"M7 2v20\"/><path d=\"M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7\"/></svg>",
@@ -110,7 +110,7 @@
       "discriminant": "postsTeaser",
       "value": {
         "heading": "Latest News",
-        "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "subheading": "The latest bits of news from ourselves and our partners:",
         "maxPosts": 3
       }
     },
