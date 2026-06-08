@@ -81,32 +81,6 @@
       }
     },
     {
-      "discriminant": "steps",
-      "value": {
-        "anchorId": "how-it-works",
-        "heading": "How It Works",
-        "subheading": "Lorem ipsum dolor sit amet consectetur.",
-        "items": [
-          {
-            "title": "Lorem",
-            "body": "Consectetur adipiscing elit sed do eiusmod tempor."
-          },
-          {
-            "title": "Ipsum",
-            "body": "Incididunt ut labore et dolore magna aliqua minim."
-          },
-          {
-            "title": "Dolor",
-            "body": "Quis nostrud exercitation ullamco laboris nisi aliquip."
-          },
-          {
-            "title": "Amet",
-            "body": "Duis aute irure dolor in reprehenderit voluptate velit."
-          }
-        ]
-      }
-    },
-    {
       "discriminant": "postsTeaser",
       "value": {
         "heading": "Latest News",
