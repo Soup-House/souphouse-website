@@ -14,7 +14,7 @@
       "isDropdown": {
         "discriminant": false,
         "value": {
-          "link": "/#about"
+          "link": "/about"
         }
       }
     },
