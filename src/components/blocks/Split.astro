@@ -5,7 +5,7 @@ import type { TextBlock } from './types'
 const { eyebrow, heading, body }: TextBlock = Astro.props
 const bodyHtml = body ? await marked(body) : ''
 ---
-<section class="bg-base-200 py-20">
+<section class="bg-base-200 py-10">
   <div class="mx-auto grid max-w-screen-xl items-center gap-12 px-4 md:grid-cols-2">
     <div class="space-y-4">
       {eyebrow && <p class="text-primary font-semibold tracking-widest uppercase">{eyebrow}</p>}
