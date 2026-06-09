@@ -3,7 +3,7 @@
     "siteName": "Soup House",
     "theme": "souphouse",
     "favicon": "/images/site/favicon.svg",
-    "logo": null,
+    "logo": "/images/site/logo.svg",
     "typography": {
       "pairing": "playfair-source",
       "headingWeight": "400",
