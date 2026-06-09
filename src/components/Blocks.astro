@@ -31,14 +31,27 @@ const registry: Record<string, any> = {
 
 const blocks: Array<{ discriminant: string; value: Record<string, any> }> =
   Astro.props.blocks ?? []
+
+// Blocks that paint their own full-bleed background and sit OUTSIDE the
+// alternating rhythm. Every other block gets an automatic base-100/base-200
+// stripe based on its position, so adding/removing/reordering sections in
+// Keystatic keeps the alternation correct with no manual bookkeeping.
+const SELF_STYLED = new Set(['hero', 'cta'])
+let stripe = 0
 ---
 {
   blocks.map((block) => {
     const Component = registry[block.discriminant]
     if (!Component) return null
     const { anchorId } = block.value
-    return anchorId ? (
-      <div id={anchorId} class="scroll-mt-20">
+    const bg = SELF_STYLED.has(block.discriminant)
+      ? ''
+      : stripe++ % 2 === 0
+        ? 'bg-base-100'
+        : 'bg-base-200'
+    const cls = [anchorId ? 'scroll-mt-20' : '', bg].filter(Boolean).join(' ')
+    return cls ? (
+      <div id={anchorId} class={cls}>
         <Component {...block.value} />
       </div>
     ) : (
