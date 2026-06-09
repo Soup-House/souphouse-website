@@ -40,6 +40,12 @@ export const branding = singleton({
         directory: 'public/images',
         publicPath: '/images/',
       }),
+      logo: fields.image({
+        label: 'Logo',
+        description: 'Optional. Shown to the left of the site name in the top navigation. Leave empty for text only.',
+        directory: 'public/images',
+        publicPath: '/images/',
+      }),
       typography: fields.object(
         {
           pairing: fields.select({
