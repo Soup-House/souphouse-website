@@ -1,10 +1,11 @@
 ---
+import { DEFAULT_CALENDAR_SOURCE } from '../../lib/calendar'
 import type { CalendarBlock } from './types'
 
 const {
   heading,
   subheading,
-  source = 'https://calendar.souphouse.org',
+  source = DEFAULT_CALENDAR_SOURCE,
   tags = '',
   presetTags = '',
   max = 6,
