@@ -10,15 +10,21 @@
 
 const cache = new Map()
 
+// Events come through the site's own /api/events proxy, whose edge cache keeps
+// serving the last good copy when Gancio is unreachable. If the proxy itself
+// is unavailable (e.g. a static preview build), fall back to asking Gancio
+// directly. Resolves to null when both fail, so the widget can tell "couldn't
+// load" apart from "zero upcoming events".
 function getEvents(source) {
   if (!cache.has(source)) {
-    const now = Math.floor(Date.now() / 1000)
+    const start = Math.floor(Date.now() / 1000 / 3600) * 3600
     cache.set(
       source,
-      fetch(`${source}/api/events?start=${now}&max=200`)
-        .then((r) => r.json())
+      fetch(`/api/events?source=${encodeURIComponent(source)}`)
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`proxy ${r.status}`))))
+        .catch(() => fetch(`${source}/api/events?start=${start}&max=200`).then((r) => r.json()))
         .then((e) => (Array.isArray(e) ? e : []))
-        .catch(() => [])
+        .catch(() => null)
     )
   }
   return cache.get(source)
@@ -356,6 +362,10 @@ async function initWidget(el) {
   const baseTags = parseTags(el.dataset.tags)
   const max = parseInt(el.dataset.max || '6', 10) || 6
   const all = await getEvents(source)
+  if (all === null) {
+    el.innerHTML = `<div class="text-base-content/50 py-10 text-center">The calendar isn't loading right now — please try again later, or open the full calendar below.</div>`
+    return
+  }
 
   const enabled = (el.dataset.tabs || 'list,calendar,map').split(',').map((s) => s.trim()).filter(Boolean)
   if (!enabled.length) enabled.push('list')
