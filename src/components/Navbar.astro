@@ -1,5 +1,6 @@
 ---
 import Button from '@components/ui/Button.tsx'
+import SoupIcon from '@components/ui/SoupIcon.astro'
 import navbarSettings from '@settings/navbar.json';
 import branding from '@settings/branding.json';
 
@@ -60,7 +61,13 @@ const logo = (branding.site as { logo?: string | null }).logo
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1 ">
-          {links.map((link) => (
+          {links.map((link, i) => (
+              <>
+              {i > 0 && (
+                <li class="pointer-events-none hidden justify-center xl:flex" aria-hidden="true">
+                  <SoupIcon kind="stelline" class="h-2.5 w-2.5 p-0 text-primary/40" />
+                </li>
+              )}
               <li>
                 {link.isDropdown.discriminant ? (
                   <>
@@ -80,6 +87,7 @@ const logo = (branding.site as { logo?: string | null }).logo
                   <a href={link.isDropdown.value.link}>{link.text}</a>
                 )}
               </li>
+              </>
             ))}
       </div>
       <div class="navbar-end">

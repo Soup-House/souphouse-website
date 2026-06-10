@@ -12,6 +12,7 @@ import Signup from './blocks/Signup.astro'
 import Newsletter from './blocks/Newsletter.astro'
 import Team from './blocks/Team.astro'
 import Embed from './blocks/Embed.astro'
+import Dinkus from './ui/Dinkus.astro'
 
 const registry: Record<string, any> = {
   hero: Hero,
@@ -40,7 +41,7 @@ const SELF_STYLED = new Set(['hero', 'cta'])
 let stripe = 0
 ---
 {
-  blocks.map((block) => {
+  blocks.map((block, i) => {
     const Component = registry[block.discriminant]
     if (!Component) return null
     const { anchorId } = block.value
@@ -50,9 +51,13 @@ let stripe = 0
         ? 'bg-base-100'
         : 'bg-base-200'
     const cls = [anchorId ? 'scroll-mt-20' : '', bg].filter(Boolean).join(' ')
+    // Striped sections (not the last block on the page) close with a small
+    // three-stelline flourish, tucked up into the section's bottom padding.
+    const dinkus = !!bg && i < blocks.length - 1
     return cls ? (
       <div id={anchorId} class={cls}>
         <Component {...block.value} />
+        {dinkus && <Dinkus class="-mt-7 pb-5" />}
       </div>
     ) : (
       <Component {...block.value} />
