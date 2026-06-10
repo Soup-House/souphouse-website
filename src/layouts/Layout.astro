@@ -2,6 +2,7 @@
 import '@styles/global.css'
 import Navbar from '@components/Navbar.astro'
 import Footer from '@components/Footer.astro'
+import SoupGarnish from '@components/SoupGarnish.astro'
 import { ClientRouter } from 'astro:transitions'
 import Analytics from '@vercel/analytics/astro'
 import SpeedInsights from '@vercel/speed-insights/astro'
@@ -69,7 +70,8 @@ const fontVars = {
   <ClientRouter />
   </head>
 
-  <body>
+  <body class="relative">
+    <SoupGarnish />
     <Navbar />
     <slot />
     <Footer />

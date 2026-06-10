@@ -31,7 +31,7 @@
         "anchorId": "about",
         "eyebrow": "Our Mission",
         "heading": "To show what's possible when neighbors feed each other.",
-        "body": "Soup House is where all of Saint Louis can have dinner together. We cook for our neighbors, support our partners, and build a gathering place to show what we can do for each other."
+        "body": ""
       }
     },
     {
@@ -84,13 +84,6 @@
         "heading": "Latest News",
         "subheading": "The latest bits of news from ourselves and our partners:",
         "maxPosts": 3
-      }
-    },
-    {
-      "discriminant": "newsletter",
-      "value": {
-        "heading": "Stay in the loop",
-        "note": "Placeholder — meal times, distro days, and news in your inbox. (Signup coming soon.)"
       }
     },
     {
