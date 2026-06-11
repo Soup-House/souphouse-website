@@ -23,10 +23,38 @@
         "heading": "",
         "subheading": "",
         "items": [
-          { "icon": "", "title": "Partner name", "body": "What we do together.", "link": "#", "linkLabel": "Visit" },
-          { "icon": "", "title": "Partner name", "body": "What we do together.", "link": "#", "linkLabel": "Visit" },
-          { "icon": "", "title": "Partner name", "body": "What we do together.", "link": "#", "linkLabel": "Visit" }
+          {
+            "icon": "",
+            "title": "Partner name",
+            "body": "What we do together.",
+            "link": "#",
+            "linkLabel": "Visit"
+          },
+          {
+            "icon": "",
+            "title": "Partner name",
+            "body": "What we do together.",
+            "link": "#",
+            "linkLabel": "Visit"
+          },
+          {
+            "icon": "",
+            "title": "Partner name",
+            "body": "What we do together.",
+            "link": "#",
+            "linkLabel": "Visit"
+          }
         ]
+      }
+    },
+    {
+      "discriminant": "signup",
+      "value": {
+        "anchorId": "partner",
+        "heading": "Partner with us",
+        "form": "partner",
+        "buttonLabel": "Reach out",
+        "note": "Tell us about your organization and we'll get a conversation going."
       }
     }
   ]

@@ -5,8 +5,8 @@
       "discriminant": "header",
       "value": {
         "eyebrow": "Get Involved",
-        "heading": "Lorem ipsum, join us",
-        "subheading": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "heading": "Pull up a chair",
+        "subheading": "Soup House runs on neighbors. However you'd like to pitch in, there's a place for you."
       }
     },
     {
@@ -16,23 +16,23 @@
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"/></svg>",
             "title": "Volunteer",
-            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do.",
-            "link": "#",
-            "linkLabel": "Learn more"
+            "body": "Cook, drive, set up, spread the word — every meal takes many hands, and we'll find a job that fits you.",
+            "link": "#volunteer",
+            "linkLabel": "Sign up below"
           },
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8\"/><path d=\"M12 18V6\"/></svg>",
             "title": "Donate",
-            "body": "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+            "body": "Every dollar goes toward feeding St. Louis. Donations run through Zeffy, so nothing gets skimmed along the way.",
             "link": "/donate",
-            "linkLabel": "Learn more"
+            "linkLabel": "Give"
           },
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"/><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"/></svg>",
             "title": "Partner",
-            "body": "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
-            "link": "#",
-            "linkLabel": "Learn more"
+            "body": "Already doing good work? We bring food and logistics to organizations across the city.",
+            "link": "/partners",
+            "linkLabel": "Partner with us"
           }
         ]
       }
@@ -40,9 +40,11 @@
     {
       "discriminant": "signup",
       "value": {
-        "heading": "Sign Up (placeholder)",
-        "action": "https://api.web3forms.com/submit",
-        "accessKey": "2243e8d3-0844-420d-9e2e-460e89b19b0a"
+        "heading": "Volunteer sign-up",
+        "anchorId": "volunteer",
+        "form": "volunteer",
+        "buttonLabel": "Sign up",
+        "note": "Tell us a little about yourself and we'll be in touch."
       }
     }
   ]
