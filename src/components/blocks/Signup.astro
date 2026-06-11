@@ -1,13 +1,18 @@
 ---
 import type { SignupBlock } from './types'
 
-const {
-  heading,
-  note,
-  action = '',
-  accessKey = '',
-  buttonLabel = 'Send',
-}: SignupBlock = Astro.props
+// One form component, three CRM-backed flavors. The `form` kind picks the
+// /api/forms/<kind> endpoint and which fields show; field copy per kind
+// lives here so the CMS only chooses the flavor.
+const { heading, note, form = 'contact', buttonLabel = 'Send' }: SignupBlock = Astro.props
+
+const KINDS = {
+  volunteer: { messageLabel: 'How would you like to help?', messageRequired: false, organization: false },
+  partner: { messageLabel: 'Tell us about your organization and what you have in mind', messageRequired: false, organization: true },
+  contact: { messageLabel: 'Message', messageRequired: true, organization: false },
+} as const
+
+const kind = KINDS[form] ?? KINDS.contact
 ---
 <section class="py-12">
   <div class="mx-auto max-w-2xl px-4">
@@ -15,48 +20,37 @@ const {
     {note && <p class="text-base-content/70 mb-8 text-center">{note}</p>}
     <div class="card bg-base-100 shadow-md">
       <div class="card-body">
-        {
-          action ? (
-            <form data-signup action={action} method="POST" class="space-y-4">
-              {accessKey && <input type="hidden" name="access_key" value={accessKey} />}
-              <input type="hidden" name="_subject" value="New Soup House sign-up" />
-              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <form data-signup action={`/api/forms/${form}`} method="POST" class="space-y-4">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <div class="grid gap-4 sm:grid-cols-2">
+            <label class="block">
+              <span class="mb-1 block text-sm font-medium">First name</span>
+              <input type="text" name="first_name" required autocomplete="given-name" class="input w-full" />
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-sm font-medium">Last name</span>
+              <input type="text" name="last_name" required autocomplete="family-name" class="input w-full" />
+            </label>
+          </div>
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium">Email</span>
+            <input type="email" name="email" required autocomplete="email" class="input w-full" />
+          </label>
+          {
+            kind.organization && (
               <label class="block">
-                <span class="mb-1 block text-sm font-medium">Name</span>
-                <input type="text" name="name" required class="input w-full" />
+                <span class="mb-1 block text-sm font-medium">Organization</span>
+                <input type="text" name="organization" required autocomplete="organization" class="input w-full" />
               </label>
-              <label class="block">
-                <span class="mb-1 block text-sm font-medium">Email</span>
-                <input type="email" name="email" required class="input w-full" />
-              </label>
-              <label class="block">
-                <span class="mb-1 block text-sm font-medium">How would you like to help?</span>
-                <textarea name="message" rows="4" class="textarea w-full" />
-              </label>
-              <button type="submit" class="btn btn-primary w-full">{buttonLabel}</button>
-              <p data-signup-status role="status" aria-live="polite" class="text-center text-sm" />
-            </form>
-          ) : (
-            <div class="space-y-4">
-              <label class="block">
-                <span class="mb-1 block text-sm font-medium">Name</span>
-                <input type="text" class="input w-full" disabled />
-              </label>
-              <label class="block">
-                <span class="mb-1 block text-sm font-medium">Email</span>
-                <input type="email" class="input w-full" disabled />
-              </label>
-              <label class="block">
-                <span class="mb-1 block text-sm font-medium">How would you like to help?</span>
-                <textarea rows="4" class="textarea w-full" disabled />
-              </label>
-              <button class="btn btn-primary w-full" disabled>{buttonLabel} (not set up yet)</button>
-              <p class="text-base-content/50 text-center text-sm">
-                Add a form endpoint in the CMS (Get Involved → Sign-up form) to turn this on.
-              </p>
-            </div>
-          )
-        }
+            )
+          }
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium">{kind.messageLabel}</span>
+            <textarea name="message" rows="4" required={kind.messageRequired} class="textarea w-full" />
+          </label>
+          <button type="submit" class="btn btn-primary w-full">{buttonLabel}</button>
+          <p data-signup-status role="status" aria-live="polite" class="text-center text-sm"></p>
+        </form>
       </div>
     </div>
   </div>
@@ -85,14 +79,15 @@ const {
             body: new FormData(form),
             headers: { Accept: 'application/json' },
           })
-          if (res.ok) {
+          const data = await res.json().catch(() => null)
+          if (res.ok && data?.ok) {
             form.reset()
             setStatus("Thanks! We got it and we'll be in touch.", 'text-success')
           } else {
-            setStatus('Something went wrong — please email us instead.', 'text-error')
+            setStatus('Something went wrong — please try again later.', 'text-error')
           }
         } catch {
-          setStatus('Something went wrong — please email us instead.', 'text-error')
+          setStatus('Something went wrong — please try again later.', 'text-error')
         } finally {
           if (btn) btn.disabled = false
         }
