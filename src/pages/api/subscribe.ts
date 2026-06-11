@@ -5,8 +5,15 @@ import type { APIRoute } from 'astro'
 // never reaches the browser; the form never talks to the CRM directly.
 export const prerender = false
 
-const CRM_URL = import.meta.env.CIVI_CRM_URL ?? 'https://crm.souphouse.org'
-const API_KEY = import.meta.env.CIVI_API_KEY
+// Read at request time from the runtime env (Vercel functions) with a
+// build-time fallback (local dev) — import.meta.env alone gets statically
+// compiled and can miss runtime-injected secrets on serverless.
+const env = (name: string): string | undefined =>
+  (typeof process !== 'undefined' ? process.env?.[name] : undefined) ??
+  (import.meta.env[name] as string | undefined)
+
+const CRM_URL = () => env('CIVI_CRM_URL') ?? 'https://crm.souphouse.org'
+const API_KEY = () => env('CIVI_API_KEY')
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -17,7 +24,7 @@ const json = (body: unknown, status = 200) =>
   })
 
 export const POST: APIRoute = async ({ request }) => {
-  if (!API_KEY) {
+  if (!API_KEY()) {
     return json({ ok: false, error: 'not configured' }, 503)
   }
 
@@ -43,10 +50,10 @@ export const POST: APIRoute = async ({ request }) => {
   if (firstName) payload.first_name = firstName.slice(0, 100)
 
   try {
-    const upstream = await fetch(`${CRM_URL}/civicrm/ajax/rest`, {
+    const upstream = await fetch(`${CRM_URL()}/civicrm/ajax/rest`, {
       method: 'POST',
       headers: {
-        'X-Civi-Auth': `Bearer ${API_KEY}`,
+        'X-Civi-Auth': `Bearer ${API_KEY()}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
