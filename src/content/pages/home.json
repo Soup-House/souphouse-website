@@ -87,6 +87,13 @@
       }
     },
     {
+      "discriminant": "newsletter",
+      "value": {
+        "heading": "Stay in the loop",
+        "note": "Meal times, distro days, and news in your inbox."
+      }
+    },
+    {
       "discriminant": "cta",
       "value": {
         "heading": "Help us cook for the neighborhood!",
