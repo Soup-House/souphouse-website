@@ -52,6 +52,27 @@ export const FONT_PAIRINGS: FontPairing[] = [
     href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap',
   },
   {
+    id: 'nunito',
+    label: 'Nunito headings / Nunito Sans body',
+    heading: '"Nunito", ui-sans-serif, system-ui, sans-serif',
+    body: '"Nunito Sans", ui-sans-serif, system-ui, sans-serif',
+    href: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap',
+  },
+  {
+    id: 'quicksand-dm',
+    label: 'Quicksand headings / DM Sans body',
+    heading: '"Quicksand", ui-sans-serif, system-ui, sans-serif',
+    body: '"DM Sans", ui-sans-serif, system-ui, sans-serif',
+    href: 'https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap',
+  },
+  {
+    id: 'outfit',
+    label: 'Outfit (headings + body)',
+    heading: '"Outfit", ui-sans-serif, system-ui, sans-serif',
+    body: '"Outfit", ui-sans-serif, system-ui, sans-serif',
+    href: 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap',
+  },
+  {
     id: 'inter-lora',
     label: 'Inter headings / Lora body',
     heading: '"Inter", ui-sans-serif, system-ui, sans-serif',
