@@ -84,7 +84,7 @@ const pages = defineCollection({
               value: z.object({
                 anchorId: z.string().optional(),
                 eyebrow: z.string().optional(),
-                heading: z.string(),
+                heading: z.string().optional(),
                 subheading: z.string().optional(),
               }),
             }),
