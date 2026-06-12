@@ -31,6 +31,27 @@ export const FONT_PAIRINGS: FontPairing[] = [
     href: 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap',
   },
   {
+    id: 'robotoslab-roboto',
+    label: 'Roboto Slab headings / Roboto body',
+    heading: '"Roboto Slab", "Roboto", ui-serif, Georgia, serif',
+    body: '"Roboto", ui-sans-serif, system-ui, sans-serif',
+    href: 'https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap',
+  },
+  {
+    id: 'jost-source',
+    label: 'Jost headings / Source Sans body',
+    heading: '"Jost", ui-sans-serif, system-ui, sans-serif',
+    body: '"Source Sans 3", ui-sans-serif, system-ui, sans-serif',
+    href: 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap',
+  },
+  {
+    id: 'plex',
+    label: 'IBM Plex Sans (headings + body)',
+    heading: '"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif',
+    body: '"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif',
+    href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap',
+  },
+  {
     id: 'inter-lora',
     label: 'Inter headings / Lora body',
     heading: '"Inter", ui-sans-serif, system-ui, sans-serif',
