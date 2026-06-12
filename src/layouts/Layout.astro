@@ -24,10 +24,14 @@ const headingFont =
 const bodyFont =
   FONT_FAMILIES.find((f) => f.id === typography.bodyFont) ??
   FONT_FAMILIES.find((f) => f.id === DEFAULT_TYPOGRAPHY.bodyFont)!
-const fontHrefs = [...new Set([headingFont.href, bodyFont.href])]
+const uiFont =
+  FONT_FAMILIES.find((f) => f.id === typography.uiFont) ??
+  FONT_FAMILIES.find((f) => f.id === DEFAULT_TYPOGRAPHY.uiFont)!
+const fontHrefs = [...new Set([headingFont.href, bodyFont.href, uiFont.href])]
 const fontVars = {
   '--font-heading': headingFont.stack,
   '--font-body': bodyFont.stack,
+  '--font-ui': uiFont.stack,
   '--font-heading-weight': typography.headingWeight,
   '--font-body-weight': typography.bodyWeight,
 }

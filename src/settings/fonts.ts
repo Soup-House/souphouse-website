@@ -40,6 +40,7 @@ export const FONT_WEIGHTS = [
 export const DEFAULT_TYPOGRAPHY = {
   headingFont: 'inter',
   bodyFont: 'lora',
+  uiFont: 'lora',
   headingWeight: '400',
   bodyWeight: '400',
 }
