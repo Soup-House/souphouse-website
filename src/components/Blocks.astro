@@ -13,6 +13,7 @@ import Newsletter from './blocks/Newsletter.astro'
 import Team from './blocks/Team.astro'
 import Embed from './blocks/Embed.astro'
 import Dinkus from './ui/Dinkus.astro'
+import SoupIcon from './ui/SoupIcon.astro'
 
 const registry: Record<string, any> = {
   hero: Hero,
@@ -39,6 +40,18 @@ const blocks: Array<{ discriminant: string; value: Record<string, any> }> =
 // Keystatic keeps the alternation correct with no manual bookkeeping.
 const SELF_STYLED = new Set(['hero', 'cta'])
 let stripe = 0
+
+// One big, flat, confident ingredient per section, bleeding off the edge —
+// clipped by the wrapper so it reads as a printed shape, not a sticker.
+const SECTION_GARNISH: Record<string, { kind: string; class: string }> = {
+  split: { kind: 'stelline', class: '-left-12 top-1/2 h-44 w-44 -translate-y-1/2 -rotate-12 text-accent' },
+  cards: { kind: 'carrot', class: '-right-10 top-16 h-56 w-56 rotate-12 text-primary' },
+  calendar: { kind: 'tomato', class: '-left-14 bottom-8 h-44 w-44 -rotate-6 text-secondary' },
+  postsTeaser: { kind: 'mushroom', class: '-right-12 top-6 h-44 w-44 rotate-12 text-accent' },
+  newsletter: { kind: 'onion', class: '-left-10 bottom-6 h-40 w-40 rotate-6 text-secondary' },
+  header: { kind: 'stelline', class: '-right-12 -top-10 h-48 w-48 rotate-12 text-primary' },
+  prose: { kind: 'celery', class: '-left-12 top-1/3 h-48 w-48 -rotate-12 text-secondary' },
+}
 ---
 {
   blocks.map((block, i) => {
@@ -50,12 +63,21 @@ let stripe = 0
       : stripe++ % 2 === 0
         ? 'bg-base-100'
         : 'bg-base-200'
-    const cls = [anchorId ? 'scroll-mt-20' : '', bg].filter(Boolean).join(' ')
+    const garnish = bg ? SECTION_GARNISH[block.discriminant] : undefined
+    const cls = [anchorId ? 'scroll-mt-20' : '', bg, garnish ? 'relative overflow-hidden' : '']
+      .filter(Boolean)
+      .join(' ')
     // Striped sections (not the last block on the page) close with a small
     // three-stelline flourish, tucked up into the section's bottom padding.
     const dinkus = !!bg && i < blocks.length - 1
     return cls ? (
       <div id={anchorId} class={cls}>
+        {garnish && (
+          <SoupIcon
+            kind={garnish.kind}
+            class={`pointer-events-none absolute hidden lg:block ${garnish.class}`}
+          />
+        )}
         <Component {...block.value} />
         {dinkus && <Dinkus class="-mt-7 pb-5" />}
       </div>

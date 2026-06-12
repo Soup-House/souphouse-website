@@ -5,7 +5,8 @@
     "favicon": "/images/site/favicon.svg",
     "logo": "/images/site/logo.svg",
     "typography": {
-      "pairing": "inter-lora",
+      "headingFont": "nunito",
+      "bodyFont": "lora",
       "headingWeight": "400",
       "bodyWeight": "400"
     }

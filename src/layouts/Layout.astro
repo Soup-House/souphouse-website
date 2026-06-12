@@ -13,15 +13,21 @@ export interface Props {
 
 import branding from '@settings/branding.json'
 import seo from '@settings/seo.json'
-import { FONT_PAIRINGS, DEFAULT_TYPOGRAPHY } from '@settings/fonts'
+import { FONT_FAMILIES, DEFAULT_TYPOGRAPHY } from '@settings/fonts'
 
 const { title } = Astro.props
 
 const typography = { ...DEFAULT_TYPOGRAPHY, ...(branding.site.typography ?? {}) }
-const pairing = FONT_PAIRINGS.find((p) => p.id === typography.pairing) ?? FONT_PAIRINGS[0]
+const headingFont =
+  FONT_FAMILIES.find((f) => f.id === typography.headingFont) ??
+  FONT_FAMILIES.find((f) => f.id === DEFAULT_TYPOGRAPHY.headingFont)!
+const bodyFont =
+  FONT_FAMILIES.find((f) => f.id === typography.bodyFont) ??
+  FONT_FAMILIES.find((f) => f.id === DEFAULT_TYPOGRAPHY.bodyFont)!
+const fontHrefs = [...new Set([headingFont.href, bodyFont.href])]
 const fontVars = {
-  '--font-heading': pairing.heading,
-  '--font-body': pairing.body,
+  '--font-heading': headingFont.stack,
+  '--font-body': bodyFont.stack,
   '--font-heading-weight': typography.headingWeight,
   '--font-body-weight': typography.bodyWeight,
 }
@@ -36,7 +42,7 @@ const fontVars = {
   <!-- Fonts (family + weights chosen in Site Settings -> Branding -> Typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href={pairing.href} />
+  {fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
 
   {branding.site.favicon && (
   <link rel="icon" href={branding.site.favicon} />
