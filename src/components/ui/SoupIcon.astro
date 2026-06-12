@@ -3,7 +3,7 @@
 // so they all carry the same visual weight as the stelline from the logo.
 // Fill follows currentColor: tint + opacity come from Tailwind text utilities
 // (e.g. <SoupIcon kind="carrot" class="h-5 w-5 text-primary/10" />).
-type SoupIconKind = 'stelline' | 'carrot' | 'celery' | 'onion' | 'tomato' | 'bayleaf' | 'mushroom'
+type SoupIconKind = 'stelline' | 'carrot' | 'celery' | 'onion' | 'tomato' | 'bayleaf' | 'mushroom' | 'spoon'
 
 interface Props {
   kind?: SoupIconKind
@@ -48,6 +48,12 @@ const ICONS: Record<SoupIconKind, { viewBox: string; shapes: string }> = {
     viewBox: '0 0 24 24',
     shapes:
       '<path d="M12 1.8C15.4 4.8 16.9 9.6 16 14.2C15.3 17.7 14 20.4 12 22.2C10 20.4 8.7 17.7 8 14.2C7.1 9.6 8.6 4.8 12 1.8Z"/>',
+  },
+  spoon: {
+    viewBox: '0 0 24 24',
+    shapes:
+      '<ellipse cx="12" cy="6.4" rx="4.4" ry="5.2"/>' +
+      '<path d="M10.9 11.2L10.5 20.4C10.5 21.3 11.1 22 12 22C12.9 22 13.5 21.3 13.5 20.4L13.1 11.2C12.7 11.4 12.4 11.5 12 11.5C11.6 11.5 11.3 11.4 10.9 11.2Z"/>',
   },
   mushroom: {
     viewBox: '0 0 24 24',
