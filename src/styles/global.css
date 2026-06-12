@@ -71,3 +71,10 @@
 }
 
 
+
+/* The stelline as working punctuation: list markers in prose carry the brand
+   mark, in tomato. (The logo's star, doing a job — not decoration.) */
+.prose ul > li::marker {
+  content: '✶  ';
+  color: var(--color-primary);
+}

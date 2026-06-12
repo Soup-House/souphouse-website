@@ -2,6 +2,13 @@
 import type { CardsBlock } from './types'
 
 const { heading, subheading, items = [] }: CardsBlock = Astro.props
+
+// Flat solid chips behind card icons, cycling the brand colors.
+const CHIPS = [
+  'bg-primary text-primary-content',
+  'bg-secondary text-secondary-content',
+  'bg-accent text-accent-content',
+]
 ---
 <section class="py-12">
   <div class="mx-auto max-w-screen-xl px-4">
@@ -15,10 +22,15 @@ const { heading, subheading, items = [] }: CardsBlock = Astro.props
     }
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {
-        items.map((card) => (
+        items.map((card, i) => (
           <div class="card bg-base-200 shadow-md transition-transform hover:-translate-y-1">
             <div class="card-body items-start gap-3">
-              {card.icon && <div class="text-primary" set:html={card.icon} />}
+              {card.icon && (
+                <div
+                  class={`flex h-14 w-14 items-center justify-center rounded-full ${CHIPS[i % CHIPS.length]}`}
+                  set:html={card.icon}
+                />
+              )}
               {card.title && <h3 class="card-title text-2xl">{card.title}</h3>}
               {card.body && <p class="text-base-content/70">{card.body}</p>}
               {

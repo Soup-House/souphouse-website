@@ -59,7 +59,7 @@
       "isDropdown": {
         "discriminant": false,
         "value": {
-          "link": "/posts"
+          "link": "/#news"
         }
       }
     }
