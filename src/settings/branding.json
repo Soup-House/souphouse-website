@@ -5,7 +5,7 @@
     "favicon": "/images/site/favicon.svg",
     "logo": "/images/site/logo.svg",
     "typography": {
-      "pairing": "playfair-source",
+      "pairing": "plex",
       "headingWeight": "400",
       "bodyWeight": "400"
     }
