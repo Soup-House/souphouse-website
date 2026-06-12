@@ -76,6 +76,7 @@ export interface PostsTeaserBlock {
   heading?: string
   subheading?: string
   maxPosts?: number | null
+  showAllLink?: boolean
 }
 
 export interface CtaBlock {

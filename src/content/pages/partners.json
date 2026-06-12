@@ -6,55 +6,19 @@
       "value": {
         "eyebrow": "Coalition",
         "heading": "Our Partners",
-        "subheading": "Placeholder — the folks we work alongside."
+        "subheading": "We're always open for new partnerships! Reach out if you'd like to work with us."
       }
     },
     {
       "discriminant": "prose",
       "value": {
-        "eyebrow": "",
-        "heading": "",
-        "body": "Placeholder intro about the partner spaces and organizations Soup House works with."
+        "body": "We work with all kinds of mission-aligned nonprofits. If you have an event that needs supporting, or an empty kitchen, let us know and we'll set up a time to meet with you. "
       }
     },
     {
       "discriminant": "cards",
       "value": {
-        "heading": "",
-        "subheading": "",
-        "items": [
-          {
-            "icon": "",
-            "title": "Partner name",
-            "body": "What we do together.",
-            "link": "#",
-            "linkLabel": "Visit"
-          },
-          {
-            "icon": "",
-            "title": "Partner name",
-            "body": "What we do together.",
-            "link": "#",
-            "linkLabel": "Visit"
-          },
-          {
-            "icon": "",
-            "title": "Partner name",
-            "body": "What we do together.",
-            "link": "#",
-            "linkLabel": "Visit"
-          }
-        ]
-      }
-    },
-    {
-      "discriminant": "signup",
-      "value": {
-        "anchorId": "partner",
-        "heading": "Partner with us",
-        "form": "partner",
-        "buttonLabel": "Reach out",
-        "note": "Tell us about your organization and we'll get a conversation going."
+        "items": []
       }
     }
   ]

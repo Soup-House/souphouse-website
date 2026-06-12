@@ -6,10 +6,10 @@
     "logo": "/images/site/logo.svg",
     "typography": {
       "headingFont": "cardo",
-      "bodyFont": "nunito",
+      "bodyFont": "roboto",
+      "uiFont": "nunito",
       "headingWeight": "400",
-      "bodyWeight": "400",
-      "uiFont": "lora"
+      "bodyWeight": "400"
     }
   }
 }
