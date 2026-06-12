@@ -43,15 +43,21 @@ let stripe = 0
 
 // One big, flat, confident ingredient per section, bleeding off the edge —
 // clipped by the wrapper so it reads as a printed shape, not a sticker.
-const SECTION_GARNISH: Record<string, { kind: string; class: string }> = {
-  split: { kind: 'stelline', class: '-left-12 top-1/2 h-44 w-44 -translate-y-1/2 -rotate-12 text-accent' },
-  cards: { kind: 'carrot', class: '-right-10 top-16 h-56 w-56 rotate-12 text-primary' },
-  calendar: { kind: 'tomato', class: '-left-14 bottom-8 h-44 w-44 -rotate-6 text-secondary' },
-  postsTeaser: { kind: 'mushroom', class: '-right-12 top-6 h-44 w-44 rotate-12 text-accent' },
-  newsletter: { kind: 'onion', class: '-left-10 bottom-6 h-40 w-40 rotate-6 text-secondary' },
-  header: { kind: 'stelline', class: '-right-12 -top-10 h-48 w-48 rotate-12 text-primary' },
-  prose: { kind: 'celery', class: '-left-12 top-1/3 h-48 w-48 -rotate-12 text-secondary' },
+// Side and color are assigned by position (like the stripes): garnished
+// sections alternate left/right and cycle the brand colors, so any page
+// composition stays balanced automatically.
+const GARNISH_COLORS = ['text-accent', 'text-primary', 'text-secondary']
+const SECTION_GARNISH: Record<string, { kind: string; left: string; right: string }> = {
+  split: { kind: 'stelline', left: '-left-12 top-1/2 -translate-y-1/2 -rotate-12 h-44 w-44', right: '-right-12 top-1/2 -translate-y-1/2 rotate-12 h-44 w-44' },
+  cards: { kind: 'carrot', left: '-left-10 top-16 -rotate-12 h-56 w-56', right: '-right-10 top-16 rotate-12 h-56 w-56' },
+  calendar: { kind: 'tomato', left: '-left-14 bottom-8 -rotate-6 h-44 w-44', right: '-right-14 bottom-8 rotate-6 h-44 w-44' },
+  postsTeaser: { kind: 'mushroom', left: '-left-12 top-6 -rotate-12 h-44 w-44', right: '-right-12 top-6 rotate-12 h-44 w-44' },
+  newsletter: { kind: 'onion', left: '-left-10 bottom-6 -rotate-6 h-40 w-40', right: '-right-10 bottom-6 rotate-6 h-40 w-40' },
+  header: { kind: 'stelline', left: '-left-12 top-6 -rotate-12 h-48 w-48', right: '-right-12 top-6 rotate-12 h-48 w-48' },
+  prose: { kind: 'spoon', left: '-left-6 top-1/3 -rotate-12 h-48 w-48', right: '-right-6 top-1/3 rotate-12 h-48 w-48' },
+  signup: { kind: 'tomato', left: '-left-10 top-10 -rotate-6 h-44 w-44', right: '-right-10 top-10 rotate-6 h-44 w-44' },
 }
+let garnishN = 0
 ---
 {
   blocks.map((block, i) => {
@@ -63,7 +69,13 @@ const SECTION_GARNISH: Record<string, { kind: string; class: string }> = {
       : stripe++ % 2 === 0
         ? 'bg-base-100'
         : 'bg-base-200'
-    const garnish = bg ? SECTION_GARNISH[block.discriminant] : undefined
+    const garnishDef = bg ? SECTION_GARNISH[block.discriminant] : undefined
+    const garnish = garnishDef
+      ? {
+          kind: garnishDef.kind,
+          class: `${garnishN % 2 === 0 ? garnishDef.left : garnishDef.right} ${GARNISH_COLORS[garnishN++ % 3]}`,
+        }
+      : undefined
     const cls = [anchorId ? 'scroll-mt-20' : '', bg, garnish ? 'relative overflow-hidden' : '']
       .filter(Boolean)
       .join(' ')
