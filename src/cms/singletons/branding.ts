@@ -58,6 +58,11 @@ export const branding = singleton({
             options: FONT_FAMILIES.map((f) => ({ label: f.label, value: f.id })),
             defaultValue: DEFAULT_TYPOGRAPHY.bodyFont,
           }),
+          uiFont: fields.select({
+            label: 'Buttons & menus font',
+            options: FONT_FAMILIES.map((f) => ({ label: f.label, value: f.id })),
+            defaultValue: DEFAULT_TYPOGRAPHY.uiFont,
+          }),
           headingWeight: fields.select({
             label: 'Heading weight',
             options: FONT_WEIGHTS,

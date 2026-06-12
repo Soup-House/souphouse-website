@@ -5,10 +5,11 @@
     "favicon": "/images/site/favicon.svg",
     "logo": "/images/site/logo.svg",
     "typography": {
-      "headingFont": "nunito",
-      "bodyFont": "lora",
+      "headingFont": "cardo",
+      "bodyFont": "nunito",
       "headingWeight": "400",
-      "bodyWeight": "400"
+      "bodyWeight": "400",
+      "uiFont": "lora"
     }
   }
 }

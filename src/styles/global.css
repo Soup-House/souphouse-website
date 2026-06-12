@@ -78,3 +78,11 @@
   content: '✶  ';
   color: var(--color-primary);
 }
+
+/* Buttons, menus, and tabs follow their own CMS-chosen family
+   (Site Settings -> Branding -> Typography -> Buttons & menus font). */
+.btn,
+.menu,
+.tabs {
+  font-family: var(--font-ui, var(--font-body));
+}
