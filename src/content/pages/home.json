@@ -5,7 +5,6 @@
       "discriminant": "hero",
       "value": {
         "heading": "We are Soup House",
-        "subheading": "The World's Soupiest House",
         "intro": "Soup House is where all of Saint Louis can have dinner together. We cook for our neighbors and organizational partners, all towards the goal of finding a gathering place of our own where there's always good, free food that everyone can enjoy together.",
         "buttons": [
           {
@@ -30,8 +29,7 @@
       "value": {
         "anchorId": "about",
         "eyebrow": "Our Mission",
-        "heading": "To show what's possible when neighbors feed each other.",
-        "body": ""
+        "heading": "To show what's possible when neighbors feed each other."
       }
     },
     {
@@ -81,10 +79,10 @@
     {
       "discriminant": "postsTeaser",
       "value": {
+        "anchorId": "news",
         "heading": "Latest News",
         "subheading": "The latest bits of news from ourselves and our partners:",
-        "maxPosts": 3,
-        "anchorId": "news"
+        "maxPosts": 3
       }
     },
     {

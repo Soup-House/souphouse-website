@@ -6,7 +6,7 @@
       "value": {
         "eyebrow": "Get Involved",
         "heading": "Pull up a chair",
-        "subheading": "Soup House runs on neighbors. However you'd like to pitch in, there's a place for you."
+        "subheading": "Soup House runs on neighbors. However you'd like to help, we'd love to have you!"
       }
     },
     {
@@ -40,11 +40,11 @@
     {
       "discriminant": "signup",
       "value": {
-        "heading": "Volunteer sign-up",
         "anchorId": "volunteer",
+        "heading": "Volunteer sign-up",
+        "note": "Tell us a little about yourself and we'll be in touch.",
         "form": "volunteer",
-        "buttonLabel": "Sign up",
-        "note": "Tell us a little about yourself and we'll be in touch."
+        "buttonLabel": "Sign up"
       }
     }
   ]

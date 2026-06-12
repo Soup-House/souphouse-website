@@ -1,0 +1,18 @@
+{
+  "title": "News",
+  "blocks": [
+    {
+      "discriminant": "header",
+      "value": {
+        "eyebrow": "News",
+        "subheading": "The latest bits of news from ourselves and our partners:"
+      }
+    },
+    {
+      "discriminant": "postsTeaser",
+      "value": {
+        "maxPosts": 999
+      }
+    }
+  ]
+}
