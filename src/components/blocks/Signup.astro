@@ -58,11 +58,11 @@ const kind = KINDS[form] ?? KINDS.contact
 
 <script>
   function bindSignupForms() {
-    document.querySelectorAll('form[data-signup]').forEach((form) => {
+    document.querySelectorAll<HTMLFormElement>('form[data-signup]').forEach((form) => {
       if (form.dataset.bound) return
       form.dataset.bound = '1'
       const status = form.querySelector('[data-signup-status]')
-      const setStatus = (text, cls) => {
+      const setStatus = (text: string, cls: string) => {
         if (status) {
           status.textContent = text
           status.className = `text-center text-sm ${cls}`
@@ -70,7 +70,7 @@ const kind = KINDS[form] ?? KINDS.contact
       }
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
-        const btn = form.querySelector('button[type="submit"]')
+        const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')
         if (btn) btn.disabled = true
         setStatus('Sending…', 'text-base-content/60')
         try {

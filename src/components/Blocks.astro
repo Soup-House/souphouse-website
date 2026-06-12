@@ -13,7 +13,7 @@ import Newsletter from './blocks/Newsletter.astro'
 import Team from './blocks/Team.astro'
 import Embed from './blocks/Embed.astro'
 import Dinkus from './ui/Dinkus.astro'
-import SoupIcon from './ui/SoupIcon.astro'
+import SoupIcon, { type SoupIconKind } from './ui/SoupIcon.astro'
 
 const registry: Record<string, any> = {
   hero: Hero,
@@ -47,7 +47,7 @@ let stripe = 0
 // sections alternate left/right and cycle the brand colors, so any page
 // composition stays balanced automatically.
 const GARNISH_COLORS = ['text-accent', 'text-primary', 'text-secondary']
-const SECTION_GARNISH: Record<string, { kind: string; left: string; right: string }> = {
+const SECTION_GARNISH: Record<string, { kind: SoupIconKind; left: string; right: string }> = {
   split: { kind: 'stelline', left: '-left-12 top-1/2 -translate-y-1/2 -rotate-12 h-44 w-44', right: '-right-12 top-1/2 -translate-y-1/2 rotate-12 h-44 w-44' },
   cards: { kind: 'carrot', left: '-left-10 top-16 -rotate-12 h-56 w-56', right: '-right-10 top-16 rotate-12 h-56 w-56' },
   calendar: { kind: 'tomato', left: '-left-14 bottom-8 -rotate-6 h-44 w-44', right: '-right-14 bottom-8 rotate-6 h-44 w-44' },
