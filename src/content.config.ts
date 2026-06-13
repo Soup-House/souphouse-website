@@ -84,7 +84,7 @@ const pages = defineCollection({
               value: z.object({
                 anchorId: z.string().optional(),
                 eyebrow: z.string().optional(),
-                heading: z.string(),
+                heading: z.string().optional(),
                 subheading: z.string().optional(),
               }),
             }),
@@ -149,6 +149,18 @@ const pages = defineCollection({
                 anchorId: z.string().optional(),
                 heading: z.string().optional(),
                 subheading: z.string().optional(),
+                source: z.string().optional(),
+                tags: z.string().optional(),
+                presetTags: z.string().optional(),
+                max: z.number().nullable().optional(),
+                showList: z.boolean().optional(),
+                showCalendar: z.boolean().optional(),
+                showMap: z.boolean().optional(),
+                defaultTab: z.string().optional(),
+                defaultTimeframe: z.string().optional(),
+                showFilters: z.boolean().optional(),
+                showLocationFilter: z.boolean().optional(),
+                defaultMapStyle: z.string().optional(),
               }),
             }),
             z.object({
@@ -175,6 +187,8 @@ const pages = defineCollection({
                 anchorId: z.string().optional(),
                 heading: z.string().optional(),
                 note: z.string().optional(),
+                form: z.string().optional().default('contact'),
+                buttonLabel: z.string().optional(),
               }),
             }),
             z.object({
@@ -183,24 +197,6 @@ const pages = defineCollection({
                 anchorId: z.string().optional(),
                 heading: z.string().optional(),
                 note: z.string().optional(),
-              }),
-            }),
-            z.object({
-              discriminant: z.literal('schedule'),
-              value: z.object({
-                anchorId: z.string().optional(),
-                heading: z.string().optional(),
-                subheading: z.string().optional(),
-                items: z
-                  .array(
-                    z.object({
-                      when: z.string().optional(),
-                      place: z.string().optional(),
-                      detail: z.string().optional(),
-                    })
-                  )
-                  .optional()
-                  .default([]),
               }),
             }),
             z.object({

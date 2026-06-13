@@ -93,12 +93,63 @@ export const pageBlocks = fields.blocks(
       }),
     },
     calendar: {
-      label: 'Calendar placeholder',
-      itemLabel: (props) => props.fields.heading.value || 'Calendar placeholder',
+      label: 'Events widget (list / calendar / map)',
+      itemLabel: (props) => props.fields.heading.value || 'Events widget',
       schema: fields.object({
         ...anchorField,
         heading: fields.text({ label: 'Heading' }),
         subheading: fields.text({ label: 'Subheading', multiline: true }),
+        source: fields.text({
+          label: 'Calendar source',
+          description: 'Gancio instance URL',
+          defaultValue: 'https://calendar.souphouse.org',
+        }),
+        tags: fields.text({
+          label: 'Base tag filter',
+          description: 'Comma-separated; only events with these tags ever show. Leave blank for all.',
+        }),
+        presetTags: fields.text({
+          label: 'Preset filter tags',
+          description: 'Comma-separated chips shown in the filter bar for visitors to toggle',
+        }),
+        max: fields.integer({ label: 'Max events in the list view', defaultValue: 6 }),
+        showList: fields.checkbox({ label: 'Show List tab', defaultValue: true }),
+        showCalendar: fields.checkbox({ label: 'Show Calendar (month grid) tab', defaultValue: true }),
+        showMap: fields.checkbox({ label: 'Show Map tab', defaultValue: true }),
+        defaultTab: fields.select({
+          label: 'Default tab',
+          options: [
+            { label: 'List', value: 'list' },
+            { label: 'Calendar', value: 'calendar' },
+            { label: 'Map', value: 'map' },
+          ],
+          defaultValue: 'list',
+        }),
+        defaultTimeframe: fields.select({
+          label: 'Default timeframe',
+          options: [
+            { label: 'Today', value: 'today' },
+            { label: 'Next 7 days', value: '7' },
+            { label: 'Next 30 days', value: '30' },
+            { label: 'Next 3 months', value: '90' },
+            { label: 'All upcoming', value: 'all' },
+          ],
+          defaultValue: '30',
+        }),
+        showFilters: fields.checkbox({ label: 'Show the filter bar', defaultValue: true }),
+        showLocationFilter: fields.checkbox({
+          label: 'Show the "within X miles of…" location filter',
+          defaultValue: true,
+        }),
+        defaultMapStyle: fields.select({
+          label: 'Default map style',
+          options: [
+            { label: 'Standard', value: 'standard' },
+            { label: 'Light', value: 'light' },
+            { label: 'Dark', value: 'dark' },
+          ],
+          defaultValue: 'standard',
+        }),
       }),
     },
     postsTeaser: {
@@ -128,6 +179,17 @@ export const pageBlocks = fields.blocks(
         ...anchorField,
         heading: fields.text({ label: 'Heading' }),
         note: fields.text({ label: 'Note', multiline: true }),
+        form: fields.select({
+          label: 'Form handler',
+          description: 'Which CRM form processor receives submissions.',
+          options: [
+            { label: 'Volunteer sign-up', value: 'volunteer' },
+            { label: 'Partner inquiry', value: 'partner' },
+            { label: 'Contact message', value: 'contact' },
+          ],
+          defaultValue: 'contact',
+        }),
+        buttonLabel: fields.text({ label: 'Button label', defaultValue: 'Send' }),
       }),
     },
     newsletter: {
@@ -137,23 +199,6 @@ export const pageBlocks = fields.blocks(
         ...anchorField,
         heading: fields.text({ label: 'Heading' }),
         note: fields.text({ label: 'Note', multiline: true }),
-      }),
-    },
-    schedule: {
-      label: 'Meals & distributions',
-      itemLabel: (props) => props.fields.heading.value || 'Meals & distributions',
-      schema: fields.object({
-        ...anchorField,
-        heading: fields.text({ label: 'Heading' }),
-        subheading: fields.text({ label: 'Subheading', multiline: true }),
-        items: fields.array(
-          fields.object({
-            when: fields.text({ label: 'When', description: 'e.g. Wednesdays, 6pm' }),
-            place: fields.text({ label: 'Place' }),
-            detail: fields.text({ label: 'Detail', multiline: true }),
-          }),
-          { label: 'Times', itemLabel: (props) => props.fields.when.value || 'Time' }
-        ),
       }),
     },
     team: {

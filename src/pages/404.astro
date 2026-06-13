@@ -1,4 +1,16 @@
 ---
-import Construction from '@components/Construction.astro'
+import Layout from '@layouts/Layout.astro'
+import SoupIcon from '@components/ui/SoupIcon.astro'
 ---
-<Construction />
+<Layout title="Not found">
+  <section class="flex min-h-[70vh] items-center justify-center py-16">
+    <div class="px-4 text-center">
+      <div class="border-base-300 bg-base-200 relative mx-auto mb-10 flex h-56 w-56 items-end justify-center rounded-full border-8">
+        <SoupIcon kind="stelline" class="text-primary/70 mb-10 h-7 w-7 -rotate-12" />
+      </div>
+      <h1 class="font-heading mb-3 text-5xl">Nothing in this bowl.</h1>
+      <p class="text-base-content/70 mb-8 text-lg">The page you're looking for isn't on the menu.</p>
+      <a href="/" class="btn btn-primary btn-lg">Back to the kitchen</a>
+    </div>
+  </section>
+</Layout>

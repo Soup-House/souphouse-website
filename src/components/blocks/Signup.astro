@@ -1,25 +1,98 @@
 ---
 import type { SignupBlock } from './types'
 
-const { heading, note }: SignupBlock = Astro.props
+// One form component, three CRM-backed flavors. The `form` kind picks the
+// /api/forms/<kind> endpoint and which fields show; field copy per kind
+// lives here so the CMS only chooses the flavor.
+const { heading, note, form = 'contact', buttonLabel = 'Send' }: SignupBlock = Astro.props
+
+const KINDS = {
+  volunteer: { messageLabel: 'How would you like to help?', messageRequired: false, organization: false },
+  partner: { messageLabel: 'Tell us about your organization and what you have in mind', messageRequired: false, organization: true },
+  contact: { messageLabel: 'Message', messageRequired: true, organization: false },
+} as const
+
+const kind = KINDS[form] ?? KINDS.contact
 ---
-<section class="bg-base-200 py-20">
+<section class="py-12">
   <div class="mx-auto max-w-2xl px-4">
     {heading && <h2 class="font-heading mb-2 text-center text-4xl">{heading}</h2>}
     {note && <p class="text-base-content/70 mb-8 text-center">{note}</p>}
     <div class="card bg-base-100 shadow-md">
-      <div class="card-body space-y-4">
-        <label class="floating-label">
-          <span>Name</span>
-          <input type="text" placeholder="Name" class="input input-bordered w-full" />
-        </label>
-        <label class="floating-label">
-          <span>Email</span>
-          <input type="email" placeholder="Email" class="input input-bordered w-full" />
-        </label>
-        <textarea class="textarea textarea-bordered w-full" placeholder="How would you like to help?"></textarea>
-        <button class="btn btn-primary">Send (not wired up)</button>
+      <div class="card-body">
+        <form data-signup action={`/api/forms/${form}`} method="POST" class="space-y-4">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <div class="grid gap-4 sm:grid-cols-2">
+            <label class="block">
+              <span class="mb-1 block text-sm font-medium">First name</span>
+              <input type="text" name="first_name" required autocomplete="given-name" class="input w-full" />
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-sm font-medium">Last name</span>
+              <input type="text" name="last_name" required autocomplete="family-name" class="input w-full" />
+            </label>
+          </div>
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium">Email</span>
+            <input type="email" name="email" required autocomplete="email" class="input w-full" />
+          </label>
+          {
+            kind.organization && (
+              <label class="block">
+                <span class="mb-1 block text-sm font-medium">Organization</span>
+                <input type="text" name="organization" required autocomplete="organization" class="input w-full" />
+              </label>
+            )
+          }
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium">{kind.messageLabel}</span>
+            <textarea name="message" rows="4" required={kind.messageRequired} class="textarea w-full" />
+          </label>
+          <button type="submit" class="btn btn-primary w-full">{buttonLabel}</button>
+          <p data-signup-status role="status" aria-live="polite" class="text-center text-sm"></p>
+        </form>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  function bindSignupForms() {
+    document.querySelectorAll<HTMLFormElement>('form[data-signup]').forEach((form) => {
+      if (form.dataset.bound) return
+      form.dataset.bound = '1'
+      const status = form.querySelector('[data-signup-status]')
+      const setStatus = (text: string, cls: string) => {
+        if (status) {
+          status.textContent = text
+          status.className = `text-center text-sm ${cls}`
+        }
+      }
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')
+        if (btn) btn.disabled = true
+        setStatus('Sending…', 'text-base-content/60')
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          })
+          const data = await res.json().catch(() => null)
+          if (res.ok && data?.ok) {
+            form.reset()
+            setStatus("Thanks! We got it and we'll be in touch.", 'text-success')
+          } else {
+            setStatus('Something went wrong — please try again later.', 'text-error')
+          }
+        } catch {
+          setStatus('Something went wrong — please try again later.', 'text-error')
+        } finally {
+          if (btn) btn.disabled = false
+        }
+      })
+    })
+  }
+  document.addEventListener('astro:page-load', bindSignupForms)
+</script>

@@ -1,21 +1,61 @@
 ---
-// Placeholder for the Gancio-fed calendar widget that will live here later.
+import { DEFAULT_CALENDAR_SOURCE } from '../../lib/calendar'
 import type { CalendarBlock } from './types'
 
-const { heading, subheading }: CalendarBlock = Astro.props
+const {
+  heading,
+  subheading,
+  source = DEFAULT_CALENDAR_SOURCE,
+  tags = '',
+  presetTags = '',
+  max = 6,
+  showList = true,
+  showCalendar = true,
+  showMap = true,
+  defaultTab = 'list',
+  defaultTimeframe = '30',
+  showFilters = true,
+  showLocationFilter = true,
+  defaultMapStyle = 'standard',
+}: CalendarBlock = Astro.props
+
+const enabledTabs = [showList && 'list', showCalendar && 'calendar', showMap && 'map']
+  .filter(Boolean)
+  .join(',')
 ---
-<section class="bg-base-100 py-20">
+<section class="py-12">
   <div class="mx-auto max-w-screen-xl px-4">
-    <header class="mb-10 space-y-3 text-center">
-      {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
-      {subheading && <p class="text-base-content/70 text-lg">{subheading}</p>}
-    </header>
+    {
+      (heading || subheading) && (
+        <header class="mb-10 space-y-3 text-center">
+          {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
+          {subheading && <p class="text-base-content/70 text-lg">{subheading}</p>}
+        </header>
+      )
+    }
     <div
-      class="border-base-300 text-base-content/50 flex min-h-72 items-center justify-center rounded-2xl border-2 border-dashed">
-      <p class="text-center text-lg">
-        Calendar widget goes here<br />
-        <span class="text-sm">(reads from Gancio later)</span>
-      </p>
+      data-gancio
+      data-view="tabs"
+      data-source={source}
+      data-tags={tags}
+      data-preset-tags={presetTags}
+      data-max={max}
+      data-tabs={enabledTabs}
+      data-default={defaultTab}
+      data-timeframe={defaultTimeframe}
+      data-show-filters={String(showFilters)}
+      data-show-location={String(showLocationFilter)}
+      data-map-style={defaultMapStyle}>
+      <div class="text-base-content/50 py-10 text-center">Loading events…</div>
+    </div>
+    <div class="mt-10 text-center">
+      <a href={source} target="_blank" rel="noopener" class="btn btn-primary btn-outline">
+        See the full calendar
+      </a>
     </div>
   </div>
 </section>
+
+<script>
+  import '../../scripts/calendar.js'
+</script>

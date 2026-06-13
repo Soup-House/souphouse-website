@@ -14,7 +14,7 @@
       "isDropdown": {
         "discriminant": false,
         "value": {
-          "link": "/#about"
+          "link": "/about"
         }
       }
     },
@@ -28,11 +28,11 @@
       }
     },
     {
-      "text": "Meals",
+      "text": "Community Calendar",
       "isDropdown": {
         "discriminant": false,
         "value": {
-          "link": "/#meals"
+          "link": "/#events"
         }
       }
     },
@@ -59,7 +59,7 @@
       "isDropdown": {
         "discriminant": false,
         "value": {
-          "link": "/posts"
+          "link": "/#news"
         }
       }
     }
@@ -68,8 +68,8 @@
     {
       "label": "Donate",
       "link": "/donate",
-      "icon": "",
       "style": "primary",
+      "type": "",
       "size": ""
     }
   ]

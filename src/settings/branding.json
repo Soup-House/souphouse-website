@@ -1,10 +1,13 @@
 {
   "site": {
-    "siteName": "Soup House, Inc.",
+    "siteName": "Soup House",
     "theme": "souphouse",
-    "favicon": "/images/site/favicon.png",
+    "favicon": "/images/site/favicon.svg",
+    "logo": "/images/site/logo.svg",
     "typography": {
-      "pairing": "plex",
+      "headingFont": "cardo",
+      "bodyFont": "roboto",
+      "uiFont": "nunito",
       "headingWeight": "400",
       "bodyWeight": "400"
     }

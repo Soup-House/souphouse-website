@@ -2,23 +2,58 @@
 import '@styles/global.css'
 import Navbar from '@components/Navbar.astro'
 import Footer from '@components/Footer.astro'
+import SoupGarnish from '@components/SoupGarnish.astro'
 import { ClientRouter } from 'astro:transitions'
+import Analytics from '@vercel/analytics/astro'
+import SpeedInsights from '@vercel/speed-insights/astro'
 
 export interface Props {
-  title: string
+  title?: string
 }
 
 import branding from '@settings/branding.json'
-import seo from '@settings/seo.json'
-import { FONT_PAIRINGS, DEFAULT_TYPOGRAPHY } from '@settings/fonts'
+import seoJson from '@settings/seo.json'
+import { FONT_FAMILIES, DEFAULT_TYPOGRAPHY } from '@settings/fonts'
+
+// seo.json is plain JSON, so TS infers only the fields currently present.
+// Spell out the full Keystatic schema so optional fields (canonical, images)
+// typecheck once an editor fills them in.
+type SeoSettings = {
+  seo: { title: string; description: string; keywords: string; canonical?: string }
+  opengraph: { Title: string; Description: string; Image?: string | null }
+  twitter: { Title: string; Description: string; Image?: string | null }
+}
+const seo = seoJson as SeoSettings
+
+// Keystatic stores image fields as repo paths under src/assets; resolve them
+// through Vite so the URL points at an asset that exists in the build output.
+const seoImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/seo/**/*',
+  { eager: true },
+)
+const seoImageUrl = (path?: string | null) =>
+  path ? seoImages[path]?.default.src : undefined
+const ogImage = seoImageUrl(seo.opengraph.Image)
+const twitterImage = seoImageUrl(seo.twitter.Image)
 
 const { title } = Astro.props
+const fullTitle = [seo.seo.title, title].filter(Boolean).join(' | ')
 
 const typography = { ...DEFAULT_TYPOGRAPHY, ...(branding.site.typography ?? {}) }
-const pairing = FONT_PAIRINGS.find((p) => p.id === typography.pairing) ?? FONT_PAIRINGS[0]
+const headingFont =
+  FONT_FAMILIES.find((f) => f.id === typography.headingFont) ??
+  FONT_FAMILIES.find((f) => f.id === DEFAULT_TYPOGRAPHY.headingFont)!
+const bodyFont =
+  FONT_FAMILIES.find((f) => f.id === typography.bodyFont) ??
+  FONT_FAMILIES.find((f) => f.id === DEFAULT_TYPOGRAPHY.bodyFont)!
+const uiFont =
+  FONT_FAMILIES.find((f) => f.id === typography.uiFont) ??
+  FONT_FAMILIES.find((f) => f.id === DEFAULT_TYPOGRAPHY.uiFont)!
+const fontHrefs = [...new Set([headingFont.href, bodyFont.href, uiFont.href])]
 const fontVars = {
-  '--font-heading': pairing.heading,
-  '--font-body': pairing.body,
+  '--font-heading': headingFont.stack,
+  '--font-body': bodyFont.stack,
+  '--font-ui': uiFont.stack,
   '--font-heading-weight': typography.headingWeight,
   '--font-body-weight': typography.bodyWeight,
 }
@@ -33,43 +68,46 @@ const fontVars = {
   <!-- Fonts (family + weights chosen in Site Settings -> Branding -> Typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href={pairing.href} />
+  {fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
 
   {branding.site.favicon && (
   <link rel="icon" href={branding.site.favicon} />
       )}
 
   <!-- SEO -->
-  {seo.seo.title && <title>{seo.seo.title} | {title}</title>}
+  {fullTitle && <title>{fullTitle}</title>}
   {seo.seo.description && <meta name="description" content={seo.seo.description} />}
   {seo.seo.keywords && <meta name="keywords" content={seo.seo.keywords} />}
   {seo.seo.canonical && <link rel="canonical" href={seo.seo.canonical} />}
   
   <!-- Open Graph -->
-  <meta property="og:title" content={seo.opengraph?.Title || title || seo.title} />
+  <meta property="og:title" content={seo.opengraph?.Title || title || seo.seo.title} />
   {seo.opengraph?.Description && (
     <meta property="og:description" content={seo.opengraph.Description} />
   )}
-  {seo.opengraph?.Image?.src && (
-    <meta property="og:image" content={new URL(seo.opengraph.Image.src, Astro.url.origin)} />
+  {ogImage && (
+    <meta property="og:image" content={new URL(ogImage, Astro.site ?? Astro.url.origin).href} />
   )}
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={seo.twitter?.Title || title || seo.title} />
+  <meta name="twitter:title" content={seo.twitter?.Title || title || seo.seo.title} />
   {seo.twitter?.Description && (
     <meta name="twitter:description" content={seo.twitter.Description} />
   )}
-  {seo.twitter?.Image?.src && (
-    <meta name="twitter:image" content={new URL(seo.twitter.Image.src, Astro.url.origin)} />
+  {twitterImage && (
+    <meta name="twitter:image" content={new URL(twitterImage, Astro.site ?? Astro.url.origin).href} />
   )}
  
   <ClientRouter />
   </head>
 
-  <body>
+  <body class="relative">
+    <SoupGarnish />
     <Navbar />
     <slot />
     <Footer />
+    <Analytics />
+    <SpeedInsights />
   </body>
 </html>

@@ -1,10 +1,31 @@
 ---
-import Button from '@components/ui/Button.tsx'
+import Buttons from '@components/ui/Buttons.astro'
+import SoupIcon from '@components/ui/SoupIcon.astro'
 import navbarSettings from '@settings/navbar.json';
 import branding from '@settings/branding.json';
 
-const buttons = navbarSettings?.buttons || []
-const links = navbarSettings?.links || []
+// navbar.json is plain JSON, so TS can't infer the Keystatic conditional
+// field as a discriminated union — spell it out so `discriminant` narrows.
+type NavLink = {
+  text: string
+  isDropdown:
+    | { discriminant: true; value: { text: string; link: string | null; description: string }[] }
+    | { discriminant: false; value: { link: string | null } }
+}
+type NavButton = {
+  label: string
+  link: string
+  icon?: string
+  style?: string
+  type?: string
+  size?: string
+}
+
+const buttons = (navbarSettings?.buttons || []) as NavButton[]
+const links = (navbarSettings?.links || []) as NavLink[]
+// logo is an optional Keystatic image field; cast so TS doesn't infer it
+// out of the current branding.json (which may not have it set yet).
+const logo = (branding.site as { logo?: string | null }).logo
 
 ---
 <div class="bg-base-100/50 sticky top-0 z-50 backdrop-blur-xl">
@@ -32,78 +53,58 @@ const links = navbarSettings?.links || []
               <li>
                 {link.isDropdown.discriminant ? (
                   <>
-                    <a>{link.text}</a>
+                    <span>{link.text}</span>
                     <ul class="p-2">
                       {link.isDropdown.value.map((sublink) => (
-                          
                         <li>
                           <a href={sublink.link}>{sublink.text}</a>
                         </li>
                       ))}
                     </ul>
-                    </details>
                   </>
                 ) : (
                   <a href={link.isDropdown.value.link}>{link.text}</a>
                 )}
               </li>
             ))}
-            
+          </ul>
         </div>
-        <a href="/" aria-label={branding.site.siteName} class="btn btn-ghost text-xl">{branding.site.siteName}</a>
+        <a href="/" aria-label={branding.site.siteName} class="btn btn-ghost gap-2 text-xl">
+          {logo && <img src={logo} alt="" class="h-8 w-auto" />}
+          {branding.site.siteName}
+        </a>
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1 ">
-          {links.map((link) => (
+          {links.map((link, i) => (
+              <>
+              {i > 0 && (
+                <li class="pointer-events-none hidden justify-center xl:flex" aria-hidden="true">
+                  <SoupIcon kind="stelline" class="h-2.5 w-2.5 p-0 text-primary/40" />
+                </li>
+              )}
               <li>
                 {link.isDropdown.discriminant ? (
-                  <>
-                    <details>
-                      <summary>{link.text}</summary>
+                  <details>
+                    <summary>{link.text}</summary>
                     <ul class="p-2">
                       {link.isDropdown.value.map((sublink) => (
-                          
                         <li>
                           <a href={sublink.link}>{sublink.text}</a>
                         </li>
                       ))}
                     </ul>
-                    </details>
-                  </>
+                  </details>
                 ) : (
                   <a href={link.isDropdown.value.link}>{link.text}</a>
                 )}
               </li>
+              </>
             ))}
+        </ul>
       </div>
       <div class="navbar-end">
-          {
-              buttons.map((button) => {
-                const allowedStyles = [
-                  'primary',
-                  'secondary',
-                  'neutral',
-                  'info',
-                  'success',
-                  'warning',
-                  'error'
-                ];
-                const safeStyle = allowedStyles.includes(button.style)
-                  ? button.style
-                  : 'primary';
-                return (
-                  <Button
-                    client:load
-                    link={button.link}
-                    label={button.label}
-                    style={safeStyle as 'primary' | 'secondary' | 'neutral' | 'info' | 'success' | 'warning' | 'error'}
-                    type={['ghost', 'link', 'outline', 'disabled', ''].includes(button.type) ? button.type as 'ghost' | 'link' | 'outline' | 'disabled' | '' : ''}
-                    size={['', 'default', 'large', 'small', 'tiny', 'wide'].includes(button.size) ? button.size as '' | 'default' | 'large' | 'small' | 'tiny' | 'wide' : ''}
-                    icon={button.icon}
-                  />
-                );
-              })
-            }
+        <Buttons buttons={buttons} />
       </div>
     </div>
   </div>

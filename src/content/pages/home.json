@@ -5,15 +5,11 @@
       "discriminant": "hero",
       "value": {
         "heading": "We are Soup House",
-        "subheading": "The World's Soupiest House",
-        "intro": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-        "image": "@assets/images/pages/home/hero/heroImage.jpg",
-        "imageAlt": "A bowl of soup",
+        "intro": "Soup House is where all of Saint Louis can have dinner together. We cook for our neighbors and organizational partners, all towards the goal of finding a gathering place of our own where there's always good, free food that everyone can enjoy together.",
         "buttons": [
           {
             "label": "Get Involved",
             "link": "/get-involved",
-            "icon": "",
             "style": "primary",
             "type": "",
             "size": "large"
@@ -21,7 +17,6 @@
           {
             "label": "Learn More",
             "link": "/about",
-            "icon": "",
             "style": "secondary",
             "type": "outline",
             "size": "large"
@@ -34,8 +29,7 @@
       "value": {
         "anchorId": "about",
         "eyebrow": "Our Mission",
-        "heading": "Lorem ipsum dolor sit amet, consectetur adipiscing",
-        "body": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident."
+        "heading": "To show what's possible when neighbors feed each other."
       }
     },
     {
@@ -43,41 +37,23 @@
       "value": {
         "anchorId": "what-we-do",
         "heading": "What We Do",
-        "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.",
+        "subheading": "Our work comes in three flavors:",
         "items": [
           {
             "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2\"/><path d=\"M7 2v20\"/><path d=\"M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7\"/></svg>",
-            "title": "Lorem Meals",
-            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pay-what-you-can dolore magna.",
-            "link": "",
-            "linkLabel": ""
+            "title": "Community Meals",
+            "body": "We host our own meals and events around St. Louis. Grab a plate and take a seat!"
           },
           {
-            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z\"/><path d=\"M3 6h18\"/><path d=\"M16 10a4 4 0 0 1-8 0\"/></svg>",
-            "title": "Ipsum Groceries",
-            "body": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
-            "link": "",
-            "linkLabel": ""
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762\"/></svg>",
+            "title": "Partner Support",
+            "body": "We back folks already doing good work across the city -- helping out with food and logistics at their gatherings."
           },
           {
-            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/></svg>",
-            "title": "Dolor Community",
-            "body": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.",
-            "link": "",
-            "linkLabel": ""
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/></svg>",
+            "title": "A Gathering Place",
+            "body": "We're working toward a permanent kitchen and gathering space where good food is always available."
           }
-        ]
-      }
-    },
-    {
-      "discriminant": "schedule",
-      "value": {
-        "anchorId": "meals",
-        "heading": "Meals & Distributions",
-        "subheading": "Placeholder — when and where to find us.",
-        "items": [
-          { "when": "Day, time", "place": "Location", "detail": "What's happening." },
-          { "when": "Day, time", "place": "Location", "detail": "What's happening." }
         ]
       }
     },
@@ -85,29 +61,27 @@
       "discriminant": "calendar",
       "value": {
         "anchorId": "events",
-        "heading": "Upcoming Events",
-        "subheading": "Placeholder — events and gatherings will list here."
-      }
-    },
-    {
-      "discriminant": "steps",
-      "value": {
-        "anchorId": "how-it-works",
-        "heading": "How It Works",
-        "subheading": "Lorem ipsum dolor sit amet consectetur.",
-        "items": [
-          { "title": "Lorem", "body": "Consectetur adipiscing elit sed do eiusmod tempor." },
-          { "title": "Ipsum", "body": "Incididunt ut labore et dolore magna aliqua minim." },
-          { "title": "Dolor", "body": "Quis nostrud exercitation ullamco laboris nisi aliquip." },
-          { "title": "Amet", "body": "Duis aute irure dolor in reprehenderit voluptate velit." }
-        ]
+        "heading": "Community Calendar",
+        "subheading": "We're working on a calendar of events in St. Louis with free food. Take a look, or visit the full calendar and submit your own event! ",
+        "source": "https://calendar.souphouse.org",
+        "presetTags": "meal, distribution, art, volunteer, vegan, vegetarian, gluten-free",
+        "max": 6,
+        "showList": true,
+        "showCalendar": true,
+        "showMap": true,
+        "defaultTab": "list",
+        "defaultTimeframe": "30",
+        "showFilters": true,
+        "showLocationFilter": true,
+        "defaultMapStyle": "standard"
       }
     },
     {
       "discriminant": "postsTeaser",
       "value": {
+        "anchorId": "news",
         "heading": "Latest News",
-        "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "subheading": "The latest bits of news from ourselves and our partners:",
         "maxPosts": 3
       }
     },
@@ -115,19 +89,18 @@
       "discriminant": "newsletter",
       "value": {
         "heading": "Stay in the loop",
-        "note": "Placeholder — meal times, distro days, and news in your inbox. (Signup coming soon.)"
+        "note": "Meal times, distro days, and news in your inbox."
       }
     },
     {
       "discriminant": "cta",
       "value": {
-        "heading": "Lorem ipsum, get involved",
-        "body": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+        "heading": "Help us cook for the neighborhood!",
+        "body": "We need all sorts of volunteers! Wherever you come from and whatever you know, we're always happy to have more hands at the table. ",
         "buttons": [
           {
             "label": "Volunteer",
             "link": "/get-involved",
-            "icon": "",
             "style": "secondary",
             "type": "",
             "size": "large"
@@ -135,7 +108,6 @@
           {
             "label": "Donate",
             "link": "/donate",
-            "icon": "",
             "style": "",
             "type": "outline",
             "size": "large"

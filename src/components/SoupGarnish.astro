@@ -1,0 +1,62 @@
+---
+import SoupIcon from '@components/ui/SoupIcon.astro'
+
+// Soup-ingredient scatter down the page's side gutters. Positioned absolutely
+// against the full page height (body is relative), so the garnish is strewn
+// through the whole page and scrolls with the content. Each column fills only
+// the gutter outside the site's widest content column (--sh-content), minus a
+// fixed safety gap (--sh-gap), and clips anything past that edge — so an icon
+// can never crowd the centered text, no matter how narrow the viewport gets.
+// Shown from 2xl up, where the gutter is wide enough to hold the icons; z-0
+// keeps it under the sticky navbar (z-50).
+// Tinted with the tomato primary, opacities in the /7–/10 whisper range.
+---
+<div aria-hidden="true" class="soup-garnish pointer-events-none absolute inset-y-0 left-0 z-0 hidden overflow-hidden 2xl:block">
+  <SoupIcon kind="stelline" class="absolute left-7 top-[2%] h-7 w-7 -rotate-12 text-primary/10" />
+  <SoupIcon kind="carrot" class="absolute left-12 top-[7%] h-8 w-8 rotate-24 text-primary/9" />
+  <SoupIcon kind="mushroom" class="absolute left-5 top-[13%] h-6 w-6 rotate-12 text-primary/8" />
+  <SoupIcon kind="bayleaf" class="absolute left-10 top-[18%] h-7 w-7 -rotate-45 text-primary/8" />
+  <SoupIcon kind="stelline" class="absolute left-14 top-[24%] h-5 w-5 rotate-12 text-primary/7" />
+  <SoupIcon kind="tomato" class="absolute left-6 top-[29%] h-7 w-7 -rotate-6 text-primary/9" />
+  <SoupIcon kind="celery" class="absolute left-11 top-[35%] h-7 w-7 rotate-14 text-primary/8" />
+  <SoupIcon kind="stelline" class="absolute left-5 top-[40%] h-6 w-6 rotate-45 text-primary/10" />
+  <SoupIcon kind="onion" class="absolute left-9 top-[46%] h-7 w-7 rotate-6 text-primary/9" />
+  <SoupIcon kind="bayleaf" class="absolute left-13 top-[51%] h-6 w-6 rotate-60 text-primary/7" />
+  <SoupIcon kind="stelline" class="absolute left-6 top-[57%] h-5 w-5 -rotate-12 text-primary/9" />
+  <SoupIcon kind="carrot" class="absolute left-11 top-[62%] h-7 w-7 -rotate-30 text-primary/8" />
+  <SoupIcon kind="mushroom" class="absolute left-5 top-[68%] h-7 w-7 -rotate-6 text-primary/9" />
+  <SoupIcon kind="stelline" class="absolute left-13 top-[73%] h-5 w-5 rotate-6 text-primary/7" />
+  <SoupIcon kind="celery" class="absolute left-7 top-[79%] h-8 w-8 -rotate-18 text-primary/8" />
+  <SoupIcon kind="tomato" class="absolute left-12 top-[84%] h-6 w-6 rotate-12 text-primary/8" />
+  <SoupIcon kind="stelline" class="absolute left-5 top-[90%] h-6 w-6 rotate-45 text-primary/8" />
+  <SoupIcon kind="onion" class="absolute left-10 top-[95%] h-7 w-7 -rotate-12 text-primary/9" />
+</div>
+<div aria-hidden="true" class="soup-garnish pointer-events-none absolute inset-y-0 right-0 z-0 hidden overflow-hidden 2xl:block">
+  <SoupIcon kind="tomato" class="absolute right-9 top-[3%] h-7 w-7 rotate-12 text-primary/9" />
+  <SoupIcon kind="stelline" class="absolute right-13 top-[8%] h-6 w-6 -rotate-12 text-primary/8" />
+  <SoupIcon kind="onion" class="absolute right-5 top-[14%] h-7 w-7 rotate-6 text-primary/9" />
+  <SoupIcon kind="celery" class="absolute right-11 top-[19%] h-8 w-8 rotate-16 text-primary/8" />
+  <SoupIcon kind="stelline" class="absolute right-6 top-[25%] h-7 w-7 rotate-45 text-primary/10" />
+  <SoupIcon kind="mushroom" class="absolute right-12 top-[30%] h-6 w-6 -rotate-12 text-primary/8" />
+  <SoupIcon kind="bayleaf" class="absolute right-8 top-[36%] h-7 w-7 rotate-30 text-primary/8" />
+  <SoupIcon kind="carrot" class="absolute right-13 top-[41%] h-7 w-7 -rotate-20 text-primary/9" />
+  <SoupIcon kind="stelline" class="absolute right-5 top-[47%] h-5 w-5 -rotate-6 text-primary/7" />
+  <SoupIcon kind="tomato" class="absolute right-10 top-[52%] h-6 w-6 -rotate-12 text-primary/8" />
+  <SoupIcon kind="celery" class="absolute right-6 top-[58%] h-7 w-7 -rotate-14 text-primary/8" />
+  <SoupIcon kind="stelline" class="absolute right-12 top-[63%] h-5 w-5 rotate-12 text-primary/9" />
+  <SoupIcon kind="onion" class="absolute right-8 top-[69%] h-6 w-6 -rotate-6 text-primary/9" />
+  <SoupIcon kind="bayleaf" class="absolute right-13 top-[74%] h-6 w-6 -rotate-50 text-primary/7" />
+  <SoupIcon kind="carrot" class="absolute right-5 top-[80%] h-8 w-8 rotate-26 text-primary/9" />
+  <SoupIcon kind="stelline" class="absolute right-11 top-[85%] h-6 w-6 rotate-6 text-primary/8" />
+  <SoupIcon kind="mushroom" class="absolute right-6 top-[91%] h-7 w-7 rotate-6 text-primary/9" />
+  <SoupIcon kind="stelline" class="absolute right-10 top-[96%] h-5 w-5 -rotate-45 text-primary/7" />
+</div>
+<style>
+  .soup-garnish {
+    /* the site's widest content column (max-w-screen-xl / max-w-7xl), and the
+       minimum clear space to keep between that column and any garnish icon */
+    --sh-content: 1280px;
+    --sh-gap: 2rem;
+    width: max(0px, calc((100vw - var(--sh-content)) / 2 - var(--sh-gap)));
+  }
+</style>

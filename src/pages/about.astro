@@ -1,0 +1,10 @@
+---
+import Layout from '@layouts/Layout.astro'
+import Blocks from '@components/Blocks.astro'
+import { getEntry } from 'astro:content'
+
+const page = await getEntry('pages', 'about')
+---
+<Layout title={page?.data.title}>
+  <Blocks blocks={page?.data.blocks} />
+</Layout>

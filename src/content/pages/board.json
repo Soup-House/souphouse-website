@@ -15,18 +15,15 @@
         "members": [
           {
             "name": "Adam Holbrook",
-            "role": "President",
-            "bio": "Short bio goes here."
+            "role": "President"
           },
           {
             "name": "Birdie Huber",
-            "role": "Secretary",
-            "bio": "Short bio goes here."
+            "role": "Secretary"
           },
           {
             "name": "Eliza Roark",
-            "role": "Treasurer",
-            "bio": "Short bio goes here."
+            "role": "Treasurer"
           },
           {
             "name": "Randi Wiggins",
@@ -35,18 +32,15 @@
           },
           {
             "name": "Samuel McCay",
-            "role": "Director",
-            "bio": "Short bio goes here."
+            "role": "Director"
           },
           {
             "name": "Natalie Wilkerson",
-            "role": "Director",
-            "bio": "Short bio goes here."
+            "role": "Director"
           },
           {
             "name": "Michael Vassilakis",
-            "role": "Director",
-            "bio": "Short bio goes here."
+            "role": "Director"
           }
         ]
       }
