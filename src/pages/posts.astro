@@ -1,0 +1,14 @@
+---
+import Layout from '@layouts/Layout.astro'
+import Blocks from '@components/Blocks.astro'
+import { getEntry } from 'astro:content'
+
+const page = await getEntry('pages', 'posts')
+// The archive never links to itself, whatever the CMS says.
+const blocks = (page?.data.blocks ?? []).map((b) =>
+  b.discriminant === 'postsTeaser' ? { ...b, value: { ...b.value, showAllLink: false } } : b
+)
+---
+<Layout title={page?.data.title ?? 'News'}>
+  <Blocks blocks={blocks} />
+</Layout>

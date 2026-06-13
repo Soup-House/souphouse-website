@@ -6,20 +6,22 @@
       "value": {
         "eyebrow": "Contact",
         "heading": "Get in touch",
-        "subheading": "Placeholder — we'd love to hear from you."
+        "subheading": "Stories, recipes, quick notes, whatever -- hit us up; we'd love to hear from you!"
       }
     },
     {
       "discriminant": "prose",
       "value": {
-        "body": "**Email:** contact@souphouse.org\n\n**Where we are:** South St. Louis\n\n**Mail:** wherever"
+        "body": "**Email:** contact@souphouse.org\n\n**Where we are:** Saint Louis, Missouri"
       }
     },
     {
       "discriminant": "signup",
       "value": {
         "heading": "Send us a note",
-        "note": "Placeholder form"
+        "note": "We read everything — we'll get back to you within a few days.",
+        "form": "contact",
+        "buttonLabel": "Send"
       }
     }
   ]

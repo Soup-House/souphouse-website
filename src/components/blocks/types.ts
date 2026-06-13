@@ -58,12 +58,25 @@ export interface StepsBlock {
 export interface CalendarBlock {
   heading?: string
   subheading?: string
+  source?: string
+  tags?: string
+  presetTags?: string
+  max?: number | null
+  showList?: boolean
+  showCalendar?: boolean
+  showMap?: boolean
+  defaultTab?: string
+  defaultTimeframe?: string
+  showFilters?: boolean
+  showLocationFilter?: boolean
+  defaultMapStyle?: string
 }
 
 export interface PostsTeaserBlock {
   heading?: string
   subheading?: string
   maxPosts?: number | null
+  showAllLink?: boolean
 }
 
 export interface CtaBlock {
@@ -75,23 +88,13 @@ export interface CtaBlock {
 export interface SignupBlock {
   heading?: string
   note?: string
+  form?: 'volunteer' | 'partner' | 'contact'
+  buttonLabel?: string
 }
 
 export interface NewsletterBlock {
   heading?: string
   note?: string
-}
-
-export interface ScheduleItem {
-  when?: string
-  place?: string
-  detail?: string
-}
-
-export interface ScheduleBlock {
-  heading?: string
-  subheading?: string
-  items?: ScheduleItem[]
 }
 
 export interface Member {

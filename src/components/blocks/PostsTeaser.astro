@@ -2,9 +2,9 @@
 import Posts from '@components/Posts.astro'
 import type { PostsTeaserBlock } from './types'
 
-const { heading, subheading, maxPosts }: PostsTeaserBlock = Astro.props
+const { heading, subheading, maxPosts, showAllLink = true }: PostsTeaserBlock = Astro.props
 ---
-<section class="bg-base-100 py-20">
+<section class="py-12">
   <div class="container mx-auto max-w-screen-2xl px-3">
     <header class="space-y-3 text-center">
       {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
@@ -13,5 +13,12 @@ const { heading, subheading, maxPosts }: PostsTeaserBlock = Astro.props
     <div class="mt-10">
       <Posts maxPosts={maxPosts ?? 3} />
     </div>
+    {
+      showAllLink && (
+        <div class="mt-8 text-center">
+          <a href="/posts" class="link link-primary text-sm font-medium">All news →</a>
+        </div>
+      )
+    }
   </div>
 </section>

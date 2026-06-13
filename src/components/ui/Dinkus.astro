@@ -1,0 +1,15 @@
+---
+import SoupIcon from './SoupIcon.astro'
+
+// Three-stelline section flourish, arranged like the row of stars in the logo
+// (outer two a touch lower and tilted).
+interface Props {
+  class?: string
+}
+const { class: className } = Astro.props
+---
+<div class={`flex items-center justify-center gap-2 ${className ?? ''}`} aria-hidden="true">
+  <SoupIcon kind="stelline" class="h-2.5 w-2.5 translate-y-0.5 rotate-12 text-primary/25" />
+  <SoupIcon kind="stelline" class="h-3.5 w-3.5 text-primary/30" />
+  <SoupIcon kind="stelline" class="h-2.5 w-2.5 translate-y-0.5 -rotate-12 text-primary/25" />
+</div>

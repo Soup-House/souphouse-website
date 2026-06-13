@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
+import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -19,7 +20,8 @@ const isDev = process.argv.includes('dev');
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), markdoc(), keystatic()],
+  site: 'https://souphouse.org',
+  integrations: [react(), markdoc(), keystatic(), sitemap()],
   output: 'static',
   adapter: vercel(),
   vite: {

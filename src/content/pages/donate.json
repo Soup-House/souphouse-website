@@ -6,23 +6,19 @@
       "value": {
         "eyebrow": "Support",
         "heading": "Donate",
-        "subheading": "Placeholder — your gift keeps neighbors fed."
+        "subheading": "Your gift helps us all make food together and show the world what's possible."
       }
     },
     {
       "discriminant": "prose",
       "value": {
-        "eyebrow": "",
-        "heading": "",
         "body": "Our donation form runs on **Zeffy**, which is free for us to use — so every cent of your gift reaches Soup House. At checkout Zeffy will offer to add a **tip for Zeffy** on top of your donation. That tip is optional and doesn't come to us. If you'd rather not, just choose **\"Other\"** and enter **$0**."
       }
     },
     {
       "discriminant": "embed",
       "value": {
-        "heading": "",
-        "note": "",
-        "html": ""
+        "html": "<div>\n  <div data-zeffy-embed data-form-url=\"/embed/donation-form/donate-to-help-us-soup-it-up\"></div>\n  <div data-zeffy-embed-fallback style=\"display:none;\">\n    <div style=\"position:relative;overflow:hidden;height:450px;width:100%;\"><iframe title='Donation form powered by Zeffy' style='position: absolute; border: 0; top:0;left:0;bottom:0;right:0;width:100%;height:100%' src='https://www.zeffy.com/embed/donation-form/donate-to-help-us-soup-it-up' allowpaymentrequest allowTransparency=\"true\"></iframe></div>\n  </div>\n  <script\n    src=\"https://www.zeffy.com/embed/v2/zeffy-embed.js\"\n    onerror=\"document.querySelectorAll('[data-zeffy-embed-fallback]').forEach(function(el){el.style.display='block';});\">\n  </script>\n</div>"
       }
     }
   ]

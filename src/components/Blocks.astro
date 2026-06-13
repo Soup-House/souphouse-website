@@ -10,9 +10,10 @@ import PostsTeaser from './blocks/PostsTeaser.astro'
 import Cta from './blocks/Cta.astro'
 import Signup from './blocks/Signup.astro'
 import Newsletter from './blocks/Newsletter.astro'
-import Schedule from './blocks/Schedule.astro'
 import Team from './blocks/Team.astro'
 import Embed from './blocks/Embed.astro'
+import Dinkus from './ui/Dinkus.astro'
+import SoupIcon, { type SoupIconKind } from './ui/SoupIcon.astro'
 
 const registry: Record<string, any> = {
   hero: Hero,
@@ -26,25 +27,100 @@ const registry: Record<string, any> = {
   cta: Cta,
   signup: Signup,
   newsletter: Newsletter,
-  schedule: Schedule,
   team: Team,
   embed: Embed,
 }
 
 const blocks: Array<{ discriminant: string; value: Record<string, any> }> =
   Astro.props.blocks ?? []
+
+// Blocks that paint their own full-bleed background and sit OUTSIDE the
+// alternating rhythm. Every other block gets an automatic base-100/base-200
+// stripe based on its position, so adding/removing/reordering sections in
+// Keystatic keeps the alternation correct with no manual bookkeeping.
+const SELF_STYLED = new Set(['hero', 'cta'])
+let stripe = 0
+
+// One big, flat, confident ingredient per section, bleeding off the edge —
+// clipped by the wrapper so it reads as a printed shape, not a sticker.
+// Side and color are assigned by position (like the stripes): garnished
+// sections alternate left/right and cycle the brand colors, so any page
+// composition stays balanced automatically.
+const GARNISH_COLORS = ['text-accent', 'text-primary', 'text-secondary']
+const SECTION_GARNISH: Record<string, { kind: SoupIconKind; left: string; right: string }> = {
+  split: { kind: 'stelline', left: '-left-12 top-1/2 -translate-y-1/2 -rotate-12 h-44 w-44', right: '-right-12 top-1/2 -translate-y-1/2 rotate-12 h-44 w-44' },
+  cards: { kind: 'carrot', left: '-left-10 top-16 -rotate-12 h-56 w-56', right: '-right-10 top-16 rotate-12 h-56 w-56' },
+  calendar: { kind: 'tomato', left: '-left-14 bottom-8 -rotate-6 h-44 w-44', right: '-right-14 bottom-8 rotate-6 h-44 w-44' },
+  postsTeaser: { kind: 'mushroom', left: '-left-12 top-6 -rotate-12 h-44 w-44', right: '-right-12 top-6 rotate-12 h-44 w-44' },
+  newsletter: { kind: 'onion', left: '-left-10 bottom-6 -rotate-6 h-40 w-40', right: '-right-10 bottom-6 rotate-6 h-40 w-40' },
+  header: { kind: 'stelline', left: '-left-12 top-6 -rotate-12 h-48 w-48', right: '-right-12 top-6 rotate-12 h-48 w-48' },
+  prose: { kind: 'spoon', left: '-left-6 top-1/3 -rotate-12 h-48 w-48', right: '-right-6 top-1/3 rotate-12 h-48 w-48' },
+  signup: { kind: 'tomato', left: '-left-10 top-10 -rotate-6 h-44 w-44', right: '-right-10 top-10 rotate-6 h-44 w-44' },
+}
+let garnishN = 0
 ---
 {
-  blocks.map((block) => {
+  blocks.map((block, i) => {
     const Component = registry[block.discriminant]
     if (!Component) return null
     const { anchorId } = block.value
-    return anchorId ? (
-      <div id={anchorId} class="scroll-mt-20">
+    const bg = SELF_STYLED.has(block.discriminant)
+      ? ''
+      : stripe++ % 2 === 0
+        ? 'bg-base-100'
+        : 'bg-base-200'
+    const garnishDef = bg ? SECTION_GARNISH[block.discriminant] : undefined
+    const garnishOnLeft = garnishN % 2 === 0
+    const garnish = garnishDef
+      ? {
+          kind: garnishDef.kind,
+          side: garnishOnLeft ? 'section-garnish--left' : 'section-garnish--right',
+          class: `${garnishOnLeft ? garnishDef.left : garnishDef.right} ${GARNISH_COLORS[garnishN++ % 3]}`,
+        }
+      : undefined
+    const cls = [anchorId ? 'scroll-mt-20' : '', bg, garnish ? 'relative overflow-hidden' : '']
+      .filter(Boolean)
+      .join(' ')
+    // Striped sections (not the last block on the page) close with a small
+    // three-stelline flourish, tucked up into the section's bottom padding.
+    const dinkus = !!bg && i < blocks.length - 1
+    return cls ? (
+      <div id={anchorId} class={cls}>
+        {garnish && (
+          <div
+            class={`section-garnish pointer-events-none absolute inset-y-0 z-0 hidden overflow-hidden lg:block ${garnish.side}`}
+          >
+            <SoupIcon kind={garnish.kind} class={`absolute ${garnish.class}`} />
+          </div>
+        )}
         <Component {...block.value} />
+        {dinkus && <Dinkus class="-mt-7 pb-5" />}
       </div>
     ) : (
       <Component {...block.value} />
     )
   })
 }
+<style>
+  .section-garnish {
+    /* Keep the big section ingredients clear of the centered content: each sits
+       in the gutter beside the site's widest column (--sh-content), minus a gap.
+       Rather than a hard clip at the inner edge, the shape fades to transparent
+       over --sh-fade as it nears the text, so it dissolves instead of cutting off
+       in a bar. On narrow viewports the gutter shrinks to zero and it disappears. */
+    --sh-content: 1280px;
+    --sh-gap: 2rem;
+    --sh-fade: 3.5rem;
+    width: max(0px, calc((100vw - var(--sh-content)) / 2 - var(--sh-gap)));
+  }
+  .section-garnish--left {
+    left: 0;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--sh-fade)), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - var(--sh-fade)), transparent);
+  }
+  .section-garnish--right {
+    right: 0;
+    -webkit-mask-image: linear-gradient(to left, #000 calc(100% - var(--sh-fade)), transparent);
+    mask-image: linear-gradient(to left, #000 calc(100% - var(--sh-fade)), transparent);
+  }
+</style>

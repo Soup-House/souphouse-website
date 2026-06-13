@@ -8,7 +8,9 @@ export interface Props {
 
 const { maxPosts = 3 }: Props = Astro.props
 
-const posts = await getCollection('posts')
+const posts = (await getCollection('posts')).sort(
+  (a, b) => (b.data.publishedDate?.valueOf() ?? 0) - (a.data.publishedDate?.valueOf() ?? 0)
+)
 
 ---
 <ul class="flex flex-wrap items-stretch justify-center gap-6">
@@ -19,7 +21,7 @@ const posts = await getCollection('posts')
           <div class="card bg-base-300 h-full w-80 sm:w-96 shadow-xl transition-transform hover:scale-105">
             <figure>
               {post.data.featuredImage && (
-                <Image src={post.data.featuredImage} class="object-fit h-60 rounded-t-2xl" alt="Shoes" />
+                <Image src={post.data.featuredImage} class="object-fit h-60 rounded-t-2xl" alt={post.data.imageAlt || post.data.title} />
               )}
             </figure>
             <div class="card-body">
