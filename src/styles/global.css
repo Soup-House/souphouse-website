@@ -70,6 +70,49 @@
   --noise: 0;
 }
 
+/* Dark counterpart of "souphouse" — the same warm soup-kitchen palette on a
+   dark ground: deep roasted-brown bases, cream text, and the tomato/herb/honey
+   accents lifted so they still read against the dark. Used as the dark option
+   for the theme toggle (Site Settings → Branding → Dark mode theme). */
+@plugin "daisyui/theme" {
+  name: "souphouse-dark";
+  default: false;
+  prefersdark: false;
+  color-scheme: dark;
+
+  --color-base-100: #17120f; /* page background      */
+  --color-base-200: #201a16; /* cards / raised areas  */
+  --color-base-300: #2c2520; /* borders / deeper      */
+  --color-base-content: #f2e8d6; /* body text         */
+
+  --color-primary: #db5a3f; /* tomato, lifted for dark */
+  --color-primary-content: #1a120f;
+  --color-secondary: #86a85d; /* herb green, lifted    */
+  --color-secondary-content: #11160b;
+  --color-accent: #e6b052; /* honey, lifted           */
+  --color-accent-content: #1c1408;
+  --color-neutral: #2a221d; /* deep brown             */
+  --color-neutral-content: #f2e8d6;
+
+  --color-info: #5aa3c4;
+  --color-info-content: #07131a;
+  --color-success: #6fae6f;
+  --color-success-content: #08130a;
+  --color-warning: #e0a049;
+  --color-warning-content: #1c1408;
+  --color-error: #d4584a;
+  --color-error-content: #1c0f0d;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
 
 
 /* The stelline as working punctuation: list markers in prose carry the brand

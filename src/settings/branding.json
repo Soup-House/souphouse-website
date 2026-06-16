@@ -2,6 +2,8 @@
   "site": {
     "siteName": "Soup House",
     "theme": "souphouse",
+    "darkTheme": "souphouse-dark",
+    "defaultMode": "system",
     "favicon": "/images/site/favicon.svg",
     "logo": "/images/site/logo.svg",
     "typography": {
