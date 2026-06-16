@@ -57,13 +57,57 @@ const fontVars = {
   '--font-heading-weight': typography.headingWeight,
   '--font-body-weight': typography.bodyWeight,
 }
+
+// Theme: a light theme, a dark theme, and the default mode for first-time
+// visitors — all chosen in the CMS (Site Settings → Branding). The visitor's
+// own choice (theme toggle) is stored client-side and wins; see the head
+// script below, which applies it before first paint to avoid a flash.
+const themeSite = branding.site as {
+  theme?: string
+  darkTheme?: string
+  defaultMode?: 'system' | 'light' | 'dark'
+}
+const lightTheme = themeSite.theme ?? 'souphouse'
+const darkTheme = themeSite.darkTheme ?? 'souphouse-dark'
+const defaultMode = themeSite.defaultMode ?? 'system'
+// Server-rendered default; the head script corrects it per visitor.
+const initialTheme = defaultMode === 'dark' ? darkTheme : lightTheme
 ---
 
 <!doctype html>
-<html lang="en" class="font-body scroll-smooth" data-theme={branding.site.theme} style={fontVars}>
+<html lang="en" class="font-body scroll-smooth" data-theme={initialTheme} style={fontVars}>
   <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Apply the visitor's theme before first paint (no flash), and re-apply
+       after Astro view-transition navigations, which reset <html>. -->
+  <script is:inline define:vars={{ lightTheme, darkTheme, defaultMode }}>
+    (function () {
+      function resolve() {
+        try {
+          var stored = localStorage.getItem('theme-mode');
+          var mode = stored
+            ? stored
+            : defaultMode === 'system'
+              ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+              : defaultMode;
+          return mode === 'dark' ? darkTheme : lightTheme;
+        } catch (e) {
+          return lightTheme;
+        }
+      }
+      function apply() {
+        document.documentElement.setAttribute('data-theme', resolve());
+      }
+      window.__applyTheme = apply;
+      apply();
+      if (!window.__themeBound) {
+        window.__themeBound = true;
+        document.addEventListener('astro:after-swap', apply);
+      }
+    })();
+  </script>
 
   <!-- Fonts (family + weights chosen in Site Settings -> Branding -> Typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

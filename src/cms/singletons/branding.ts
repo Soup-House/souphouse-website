@@ -1,6 +1,30 @@
 import { fields, singleton } from '@keystatic/core'
 import { FONT_FAMILIES, FONT_WEIGHTS, DEFAULT_TYPOGRAPHY } from '../../settings/fonts'
 
+// Shared between the light and dark theme pickers.
+const THEME_OPTIONS = [
+  { label: 'Light', value: 'light' },
+  { label: 'Dark', value: 'dark' },
+  { label: 'Cupcake', value: 'cupcake' },
+  { label: 'Bumblebee', value: 'bumblebee' },
+  { label: 'Emerald', value: 'emerald' },
+  { label: 'Corporate', value: 'corporate' },
+  { label: 'Synthwave', value: 'synthwave' },
+  { label: 'Retro', value: 'retro' },
+  { label: 'Cyberpunk', value: 'cyberpunk' },
+  { label: 'Valentine', value: 'valentine' },
+  { label: 'Halloween', value: 'halloween' },
+  { label: 'Garden', value: 'garden' },
+  { label: 'Forest', value: 'forest' },
+  { label: 'Aqua', value: 'aqua' },
+  { label: 'Lofi', value: 'lofi' },
+  { label: 'Pastel', value: 'pastel' },
+  { label: 'Fantasy', value: 'fantasy' },
+  { label: 'Wireframe', value: 'wireframe' },
+  { label: 'Souphouse', value: 'souphouse' },
+  { label: 'Souphouse Dark', value: 'souphouse-dark' },
+]
+
 export const branding = singleton({
   label: 'Branding',
   format: { data: 'json' },
@@ -9,31 +33,28 @@ export const branding = singleton({
     site: fields.object({
       siteName: fields.text({ label: 'Site Name' }),
       theme: fields.select({
-        label: 'Select a theme',
-        description: "Themes available from DaisyUI",
+        label: 'Light theme',
+        description: 'Default theme, used in light mode. Themes come from DaisyUI.',
+        options: THEME_OPTIONS,
+        defaultValue: 'souphouse',
+      }),
+      darkTheme: fields.select({
+        label: 'Dark mode theme',
+        description: 'Theme used when a visitor turns on dark mode.',
+        options: THEME_OPTIONS,
+        defaultValue: 'souphouse-dark',
+      }),
+      defaultMode: fields.select({
+        label: 'Default color mode',
+        description:
+          'What first-time visitors see before they choose. "Follow device" uses their system light/dark setting.',
         options: [
+          { label: 'Follow device', value: 'system' },
           { label: 'Light', value: 'light' },
           { label: 'Dark', value: 'dark' },
-          { label: 'Cupcake', value: 'cupcake' },
-          { label: 'Bumblebee', value: 'bumblebee' },
-          { label: 'Emerald', value: 'emerald' },
-          { label: 'Corporate', value: 'corporate' },
-          { label: 'Synthwave', value: 'synthwave' },
-          { label: 'Retro', value: 'retro' },
-          { label: 'Cyberpunk', value: 'cyberpunk' },
-          { label: 'Valentine', value: 'valentine' },
-          { label: 'Halloween', value: 'halloween' },
-          { label: 'Garden', value: 'garden' },
-          { label: 'Forest', value: 'forest' },
-          { label: 'Aqua', value: 'aqua' },
-          { label: 'Lofi', value: 'lofi' },
-          { label: 'Pastel', value: 'pastel' },
-          { label: 'Fantasy', value: 'fantasy' },
-          { label: 'Wireframe', value: 'wireframe' },
-          { label: 'Souphouse', value: 'souphouse' },
         ],
-        defaultValue: 'souphouse',
-      }), 
+        defaultValue: 'system',
+      }),
       favicon: fields.image({
         label: 'Favicon',
         description: 'Favicon for the site',
