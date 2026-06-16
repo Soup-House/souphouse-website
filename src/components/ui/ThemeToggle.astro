@@ -1,0 +1,57 @@
+---
+// Dark-mode slider. Writes the visitor's choice to localStorage ('theme-mode')
+// and calls the global applier set up in Layout's head script, so the theme
+// flips instantly and the choice survives reloads and view-transition
+// navigations. With no stored choice it reflects the device's setting.
+---
+<label class="flex cursor-pointer items-center gap-2" title="Toggle dark mode">
+  <span class="sr-only">Toggle dark mode</span>
+  <svg aria-hidden="true" class="h-4 w-4 fill-current opacity-70" viewBox="0 0 24 24">
+    <path d="M12 4a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1Zm0 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM4 11h1a1 1 0 1 1 0 2H4a1 1 0 1 1 0-2Zm14 0h1a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2ZM6.34 5.34a1 1 0 0 1 1.41 0l.71.71a1 1 0 1 1-1.41 1.41l-.71-.71a1 1 0 0 1 0-1.41Zm9.79 9.79a1 1 0 0 1 1.41 0l.71.71a1 1 0 1 1-1.41 1.41l-.71-.71a1 1 0 0 1 0-1.41Zm1.41-9.79a1 1 0 0 1 0 1.41l-.71.71a1 1 0 1 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0ZM7.05 15.13a1 1 0 0 1 0 1.41l-.71.71a1 1 0 1 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0Z"/>
+  </svg>
+  <input type="checkbox" class="toggle toggle-sm theme-toggle" aria-label="Toggle dark mode" />
+  <svg aria-hidden="true" class="h-4 w-4 fill-current opacity-70" viewBox="0 0 24 24">
+    <path d="M21.64 13a1 1 0 0 0-1.05-.14 7 7 0 0 1-9.45-9.45 1 1 0 0 0-1.2-1.32A9 9 0 1 0 22 14.21a1 1 0 0 0-.36-1.21Z"/>
+  </svg>
+</label>
+<script is:inline>
+  (function () {
+    function mode() {
+      try {
+        var s = localStorage.getItem('theme-mode');
+        if (s === 'light' || s === 'dark') return s;
+      } catch (e) {}
+      try {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } catch (e) {
+        return 'light';
+      }
+    }
+    function sync() {
+      var dark = mode() === 'dark';
+      document.querySelectorAll('.theme-toggle').forEach(function (el) {
+        el.checked = dark;
+      });
+    }
+    function onChange(e) {
+      try {
+        localStorage.setItem('theme-mode', e.target.checked ? 'dark' : 'light');
+      } catch (_) {}
+      if (typeof window.__applyTheme === 'function') window.__applyTheme();
+      sync();
+    }
+    function bind() {
+      document.querySelectorAll('.theme-toggle').forEach(function (el) {
+        if (el.dataset.themeBound) return;
+        el.dataset.themeBound = '1';
+        el.addEventListener('change', onChange);
+      });
+      sync();
+    }
+    bind();
+    if (!window.__themeToggleBound) {
+      window.__themeToggleBound = true;
+      document.addEventListener('astro:after-swap', bind);
+    }
+  })();
+</script>

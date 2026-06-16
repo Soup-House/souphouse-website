@@ -1,6 +1,7 @@
 ---
 import Buttons from '@components/ui/Buttons.astro'
 import SoupIcon from '@components/ui/SoupIcon.astro'
+import ThemeToggle from '@components/ui/ThemeToggle.astro'
 import navbarSettings from '@settings/navbar.json';
 import branding from '@settings/branding.json';
 
@@ -103,7 +104,8 @@ const logo = (branding.site as { logo?: string | null }).logo
             ))}
         </ul>
       </div>
-      <div class="navbar-end">
+      <div class="navbar-end gap-3">
+        <ThemeToggle />
         <Buttons buttons={buttons} />
       </div>
     </div>
