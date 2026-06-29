@@ -6,7 +6,7 @@
       "value": {
         "eyebrow": "Who we are",
         "heading": "Our Board",
-        "subheading": "Placeholder — the people behind Soup House."
+        "subheading": "The neighbors guiding Soup House's mission to keep Saint Louis fed."
       }
     },
     {
@@ -27,8 +27,7 @@
           },
           {
             "name": "Randi Wiggins",
-            "role": "Director",
-            "bio": "Short bio goes here."
+            "role": "Director"
           },
           {
             "name": "Samuel McCay",
