@@ -18,7 +18,12 @@
     {
       "discriminant": "cards",
       "value": {
-        "items": []
+        "items": [
+          {
+            "title": "Thomas Dunn Learning Center",
+            "body": "A neighborhood learning center in south St. Louis — one of the places we gather to share community meals and host events together."
+          }
+        ]
       }
     }
   ]
