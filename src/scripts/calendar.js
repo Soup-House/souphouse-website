@@ -140,7 +140,40 @@ function listHtml(events, source, max) {
     .join('')
 }
 
-function gridHtml(events, source, year, month) {
+const dayKeyOf = (ts) => {
+  const d = new Date(ts * 1000)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+// Everything on one day, shown under the grid when a day is clicked. The
+// grid itself only fits three titles per cell, so this is where the full
+// list lives (and where it's readable on a phone).
+function dayPanelHtml(events, source, dayKey) {
+  const evs = events.filter((ev) => dayKeyOf(ev.start_datetime) === dayKey)
+  const title = new Date(`${dayKey}T00:00`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+  const items = evs.length
+    ? evs
+        .map(
+          (ev) => `<li class="border-base-300 flex gap-4 border-t py-3 first:border-0">
+            <span class="text-primary w-20 shrink-0 text-sm font-semibold">${fmtTime(ev.start_datetime)}</span>
+            <span class="min-w-0">
+              <a href="${eventUrl(source, ev)}" target="_blank" rel="noopener" class="font-semibold hover:underline">${esc(ev.title)}</a>
+              ${ev.place && ev.place.name ? `<div class="text-base-content/70 text-sm">${esc(ev.place.name)}</div>` : ''}
+            </span></li>`
+        )
+        .join('')
+    : `<li class="text-base-content/50 py-2 text-sm">No events on this day.</li>`
+  return `<div data-day-panel class="bg-base-200 mt-4 rounded-2xl p-4">
+      <div class="mb-1 flex items-center justify-between gap-4">
+        <div class="font-heading text-lg">${title}
+          <span class="text-base-content/50 text-sm font-normal">· ${evs.length} event${evs.length === 1 ? '' : 's'}</span></div>
+        <button type="button" data-day-close class="btn btn-ghost btn-sm btn-circle" aria-label="Close day view">✕</button>
+      </div>
+      <ul>${items}</ul>
+    </div>`
+}
+
+function gridHtml(events, source, year, month, selDay) {
   const first = new Date(year, month, 1)
   const startDay = first.getDay()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
@@ -156,6 +189,7 @@ function gridHtml(events, source, year, month) {
   for (let i = 0; i < startDay; i++) cells += `<div class="bg-base-100 min-h-24"></div>`
   for (let day = 1; day <= daysInMonth; day++) {
     const evs = byDay[day] || []
+    const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
     const items = evs
       .slice(0, 3)
       .map(
@@ -165,7 +199,12 @@ function gridHtml(events, source, year, month) {
       )
       .join('')
     const more = evs.length > 3 ? `<div class="text-base-content/50 text-xs">+${evs.length - 3} more</div>` : ''
-    cells += `<div class="bg-base-100 min-h-24 space-y-0.5 p-1"><div class="text-base-content/60 text-xs font-semibold">${day}</div>${items}${more}</div>`
+    const sel = key === selDay
+    const clickable = evs.length
+      ? `data-day="${key}" role="button" tabindex="0" aria-label="Show all ${evs.length} events on ${key}" aria-expanded="${sel}"`
+      : ''
+    cells += `<div ${clickable} class="min-h-24 space-y-0.5 p-1 ${sel ? 'bg-primary/10' : 'bg-base-100'} ${evs.length ? 'hover:bg-base-200 cursor-pointer' : ''}">
+      <div class="text-base-content/60 text-xs font-semibold">${day}</div>${items}${more}</div>`
   }
   return `
     <div class="mb-4 flex items-center justify-between">
@@ -176,7 +215,8 @@ function gridHtml(events, source, year, month) {
     <div class="border-base-300 grid grid-cols-7 gap-px overflow-hidden rounded-lg border bg-base-300">
       ${dow.map((d) => `<div class="bg-base-200 py-2 text-center text-xs font-semibold">${d}</div>`).join('')}
       ${cells}
-    </div>`
+    </div>
+    ${selDay ? dayPanelHtml(events, source, selDay) : ''}`
 }
 
 const MAP_TILES = {
@@ -200,9 +240,80 @@ function loadLeaflet() {
   })
 }
 
+// One pin per place, coloured by what's on offer, sized by how many events
+// are there; the popup lists that place's upcoming times. Same visual
+// language as the Food map page served by Gancio at /map/.
+const KINDS = {
+  meal: ['Hot meals', '#c1432b'],
+  groceries: ['Groceries', '#5a7d3c'],
+  other: ['Other', '#e0a43b'],
+}
+const MEAL_RE = /^(hot-meal|dinner|lunch|breakfast|brunch|supper|meal|free[ _]?foods?)$/i
+const GROC_RE = /^(groceries|mobile-market|pantry|produce|distribution)$/i
+function kindOf(ev) {
+  const tags = eventTags(ev)
+  if (tags.some((t) => MEAL_RE.test(t))) return 'meal'
+  if (tags.some((t) => GROC_RE.test(t))) return 'groceries'
+  return 'other'
+}
+
+function groupPlaces(events) {
+  const places = new Map()
+  for (const ev of events) {
+    if (!hasCoords(ev)) continue
+    const lat = ev.place.latitude, lng = ev.place.longitude
+    const key = `${lat.toFixed(5)},${lng.toFixed(5)}`
+    if (!places.has(key))
+      places.set(key, { lat, lng, name: ev.place.name || ev.place.address || '', address: ev.place.address || '', events: [], kinds: {} })
+    const p = places.get(key)
+    p.events.push(ev)
+    p.kinds[kindOf(ev)] = (p.kinds[kindOf(ev)] || 0) + 1
+  }
+  for (const p of places.values()) p.kind = Object.entries(p.kinds).sort((x, y) => y[1] - x[1])[0][0]
+  return [...places.values()].sort((x, y) => x.events[0].start_datetime - y.events[0].start_datetime)
+}
+
+const isNow = (ev) => {
+  const now = Date.now() / 1000
+  return ev.start_datetime <= now && now <= (ev.end_datetime || ev.start_datetime + 3600)
+}
+
+function placePopupHtml(p, source) {
+  const list = p.events
+    .slice(0, 6)
+    .map(
+      (ev) => `<div style="border-top:1px solid #e7d9bf;padding:5px 0 3px">
+        <div style="color:#8a7a6a;font-size:12px">${fmtDate(ev.start_datetime)} · ${fmtTime(ev.start_datetime)}${
+          isNow(ev) ? ' <span style="color:#5a7d3c;font-weight:600">· open now</span>' : ''
+        }</div>
+        <a href="${eventUrl(source, ev)}" target="_blank" rel="noopener">${esc(ev.title)}</a></div>`
+    )
+    .join('')
+  const more = p.events.length > 6 ? `<div style="color:#8a7a6a;font-size:12px;padding-top:4px">+${p.events.length - 6} more</div>` : ''
+  const dir = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`
+  return `<div style="font:13px/1.45 Roboto,system-ui,sans-serif;color:#2c2420">
+      <strong style="font:700 17px/1.2 Cardo,Georgia,serif">${esc(p.name)}</strong>
+      <div style="color:#8a7a6a;margin:2px 0 4px">${esc(p.address)} · <a href="${dir}" target="_blank" rel="noopener">Directions</a></div>
+      ${list}${more}</div>`
+}
+
+function placeListHtml(places) {
+  if (!places.length) return `<li class="text-base-content/50 p-4 text-sm">No places to show.</li>`
+  return places
+    .map(
+      (p, i) => `<li data-place="${i}" class="hover:bg-base-300 grid cursor-pointer grid-cols-[12px_1fr] items-start gap-x-3 gap-y-0.5 p-3">
+        <span class="mt-1.5 inline-block h-2.5 w-2.5 rounded-full" style="background:${KINDS[p.kind][1]}"></span>
+        <span class="font-heading font-semibold leading-tight">${esc(p.name)}</span>
+        <span class="text-base-content/70 col-start-2 text-xs">${esc(p.address)}</span>
+        <span class="text-base-content/70 col-start-2 text-xs">Next <span class="text-base-content">${fmtDate(p.events[0].start_datetime)} · ${fmtTime(p.events[0].start_datetime)}</span> · ${p.events.length} upcoming</span>
+      </li>`
+    )
+    .join('')
+}
+
 async function renderMap(panel, events, source, { style, center, radiusMi }) {
-  const located = events.filter(hasCoords)
-  if (!located.length && !center) {
+  const places = groupPlaces(events)
+  if (!places.length && !center) {
     panel.innerHTML = `<div class="text-base-content/50 py-10 text-center">No events with a location to map.</div>`
     return
   }
@@ -211,28 +322,49 @@ async function renderMap(panel, events, source, { style, center, radiusMi }) {
     panel.innerHTML = `<div class="text-base-content/50 py-10 text-center">Couldn't load the map.</div>`
     return
   }
-  panel.innerHTML = ''
-  const mapEl = document.createElement('div')
-  mapEl.className = 'h-96 w-full rounded-2xl'
-  panel.appendChild(mapEl)
-  const map = L.map(mapEl)
+  const legend = Object.entries(KINDS)
+    .filter(([k]) => places.some((p) => p.kinds[k]))
+    .map(
+      ([, [label, color]]) =>
+        `<span class="inline-flex items-center gap-1.5"><span class="inline-block h-2.5 w-2.5 rounded-full" style="background:${color}"></span>${label}</span>`
+    )
+    .join('')
+  panel.innerHTML = `
+    <div class="grid gap-4 lg:grid-cols-3">
+      <div class="lg:col-span-2">
+        <div data-map class="h-[28rem] w-full rounded-2xl"></div>
+        <div class="text-base-content/70 mt-2 flex flex-wrap items-center gap-4 text-sm">${legend}
+          <span class="ml-auto">${places.length} place${places.length === 1 ? '' : 's'} · ${places.reduce((n, p) => n + p.events.length, 0)} events</span></div>
+      </div>
+      <ul data-places class="bg-base-200 divide-base-300 max-h-[28rem] divide-y overflow-y-auto rounded-2xl">${placeListHtml(places)}</ul>
+    </div>`
+  const map = L.map(panel.querySelector('[data-map]'))
   const tiles = MAP_TILES[style] || MAP_TILES.standard
   L.tileLayer(tiles.url, { attribution: tiles.attribution, maxZoom: 19 }).addTo(map)
 
   const bounds = []
-  for (const ev of located) {
-    L.marker([ev.place.latitude, ev.place.longitude])
+  for (const p of places) {
+    p.marker = L.circleMarker([p.lat, p.lng], {
+      radius: 7 + Math.min(6, Math.log2(p.events.length + 1)),
+      color: '#fff',
+      weight: 1.5,
+      fillColor: KINDS[p.kind][1],
+      fillOpacity: 0.9,
+    })
       .addTo(map)
-      .bindPopup(
-        `<strong>${esc(ev.title)}</strong><br>${fmtDate(ev.start_datetime)} · ${fmtTime(ev.start_datetime)}<br>${esc(
-          ev.place.name || ''
-        )}<br><a href="${eventUrl(source, ev)}" target="_blank" rel="noopener">Details</a>`
-      )
-    bounds.push([ev.place.latitude, ev.place.longitude])
+      .bindPopup(placePopupHtml(p, source), { maxWidth: 320 })
+    bounds.push([p.lat, p.lng])
   }
+  panel.querySelector('[data-places]').addEventListener('click', (e) => {
+    const li = e.target.closest('[data-place]')
+    if (!li) return
+    const p = places[parseInt(li.dataset.place, 10)]
+    map.setView([p.lat, p.lng], Math.max(map.getZoom(), 14))
+    p.marker.openPopup()
+  })
 
   if (center) {
-    L.circleMarker([center.lat, center.lng], { radius: 6, color: '#c1432b', fillColor: '#c1432b', fillOpacity: 1 })
+    L.circleMarker([center.lat, center.lng], { radius: 6, color: '#1a73e8', fillColor: '#1a73e8', fillOpacity: 1 })
       .addTo(map)
       .bindPopup('Search area center')
     const circle = L.circle([center.lat, center.lng], {
@@ -382,6 +514,7 @@ async function initWidget(el) {
     tab: enabled.includes(el.dataset.default) ? el.dataset.default : enabled[0],
     gy: new Date().getFullYear(),
     gm: new Date().getMonth(),
+    selDay: null, // 'YYYY-MM-DD' whose events are expanded under the grid
     center: null,
     radiusMi: 5,
     locationLabel: '',
@@ -417,7 +550,7 @@ async function initWidget(el) {
     const events = filtered()
     if (tab === 'list' && panels.list)
       panels.list.innerHTML = `<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">${listHtml(events, source, max)}</ul>`
-    if (tab === 'calendar' && panels.calendar) panels.calendar.innerHTML = gridHtml(events, source, state.gy, state.gm)
+    if (tab === 'calendar' && panels.calendar) panels.calendar.innerHTML = gridHtml(events, source, state.gy, state.gm, state.selDay)
     if (tab === 'map' && panels.map)
       renderMap(panels.map, events, source, { style: state.mapStyle, center: state.center, radiusMi: state.radiusMi })
   }
@@ -475,8 +608,20 @@ async function initWidget(el) {
       state.locationLabel = ''
       return refresh()
     }
+    if (e.target.closest('[data-day-close]')) {
+      state.selDay = null
+      return drawView('calendar')
+    }
+    const day = e.target.closest('[data-day]')
+    if (day && !e.target.closest('a')) {
+      state.selDay = state.selDay === day.dataset.day ? null : day.dataset.day
+      drawView('calendar')
+      if (state.selDay) el.querySelector('[data-day-panel]')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+      return
+    }
     const nav = e.target.closest('[data-cal-nav]')
     if (nav) {
+      state.selDay = null
       state.gm += parseInt(nav.dataset.calNav, 10)
       if (state.gm < 0) {
         state.gm = 11
@@ -509,6 +654,11 @@ async function initWidget(el) {
     }
   })
   el.addEventListener('keydown', (e) => {
+    const day = e.target.closest('[data-day]')
+    if (day && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault()
+      return day.click()
+    }
     if (e.key !== 'Enter') return
     const tagInput = e.target.closest('[data-tag-input]')
     if (tagInput && tagInput.value.trim()) {
