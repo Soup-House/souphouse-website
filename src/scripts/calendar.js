@@ -36,28 +36,10 @@ const esc = (s) =>
     (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]
   )
 const eventUrl = (source, ev) => `${source}/event/${encodeURIComponent(ev.slug)}`
-// Every event is in person around St. Louis, so dates and times are always
-// shown in Central time, whatever time zone the visitor's device is set to.
-const TZ = 'America/Chicago'
 const fmtDate = (ts) =>
-  new Date(ts * 1000).toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' })
+  new Date(ts * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
 const fmtTime = (ts) =>
-  new Date(ts * 1000).toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' })
-const tzFmt = new Intl.DateTimeFormat('en-US', {
-  timeZone: TZ, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23',
-})
-// Wall-clock parts in Central time; month is 0-based like Date#getMonth.
-function tzParts(ts) {
-  const p = Object.fromEntries(tzFmt.formatToParts(new Date(ts * 1000)).map((x) => [x.type, Number(x.value)]))
-  return { year: p.year, month: p.month - 1, day: p.day, hour: p.hour, minute: p.minute, second: p.second }
-}
-// Unix seconds for a Central-time wall clock (handles DST via the offset at that moment).
-function tzToUnix(year, month, day, hour = 0, minute = 0) {
-  const guess = Date.UTC(year, month, day, hour, minute) / 1000
-  const p = tzParts(guess)
-  const offset = Date.UTC(p.year, p.month, p.day, p.hour, p.minute, p.second) / 1000 - guess
-  return guess - offset
-}
+  new Date(ts * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
 const parseTags = (csv) =>
   (csv || '').split(',').map((t) => t.trim()).filter(Boolean)
 const eventTags = (ev) => (ev.tags || []).map((t) => String(t).toLowerCase())
@@ -103,8 +85,9 @@ async function geocode(q) {
 function timeframeWindow(tf) {
   const now = Math.floor(Date.now() / 1000)
   if (tf === 'today') {
-    const t = tzParts(now)
-    return [now, tzToUnix(t.year, t.month, t.day + 1) - 1]
+    const end = new Date()
+    end.setHours(23, 59, 59, 999)
+    return [now, Math.floor(end.getTime() / 1000)]
   }
   const days = { '7': 7, '30': 30, '90': 90 }[tf]
   if (days) return [now, now + days * 86400]
@@ -158,8 +141,8 @@ function listHtml(events, source, max) {
 }
 
 const dayKeyOf = (ts) => {
-  const d = tzParts(ts)
-  return `${d.year}-${String(d.month + 1).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`
+  const d = new Date(ts * 1000)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 // Everything on one day, shown under the grid when a day is clicked. The
@@ -167,7 +150,7 @@ const dayKeyOf = (ts) => {
 // list lives (and where it's readable on a phone).
 function dayPanelHtml(events, source, dayKey) {
   const evs = events.filter((ev) => dayKeyOf(ev.start_datetime) === dayKey)
-  const title = new Date(`${dayKey}T12:00:00Z`).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric' })
+  const title = new Date(`${dayKey}T00:00`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
   const items = evs.length
     ? evs
         .map(
@@ -196,9 +179,9 @@ function gridHtml(events, source, year, month, selDay) {
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const byDay = {}
   for (const ev of events) {
-    const d = tzParts(ev.start_datetime)
-    if (d.year === year && d.month === month) {
-      ;(byDay[d.day] ||= []).push(ev)
+    const d = new Date(ev.start_datetime * 1000)
+    if (d.getFullYear() === year && d.getMonth() === month) {
+      ;(byDay[d.getDate()] ||= []).push(ev)
     }
   }
   const dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -529,8 +512,8 @@ async function initWidget(el) {
     activeTags: new Set(),
     timeframe: el.dataset.timeframe || '30',
     tab: enabled.includes(el.dataset.default) ? el.dataset.default : enabled[0],
-    gy: tzParts(Date.now() / 1000).year,
-    gm: tzParts(Date.now() / 1000).month,
+    gy: new Date().getFullYear(),
+    gm: new Date().getMonth(),
     selDay: null, // 'YYYY-MM-DD' whose events are expanded under the grid
     center: null,
     radiusMi: 5,
