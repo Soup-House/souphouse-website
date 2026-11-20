@@ -1,0 +1,114 @@
+---
+import Layout from '@layouts/Layout.astro'
+
+// Sign up to help at one of our events: /volunteer?event=<CRM event id>.
+// Newsletter and website "Sign up to help" buttons link here. Without an event
+// (or for one that isn't taking signups) it lists the events that want help.
+// The event comes from the CRM in the browser (via /api/soup-events), so the
+// page itself stays static.
+---
+<Layout title="Volunteer at an event">
+  <section class="bg-base-100 py-12">
+    <div class="mx-auto max-w-2xl px-4">
+      <h1 class="font-heading mb-2 text-center text-4xl md:text-5xl">Lend a hand</h1>
+      <div data-volunteer-page>
+        <p class="text-base-content/50 py-10 text-center">Loading…</p>
+      </div>
+      <noscript>
+        <p class="py-6 text-center">This page needs JavaScript. You can also <a class="link link-primary" href="/get-involved">sign up on Get Involved</a> or email <a class="link link-primary" href="mailto:contact@souphouse.org">contact@souphouse.org</a>.</p>
+      </noscript>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { eventCard, loadEvents } from '../scripts/soup-events'
+  import type { SoupEvent } from '../lib/soupEvents'
+
+  const GENERAL = '<p class="text-base-content/70 mt-8 text-center">Want to help in general, not at one event? <a class="link link-primary" href="/get-involved">Sign up on Get Involved</a>.</p>'
+
+  function form(e: SoupEvent): string {
+    return `<p class="text-base-content/70 mb-6 text-center">Sign up to help at:</p>
+${eventCard(e, false)}
+<div class="card bg-base-100 mt-6 shadow-md"><div class="card-body">
+  <form data-event-signup class="space-y-4">
+    <input type="hidden" name="event_id" value="${e.id}" />
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block"><span class="mb-1 block text-sm font-medium">First name</span>
+        <input type="text" name="first_name" required autocomplete="given-name" class="input w-full" /></label>
+      <label class="block"><span class="mb-1 block text-sm font-medium">Last name</span>
+        <input type="text" name="last_name" required autocomplete="family-name" class="input w-full" /></label>
+    </div>
+    <label class="block"><span class="mb-1 block text-sm font-medium">Email</span>
+      <input type="email" name="email" required autocomplete="email" class="input w-full" /></label>
+    <label class="block"><span class="mb-1 block text-sm font-medium">Anything we should know? (optional)</span>
+      <textarea name="message" rows="3" class="textarea w-full" placeholder="e.g. I can come early to set up, or I have a car"></textarea></label>
+    <button type="submit" class="btn btn-primary w-full">Sign me up</button>
+    <p data-status role="status" aria-live="polite" class="text-center text-sm"></p>
+  </form>
+</div></div>
+${GENERAL}`
+  }
+
+  function list(events: SoupEvent[], intro: string): string {
+    const open = events.filter((e) => e.volunteers_wanted)
+    return `<p class="text-base-content/70 mb-6 text-center">${intro}</p>
+${open.length ? `<div class="grid gap-4">${open.map((e) => eventCard(e)).join('')}</div>` : '<p class="text-base-content/60 py-6 text-center">No events need extra hands right now. Check back soon!</p>'}
+${GENERAL}`
+  }
+
+  function bindForm(root: HTMLElement) {
+    const f = root.querySelector<HTMLFormElement>('form[data-event-signup]')
+    if (!f) return
+    const status = f.querySelector<HTMLElement>('[data-status]')!
+    const say = (text: string, cls: string) => {
+      status.textContent = text
+      status.className = `text-center text-sm ${cls}`
+    }
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault()
+      const btn = f.querySelector<HTMLButtonElement>('button[type="submit"]')!
+      btn.disabled = true
+      say('Sending…', 'text-base-content/60')
+      try {
+        const res = await fetch('/api/forms/event-volunteer', { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
+        const data = await res.json().catch(() => null)
+        if (res.ok && data?.ok) {
+          f.outerHTML = `<div class="py-4 text-center"><p class="font-heading text-primary text-2xl">You're signed up!</p>
+<p class="text-base-content/70 mt-2">Thank you. We've emailed you a confirmation, and we'll be in touch with the details.</p></div>`
+          return
+        }
+        say(res.status === 409 ? "Sorry, this event isn't taking sign-ups anymore." : 'Something went wrong. Please try again later.', 'text-error')
+      } catch {
+        say('Something went wrong. Please try again later.', 'text-error')
+      }
+      btn.disabled = false
+    })
+  }
+
+  async function init() {
+    const root = document.querySelector<HTMLElement>('[data-volunteer-page]')
+    if (!root || root.dataset.bound) return
+    root.dataset.bound = '1'
+    const id = Number(new URLSearchParams(location.search).get('event'))
+    try {
+      if (id > 0) {
+        const [event] = await loadEvents(`id=${id}`)
+        if (event?.volunteers_wanted) {
+          root.innerHTML = form(event)
+          bindForm(root)
+          document.title = `Volunteer: ${event.title} | Soup House`
+          return
+        }
+        root.innerHTML = list(await loadEvents('days=60'), "That event isn't taking sign-ups (it may have already happened). Here's what's coming up:")
+        return
+      }
+      root.innerHTML = list(await loadEvents('days=60'), 'Pick an event and sign up to help:')
+    } catch {
+      root.innerHTML = `<p class="text-base-content/60 py-6 text-center">Our events aren't loading right now. Please try again later, or email <a class="link link-primary" href="mailto:contact@souphouse.org">contact@souphouse.org</a>.</p>${GENERAL}`
+    }
+  }
+
+  document.addEventListener('astro:page-load', init)
+</script>

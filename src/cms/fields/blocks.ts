@@ -172,6 +172,22 @@ export const pageBlocks = fields.blocks(
         buttons,
       }),
     },
+    soupEvents: {
+      label: 'Our events (from the CRM)',
+      itemLabel: (props) => props.fields.heading.value || 'Our events',
+      schema: fields.object({
+        ...anchorField,
+        heading: fields.text({ label: 'Heading' }),
+        note: fields.text({ label: 'Note', multiline: true }),
+        days: fields.integer({ label: 'How many days ahead', defaultValue: 60, validation: { min: 1, max: 180 } }),
+        max: fields.integer({ label: 'Most events to show', defaultValue: 8 }),
+        onlyVolunteers: fields.checkbox({
+          label: 'Only events that want volunteers',
+          description: 'Events come from the CRM: the ones with "Show on the website" ticked. "Volunteers wanted" adds a sign-up button.',
+          defaultValue: false,
+        }),
+      }),
+    },
     signup: {
       label: 'Sign-up form',
       itemLabel: (props) => props.fields.heading.value || 'Sign-up form',

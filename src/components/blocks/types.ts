@@ -85,6 +85,14 @@ export interface CtaBlock {
   buttons?: ButtonData[]
 }
 
+export interface SoupEventsBlock {
+  heading?: string
+  note?: string
+  days?: number | null
+  max?: number | null
+  onlyVolunteers?: boolean
+}
+
 export interface SignupBlock {
   heading?: string
   note?: string
