@@ -6,6 +6,7 @@ import Prose from './blocks/Prose.astro'
 import Cards from './blocks/Cards.astro'
 import Steps from './blocks/Steps.astro'
 import Calendar from './blocks/Calendar.astro'
+import SoupEvents from './blocks/SoupEvents.astro'
 import PostsTeaser from './blocks/PostsTeaser.astro'
 import Cta from './blocks/Cta.astro'
 import Signup from './blocks/Signup.astro'
@@ -23,6 +24,7 @@ const registry: Record<string, any> = {
   cards: Cards,
   steps: Steps,
   calendar: Calendar,
+  soupEvents: SoupEvents,
   postsTeaser: PostsTeaser,
   cta: Cta,
   signup: Signup,
@@ -51,6 +53,7 @@ const SECTION_GARNISH: Record<string, { kind: SoupIconKind; left: string; right:
   split: { kind: 'stelline', left: '-left-12 top-1/2 -translate-y-1/2 -rotate-12 h-44 w-44', right: '-right-12 top-1/2 -translate-y-1/2 rotate-12 h-44 w-44' },
   cards: { kind: 'carrot', left: '-left-10 top-16 -rotate-12 h-56 w-56', right: '-right-10 top-16 rotate-12 h-56 w-56' },
   calendar: { kind: 'tomato', left: '-left-14 bottom-8 -rotate-6 h-44 w-44', right: '-right-14 bottom-8 rotate-6 h-44 w-44' },
+  soupEvents: { kind: 'carrot', left: '-left-10 top-12 -rotate-12 h-48 w-48', right: '-right-10 top-12 rotate-12 h-48 w-48' },
   postsTeaser: { kind: 'mushroom', left: '-left-12 top-6 -rotate-12 h-44 w-44', right: '-right-12 top-6 rotate-12 h-44 w-44' },
   newsletter: { kind: 'onion', left: '-left-10 bottom-6 -rotate-6 h-40 w-40', right: '-right-10 bottom-6 rotate-6 h-40 w-40' },
   header: { kind: 'stelline', left: '-left-12 top-6 -rotate-12 h-48 w-48', right: '-right-12 top-6 rotate-12 h-48 w-48' },

@@ -38,6 +38,17 @@
       }
     },
     {
+      "discriminant": "soupEvents",
+      "value": {
+        "anchorId": "events",
+        "heading": "Help at a dinner",
+        "note": "Pick a date and sign up. We start cooking at 5:30 PM and serve dinner at 6:30.",
+        "days": 60,
+        "max": 6,
+        "onlyVolunteers": true
+      }
+    },
+    {
       "discriminant": "signup",
       "value": {
         "anchorId": "volunteer",
