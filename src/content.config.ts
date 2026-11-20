@@ -164,6 +164,17 @@ const pages = defineCollection({
               }),
             }),
             z.object({
+              discriminant: z.literal('soupEvents'),
+              value: z.object({
+                anchorId: z.string().optional(),
+                heading: z.string().optional(),
+                note: z.string().optional(),
+                days: z.number().nullable().optional(),
+                max: z.number().nullable().optional(),
+                onlyVolunteers: z.boolean().optional(),
+              }),
+            }),
+            z.object({
               discriminant: z.literal('postsTeaser'),
               value: z.object({
                 anchorId: z.string().optional(),

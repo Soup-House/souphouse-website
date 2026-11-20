@@ -1,0 +1,27 @@
+---
+import type { SoupEventsBlock } from './types'
+
+// Soup House's own upcoming events from the CRM (only the ones marked public
+// there), each with a "Sign up to help" button when it wants volunteers. The
+// community food calendar is the separate Events widget block.
+const { heading, note, days = 60, max = 8, onlyVolunteers = false }: SoupEventsBlock = Astro.props
+---
+<section class="py-12">
+  <div class="mx-auto max-w-4xl px-4">
+    {
+      (heading || note) && (
+        <header class="mb-8 space-y-3 text-center">
+          {heading && <h2 class="font-heading text-4xl md:text-5xl">{heading}</h2>}
+          {note && <p class="text-base-content/70 text-lg">{note}</p>}
+        </header>
+      )
+    }
+    <div data-soup-events data-days={days ?? 60} data-max={max ?? 8} data-only-volunteers={String(onlyVolunteers)}>
+      <div class="text-base-content/50 py-10 text-center">Loading events…</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/soup-events'
+</script>
