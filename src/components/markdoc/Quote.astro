@@ -1,0 +1,8 @@
+---
+interface Props { by?: string }
+const { by } = Astro.props
+---
+<blockquote class="not-prose my-10 border-l-4 pl-6" style="border-color: var(--post-accent)">
+  <div class="font-heading text-2xl leading-snug md:text-3xl"><slot /></div>
+  {by && <footer class="text-base-content/60 mt-3 text-base">— {by}</footer>}
+</blockquote>
