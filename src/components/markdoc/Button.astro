@@ -1,0 +1,8 @@
+---
+interface Props { label: string; href: string }
+const { label, href } = Astro.props
+const external = /^https?:\/\//.test(href) && !/^https:\/\/(www\.)?souphouse\.org/.test(href)
+---
+<p class="not-prose my-6">
+  <a class="btn btn-primary" href={href} {...(external ? { target: '_blank', rel: 'noopener' } : {})}>{label}</a>
+</p>

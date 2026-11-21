@@ -2,6 +2,7 @@
 import { getCollection, getEntry, render } from 'astro:content'
 import Layout from '@layouts/Layout.astro'
 import { Image } from 'astro:assets'
+import SoupIcon from '@components/ui/SoupIcon.astro'
 
 const { slug } = Astro.params
 if (!slug) throw new Error('Slug not found')
@@ -15,16 +16,57 @@ export async function getStaticPaths() {
   const posts = await getCollection('posts')
   return posts.map((post) => ({ params: { slug: post.id } }))
 }
+
+// Per-post look (set in the newsletter editor or Keystatic): an accent colour
+// for headings, rules, quotes and event names, and a plain or stelline header.
+const { title, excerpt, publishedDate, featuredImage, imageAlt, coverUrl, coverAlt } = post.data
+const ACCENTS = { tomato: 'var(--color-primary)', herb: 'var(--color-secondary)', honey: 'var(--color-accent)' }
+const accent = ACCENTS[post.data.accent ?? 'tomato'] ?? ACCENTS.tomato
+const stelline = post.data.background === 'stelline'
+const date = publishedDate?.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'long', day: 'numeric', year: 'numeric' })
 ---
 
-<Layout title={post.data.title}>
-  <div class="container mx-auto max-w-screen-xl p-6">
-    <article class="prose max-w-none">
-      {post.data.featuredImage && (
-        <Image src={post.data.featuredImage} alt={post?.data?.imageAlt || 'Featured Image'} width={1000} height={500} class="object-cover w-full" />
-      )}
-      <h1 class="text-5xl font-bold">{post.data.title}</h1>
+<Layout title={title} image={coverUrl ?? undefined}>
+  <article class="post relative" style={`--post-accent: ${accent}`}>
+    <header class="relative overflow-hidden">
+      {
+        stelline && (
+          <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+            <SoupIcon kind="stelline" class="absolute -left-6 top-6 h-28 w-28 -rotate-12 opacity-15" />
+            <SoupIcon kind="stelline" class="absolute right-4 top-24 h-16 w-16 rotate-12 opacity-15" />
+            <SoupIcon kind="stelline" class="absolute -right-8 bottom-2 h-32 w-32 rotate-45 opacity-10" />
+            <SoupIcon kind="stelline" class="absolute bottom-6 left-1/4 h-10 w-10 opacity-15" />
+          </div>
+        )
+      }
+      <div class="relative mx-auto max-w-3xl px-4 pb-8 pt-12 text-center" style={stelline ? 'color: inherit' : ''}>
+        <p class="text-sm font-semibold uppercase tracking-widest" style="color: var(--post-accent)">
+          <a href="/posts" class="hover:underline">News</a>{date && <span> · {date}</span>}
+        </p>
+        <h1 class="font-heading mt-3 text-4xl leading-tight md:text-6xl">{title}</h1>
+        {excerpt && <p class="text-base-content/70 mx-auto mt-5 max-w-2xl text-lg md:text-xl">{excerpt}</p>}
+      </div>
+    </header>
+    {
+      (featuredImage || coverUrl) && (
+        <div class="mx-auto mb-10 max-w-4xl px-4">
+          {featuredImage ? (
+            <Image src={featuredImage} alt={imageAlt || title} width={1600} height={900} class="w-full rounded-3xl object-cover shadow-md" />
+          ) : (
+            <img src={coverUrl} alt={coverAlt ?? ''} class="h-auto w-full rounded-3xl shadow-md" />
+          )}
+        </div>
+      )
+    }
+    <div class="post-body prose prose-lg mx-auto max-w-3xl px-4 pb-20">
       <Content />
-    </article>
-  </div>
+    </div>
+  </article>
 </Layout>
+
+<style is:global>
+  .post header svg { color: var(--post-accent); }
+  .post-body h2 { color: var(--post-accent); margin-top: 2.2em; font-family: var(--font-heading); font-weight: var(--font-heading-weight, 400); font-size: 2.1em; line-height: 1.15; }
+  .post-body hr { border-color: color-mix(in oklab, var(--post-accent) 30%, transparent); margin: 3em 0; }
+  .post-body a:not(.btn) { color: var(--post-accent); }
+</style>

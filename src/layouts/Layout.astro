@@ -9,6 +9,8 @@ import SpeedInsights from '@vercel/speed-insights/astro'
 
 export interface Props {
   title?: string
+  // A page's own share image (a full URL), e.g. a news post's cover.
+  image?: string
 }
 
 import branding from '@settings/branding.json'
@@ -33,10 +35,9 @@ const seoImages = import.meta.glob<{ default: ImageMetadata }>(
 )
 const seoImageUrl = (path?: string | null) =>
   path ? seoImages[path]?.default.src : undefined
-const ogImage = seoImageUrl(seo.opengraph.Image)
-const twitterImage = seoImageUrl(seo.twitter.Image)
-
-const { title } = Astro.props
+const { title, image } = Astro.props
+const ogImage = image ?? seoImageUrl(seo.opengraph.Image)
+const twitterImage = image ?? seoImageUrl(seo.twitter.Image)
 const fullTitle = [seo.seo.title, title].filter(Boolean).join(' | ')
 
 const typography = { ...DEFAULT_TYPOGRAPHY, ...(branding.site.typography ?? {}) }

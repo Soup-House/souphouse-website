@@ -11,6 +11,11 @@ const posts = defineCollection({
       imageAlt: z.string().optional(),
       excerpt: z.string().optional(),
       publishedDate: z.date().optional(),
+      // set by the newsletter editor (or Keystatic)
+      coverUrl: z.string().url().nullable().optional(),
+      coverAlt: z.string().nullable().optional(),
+      accent: z.enum(['tomato', 'herb', 'honey']).optional(),
+      background: z.enum(['plain', 'stelline']).optional(),
     }),
 })
 
