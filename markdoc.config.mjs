@@ -14,6 +14,10 @@ export default defineMarkdocConfig({
         place: { type: String },
         menu: { type: String },
         signup: { type: String },
+        details: { type: String },
+        cost: { type: String },
+        reserve: { type: String },
+        tickets: { type: String },
       },
     },
     button: {

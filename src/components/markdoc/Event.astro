@@ -1,15 +1,44 @@
 ---
 // An event card in a news post, like the "Our events" block: name, date and
-// time, place, menu, and "Sign up to help" when it takes volunteers.
-interface Props { title: string; when?: string; place?: string; menu?: string; signup?: string }
-const { title, when, place, menu, signup } = Astro.props
-// Signup links point at www.souphouse.org; keep them on this site (staging too).
-const href = signup?.replace(/^https:\/\/(www\.)?souphouse\.org/, '') ?? ''
+// time, place, description, menu, cost, and buttons for what the event offers
+// (reserve a spot, tickets, "Sign up to help").
+interface Props {
+  title: string
+  when?: string
+  place?: string
+  details?: string
+  menu?: string
+  cost?: string
+  reserve?: string
+  tickets?: string
+  signup?: string
+}
+const { title, when, place, details, menu, cost, reserve, tickets, signup } = Astro.props
+// Reserve and signup links point at www.souphouse.org; keep them on this site
+// (staging too). Tickets are sold elsewhere.
+const local = (url?: string) => url?.replace(/^https:\/\/(www\.)?souphouse\.org/, '') ?? ''
+const buttons = [
+  { href: local(reserve), label: 'Reserve a spot' },
+  { href: tickets ?? '', label: 'Get tickets', external: true },
+  { href: local(signup), label: 'Sign up to help' },
+].filter((b) => b.href)
 ---
 <div class="not-prose bg-base-200 my-5 rounded-2xl p-5 shadow-sm">
   <h3 class="font-heading text-2xl leading-tight" style="color: var(--post-accent)">{title}</h3>
   {when && <p class="mt-1 font-semibold">{when}</p>}
   {place && <p class="text-base-content/70">{place}</p>}
+  {details && <p class="mt-2">{details}</p>}
   {menu && <p class="mt-2"><strong>On the menu:</strong> {menu}</p>}
-  {href && <a class="btn btn-primary btn-sm mt-4" href={href}>Sign up to help</a>}
+  {cost && <p class="mt-2"><strong>Cost:</strong> {cost}</p>}
+  {
+    buttons.length > 0 && (
+      <div class="mt-4 flex flex-wrap gap-2">
+        {buttons.map((b) => (
+          <a class="btn btn-primary btn-sm" href={b.href} {...(b.external ? { target: '_blank', rel: 'noopener' } : {})}>
+            {b.label}
+          </a>
+        ))}
+      </div>
+    )
+  }
 </div>

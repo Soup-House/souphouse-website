@@ -12,10 +12,18 @@ export interface SoupEvent {
   type: string
   start: string // ISO 8601 with offset, Soup House local time
   end: string | null
+  summary?: string | null // the description, plain text with line breaks
   menu: string | null
   location: string | null
   volunteers_wanted: boolean
   signup_url: string | null
+  flyer_url?: string | null // an image, public on the CRM
+  cost?: string | null // "Free", "$10 suggested donation"...
+  ticket_url?: string | null // tickets sold elsewhere (Zeffy)
+  reservations?: boolean // taking reservations (they may be full)
+  spots?: number | null // null: no limit
+  spots_left?: number | null // null: no limit
+  reserve_url?: string | null // null when not taking reservations, or full
 }
 
 export async function fetchSoupEvents(opts: { days?: number; id?: number } = {}): Promise<SoupEvent[]> {
