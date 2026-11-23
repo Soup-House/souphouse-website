@@ -1,0 +1,125 @@
+---
+import Layout from '@layouts/Layout.astro'
+
+// Reserve a spot at one of our events: /reserve?event=<CRM event id>.
+// Website, calendar and newsletter "Reserve a spot" buttons link here. Without
+// an event (or for one that isn't taking reservations, or is full) it lists
+// the events that are. Like /volunteer, the event comes from the CRM in the
+// browser (via /api/soup-events), so the page itself stays static.
+---
+<Layout title="Reserve a spot">
+  <section class="bg-base-100 py-12">
+    <div class="mx-auto max-w-2xl px-4">
+      <h1 class="font-heading mb-2 text-center text-4xl md:text-5xl">Save me a seat</h1>
+      <div data-reserve-page>
+        <p class="text-base-content/50 py-10 text-center">Loading…</p>
+      </div>
+      <noscript>
+        <p class="py-6 text-center">This page needs JavaScript. You can also email <a class="link link-primary" href="mailto:contact@souphouse.org">contact@souphouse.org</a> to reserve.</p>
+      </noscript>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { eventCard, loadEvents, spotsLeft } from '../scripts/soup-events'
+  import type { SoupEvent } from '../lib/soupEvents'
+
+  // The most one reservation can be for; more than that, email us.
+  const MAX_PARTY = 10
+  const ASK = '<p class="text-base-content/70 mt-8 text-center">Coming with a bigger group, or have a question? Email <a class="link link-primary" href="mailto:contact@souphouse.org">contact@souphouse.org</a>.</p>'
+
+  function form(e: SoupEvent): string {
+    const most = Math.max(1, Math.min(MAX_PARTY, e.spots_left ?? MAX_PARTY))
+    const options = Array.from({ length: most }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('')
+    const left = spotsLeft(e)
+    return `<p class="text-base-content/70 mb-6 text-center">Reserve a spot at:</p>
+${eventCard(e, false)}
+<div class="card bg-base-100 mt-6 shadow-md"><div class="card-body">
+  <form data-reserve class="space-y-4">
+    <input type="hidden" name="event_id" value="${e.id}" />
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block"><span class="mb-1 block text-sm font-medium">First name</span>
+        <input type="text" name="first_name" required autocomplete="given-name" class="input w-full" /></label>
+      <label class="block"><span class="mb-1 block text-sm font-medium">Last name</span>
+        <input type="text" name="last_name" required autocomplete="family-name" class="input w-full" /></label>
+    </div>
+    <label class="block"><span class="mb-1 block text-sm font-medium">Email</span>
+      <input type="email" name="email" required autocomplete="email" class="input w-full" /></label>
+    <label class="block"><span class="mb-1 block text-sm font-medium">How many people, you included?</span>
+      <select name="party_size" class="select w-full">${options}</select>
+      ${left ? `<span class="text-base-content/60 mt-1 block text-sm">${left}</span>` : ''}</label>
+    <button type="submit" class="btn btn-primary w-full">Reserve</button>
+    <p data-status role="status" aria-live="polite" class="text-center text-sm"></p>
+  </form>
+</div></div>
+${ASK}`
+  }
+
+  function list(events: SoupEvent[], intro: string): string {
+    const open = events.filter((e) => e.reserve_url)
+    return `<p class="text-base-content/70 mb-6 text-center">${intro}</p>
+${open.length ? `<div class="grid gap-4">${open.map((e) => eventCard(e)).join('')}</div>` : '<p class="text-base-content/60 py-6 text-center">Nothing is taking reservations right now. Check back soon!</p>'}
+${ASK}`
+  }
+
+  function bindForm(root: HTMLElement) {
+    const f = root.querySelector<HTMLFormElement>('form[data-reserve]')
+    if (!f) return
+    const status = f.querySelector<HTMLElement>('[data-status]')!
+    const say = (text: string, cls: string) => {
+      status.textContent = text
+      status.className = `text-center text-sm ${cls}`
+    }
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault()
+      const btn = f.querySelector<HTMLButtonElement>('button[type="submit"]')!
+      btn.disabled = true
+      say('Sending…', 'text-base-content/60')
+      try {
+        const res = await fetch('/api/forms/event-reservation', { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
+        const data = await res.json().catch(() => null)
+        if (res.ok && data?.ok) {
+          f.outerHTML = `<div class="py-4 text-center"><p class="font-heading text-primary text-2xl">You're booked!</p>
+<p class="text-base-content/70 mt-2">See you there. We've emailed you a confirmation; reply to it if your plans change.</p></div>`
+          return
+        }
+        if (res.status === 409 && typeof data?.spots_left === 'number' && data.spots_left > 0) {
+          say(`Sorry, there ${data.spots_left === 1 ? 'is only 1 spot' : `are only ${data.spots_left} spots`} left.`, 'text-error')
+        } else {
+          say(res.status === 409 ? "Sorry, this event is full or isn't taking reservations anymore." : 'Something went wrong. Please try again later.', 'text-error')
+        }
+      } catch {
+        say('Something went wrong. Please try again later.', 'text-error')
+      }
+      btn.disabled = false
+    })
+  }
+
+  async function init() {
+    const root = document.querySelector<HTMLElement>('[data-reserve-page]')
+    if (!root || root.dataset.bound) return
+    root.dataset.bound = '1'
+    const id = Number(new URLSearchParams(location.search).get('event'))
+    try {
+      if (id > 0) {
+        const [event] = await loadEvents(`id=${id}`)
+        if (event?.reserve_url) {
+          root.innerHTML = form(event)
+          bindForm(root)
+          document.title = `Reserve: ${event.title} | Soup House`
+          return
+        }
+        const why = event?.reservations ? "That event is full, sorry!" : "That event isn't taking reservations (it may have already happened)."
+        root.innerHTML = list(await loadEvents('days=60'), `${why} Here's what is:`)
+        return
+      }
+      root.innerHTML = list(await loadEvents('days=60'), 'Pick an event and reserve a spot:')
+    } catch {
+      root.innerHTML = `<p class="text-base-content/60 py-6 text-center">Our events aren't loading right now. Please try again later, or email <a class="link link-primary" href="mailto:contact@souphouse.org">contact@souphouse.org</a>.</p>`
+    }
+  }
+
+  document.addEventListener('astro:page-load', init)
+</script>
