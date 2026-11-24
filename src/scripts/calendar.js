@@ -242,7 +242,7 @@ function loadLeaflet() {
 
 // One pin per place, coloured by what's on offer, sized by how many events
 // are there; the popup lists that place's upcoming times. Same visual
-// language as the Food map page served by Gancio at /map/.
+// language as the calendar import's food map (souphouse-calendar-ingest).
 const KINDS = {
   meal: ['Hot meals', '#c1432b'],
   groceries: ['Groceries', '#5a7d3c'],

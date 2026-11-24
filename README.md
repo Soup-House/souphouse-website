@@ -17,8 +17,8 @@ ask an admin to add your GitHub account.
 
 ## Local development
 
-For working on the code (or editing content offline). Needs Node 22; system node
-here is 20, so load nvm first:
+For working on the code (or editing content offline). Needs Node 22 (if your
+system node is older, load nvm first):
 
 ```sh
 export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh"
@@ -53,19 +53,24 @@ npm run preview
 
 ## Deploy / hosting
 
-Hosted on **Vercel**. Every push to `main` auto-deploys. The site is static except
-`/keystatic` and `/api/keystatic`, which the Vercel adapter builds as Node serverless
-functions (for the CMS UI and GitHub OAuth).
+Hosted on **Vercel**. Every push to `main` auto-deploys. Pages are static; the
+Vercel adapter builds these routes as Node serverless functions:
 
-The production editor (GitHub storage) needs these environment variables set in the
-Vercel project:
+- `/keystatic`, `/api/keystatic`: the CMS UI and its GitHub sign-in;
+- `/api/forms/*`: the signup, volunteer, reservation and contact forms (they
+  call the CRM's form processors);
+- `/api/subscribe`: newsletter signups;
+- `/api/events`, `/api/soup-events`: cached proxies for the community calendar
+  and Soup House's own events from the CRM.
 
-- `KEYSTATIC_GITHUB_CLIENT_ID`
-- `KEYSTATIC_GITHUB_CLIENT_SECRET`
+Environment variables in the Vercel project (Production and Preview), none
+stored in the repo:
+
+- `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`,
+  `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`: Keystatic's GitHub App, installed on this repo
 - `KEYSTATIC_SECRET` (random; `openssl rand -base64 32`)
-- `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`
-
-These come from a GitHub App installed on this repo. They are not stored in the repo.
+- `CIVI_API_KEY`: the CRM API key of the user "Website Bot" (the forms)
+- `CIVI_CRM_URL`: `https://crm.souphouse.org`
 
 ## Where things are
 

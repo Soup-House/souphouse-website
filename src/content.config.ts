@@ -1,6 +1,6 @@
 // @ts-ignore
 import { defineCollection, z } from 'astro:content'
-import { glob, file } from 'astro/loaders'
+import { glob } from 'astro/loaders'
 
 const posts = defineCollection({
   loader: glob({ pattern: '**/[^_]*.(md|mdx|mdoc|yaml|json)', base: './src/content/posts' }),
@@ -16,42 +16,6 @@ const posts = defineCollection({
       coverAlt: z.string().nullable().optional(),
       accent: z.enum(['tomato', 'herb', 'honey']).optional(),
       background: z.enum(['plain', 'stelline']).optional(),
-    }),
-})
-
-const branding = defineCollection({
-  loader: file('./src/settings/branding.json'),
-  schema: z.object({
-    siteName: z.string(),
-    theme: z.string(),
-    favicon: z.string(),
-  }),
-})
-
-const seo = defineCollection({
-  loader: file('./src/settings/seo.json'),
-  schema: ({ image }) =>
-    z.object({
-      seo: z.object({
-        title: z.string().optional(),
-        description: z.string().optional(),
-        keywords: z.string().optional(),
-        canonical: z.string().optional(),
-      }).optional(),
-      opengraph: z
-        .object({
-          Title: z.string().optional(),
-          Description: z.string().optional(),
-          Image: image().optional(),
-        })
-        .optional(),
-      twitter: z
-        .object({
-          Title: z.string().optional(),
-          Description: z.string().optional(),
-          Image: image().optional(),
-        })
-        .optional(),
     }),
 })
 
@@ -250,4 +214,4 @@ const pages = defineCollection({
     }),
 })
 
-export const collections = { posts, branding, seo, pages }
+export const collections = { posts, pages }
