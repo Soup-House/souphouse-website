@@ -14,7 +14,7 @@ export const posts = collection({
       directory: "src/assets/images/posts",
       publicPath: "@assets/images/posts/",
     }),
-    imgAlt: fields.text({ label: 'Image Alt' }),
+    imageAlt: fields.text({ label: 'Featured image description (alt text)' }),
     content: fields.markdoc({
       label: "Content",
       options: {

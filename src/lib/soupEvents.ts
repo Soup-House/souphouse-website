@@ -40,10 +40,8 @@ export async function fetchSoupEvents(opts: { days?: number; id?: number } = {})
   return Array.isArray(data?.events) ? data.events : []
 }
 
-// "Thursday, December 10" and "6:30 PM", in Soup House time whatever the
-// visitor's (or the server's) timezone.
+// "Thursday, December 10", in Soup House time whatever the visitor's (or the
+// server's) timezone.
 const TZ = 'America/Chicago'
 export const eventDay = (iso: string) =>
   new Date(iso).toLocaleDateString('en-US', { timeZone: TZ, weekday: 'long', month: 'long', day: 'numeric' })
-export const eventTime = (iso: string) =>
-  new Date(iso).toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' })

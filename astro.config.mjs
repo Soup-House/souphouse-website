@@ -8,10 +8,9 @@ import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
-// Static by default. Keystatic's two routes (/keystatic, /api/keystatic) are
-// marked prerender:false, so the Vercel adapter turns just those into Node
-// serverless functions (for the GitHub OAuth + API), while every page stays
-// static. The admin needs a Node runtime, which Vercel provides.
+// Static by default. Routes marked prerender:false (Keystatic's /keystatic and
+// /api/keystatic, and the API routes in src/pages/api) become Node serverless
+// functions on Vercel, while every page stays static.
 //
 // basic-ssl is dev-only: HTTPS so the Keystatic admin gets a secure context
 // when opened over a LAN IP. We key off argv ('dev') because NODE_ENV isn't
